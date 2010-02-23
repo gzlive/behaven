@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -86,18 +85,10 @@ namespace BehaveN
                 {
                     if (!pi.IsOut)
                     {
-                        if (convertibleObject != null && !InlineTypes.InlineTypeExistsFor(pi.ParameterType))
+                        if (convertibleObject != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
                         {
-                            Type itemType = GetCollectionItemType(pi.ParameterType);
-
-                            if (itemType != null)
-                            {
-                                parameters[i] = convertibleObject.ToList(itemType);
-                            }
-                            else
-                            {
-                                parameters[i] = convertibleObject.ToObject(pi.ParameterType);
-                            }
+                            BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
+                            parameters[i] = blockType.GetObject(pi.ParameterType, convertibleObject);
                         }
                         else
                         {
@@ -159,23 +150,6 @@ namespace BehaveN
             {
                 throw new VerificationException(new Exception("One or more output parameters did not pass."));
             }
-        }
-
-        internal static Type GetCollectionItemType(Type parameterType)
-        {
-            if (!parameterType.IsGenericType) return null;
-
-            Type genericType = parameterType.GetGenericTypeDefinition();
-
-            if (genericType == typeof(IEnumerable<>) ||
-                genericType == typeof(IList<>) ||
-                genericType == typeof(ICollection<>) ||
-                genericType == typeof(List<>))
-            {
-                return parameterType.GetGenericArguments()[0];
-            }
-
-            return null;
         }
 
         private void Invoke(object[] parameters)

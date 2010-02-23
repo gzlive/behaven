@@ -44,9 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockType.cs" />
+    <Compile Include="BlockTypes.cs" />
+    <Compile Include="DateTimeInlineType.cs" />
+    <Compile Include="DecimalInlineType.cs" />
+    <Compile Include="EnumInlineType.cs" />
+    <Compile Include="FormBlockType.cs" />
+    <Compile Include="GridBlockType.cs" />
     <Compile Include="InlineType.cs" />
     <Compile Include="InlineTypes.cs" />
+    <Compile Include="Int32InlineType.cs" />
     <Compile Include="PatternMaker.cs" />
+    <Compile Include="StringInlineType.cs" />
     <Compile Include="TextParser.cs" />
     <Compile Include="NameParser.cs" />
     <Compile Include="Int32Parser.cs" />

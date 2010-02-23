@@ -49,7 +49,7 @@ namespace BehaveN
                 return DateTimeParser.ParseDateTime(value);
             }
 
-            Type itemType = StepMethod.GetCollectionItemType(type);
+            Type itemType = BlockType.GetCollectionItemType(type);
 
             if (itemType != null)
             {
