@@ -12,11 +12,11 @@ namespace BehaveN.Tests
             Interpreter1 i1 = new Interpreter1();
             Interpreter2 i2 = new Interpreter2();
 
-            Scenario scenario = new Scenario();
-            scenario.UseStepDefinitionsFrom(i1);
-            scenario.UseStepDefinitionsFrom(i2);
+            Specifications specifications = new Specifications();
+            specifications.UseStepDefinitionsFrom(i1);
+            specifications.UseStepDefinitionsFrom(i2);
 
-            scenario.VerifyText("Given foo\r\n" +
+            specifications.VerifyText("Given foo\r\n" +
                                 "Given bar\r\n" +
                                 "Given baz\r\n");
 

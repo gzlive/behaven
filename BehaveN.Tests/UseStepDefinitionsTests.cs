@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class UseStepDefinitionsTests : Scenario
+    public class UseStepDefinitionsTests : Specifications
     {
         [SetUp]
         public void SetUp()
@@ -15,7 +15,7 @@ namespace BehaveN.Tests
         [Test]
         public void UseStepDefinitionsFrom()
         {
-            Scenario s = new Scenario();
+            Specifications s = new Specifications();
             s.UseStepDefinitionsFrom(new Steps1());
 
             s.Given("Step1");
@@ -27,7 +27,7 @@ namespace BehaveN.Tests
         [Test]
         public void UseStepDefinitionsFromType()
         {
-            Scenario s = new Scenario();
+            Specifications s = new Specifications();
             s.UseStepDefinitionsFromType<Steps1>();
 
             s.Given("Step1");
@@ -39,7 +39,7 @@ namespace BehaveN.Tests
         [Test]
         public void UseStepDefinitionsFromAssemblyOfType()
         {
-            Scenario s = new Scenario();
+            Specifications s = new Specifications();
             s.UseStepDefinitionsFromAssemblyOfType<Steps1>();
 
             s.Given("Step1");

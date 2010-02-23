@@ -9,13 +9,13 @@ namespace BehaveN.Tests
         [SetUp]
         public void BaseSetUp()
         {
-            s = new Scenario();
+            s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             sw = new StringWriter();
             s.Reporter = new PlainTextScenarioReporter(sw);
         }
 
-        protected Scenario s;
+        protected Specifications s;
         private bool passed;
         private StringWriter sw;
 

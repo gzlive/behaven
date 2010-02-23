@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class FileTests : Scenario
+    public class FileTests : Specifications
     {
         private bool _givenInvoked;
         private bool _whenInvoked;

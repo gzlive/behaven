@@ -46,7 +46,7 @@ namespace BehaveN.Tool
         {
             foreach (var scenarioFile in scenarioFiles)
             {
-                var scenario = new Scenario();
+                var scenario = new Specifications();
 
                 foreach (var assembly in _assemblies)
                 {

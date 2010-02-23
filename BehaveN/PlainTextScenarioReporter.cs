@@ -6,7 +6,7 @@ using System.Text;
 namespace BehaveN
 {
     /// <summary>
-    /// Represents a plain text reporter for Scenario steps.
+    /// Represents a plain text reporter for Specifications steps.
     /// </summary>
     public class PlainTextScenarioReporter : Reporter
     {

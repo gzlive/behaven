@@ -22,10 +22,10 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Reads the specifications to the scenario.
+        /// Reads the specifications to the specifications.
         /// </summary>
-        /// <param name="scenario">The scenario.</param>
-        public void ReadTo(Scenario scenario)
+        /// <param name="specifications">The scenario.</param>
+        public void ReadTo(Specifications specifications)
         {
             List<string> lines = TextParser.GetLines(_text);
 
@@ -52,7 +52,7 @@ namespace BehaveN
                     convertibleObject = grid;
                 }
 
-                ParseLine(line, convertibleObject, scenario);
+                ParseLine(line, convertibleObject, specifications);
             }
         }
 
@@ -62,13 +62,13 @@ namespace BehaveN
         private static readonly Regex _thenRegex = new Regex(@"^\s*Then\s+(.+)", RegexOptions.IgnoreCase);
         private static readonly Regex _andRegex = new Regex(@"^\s*And\s+(.+)", RegexOptions.IgnoreCase);
 
-        private void ParseLine(string line, IConvertibleObject convertibleObject, Scenario scenario)
+        private void ParseLine(string line, IConvertibleObject convertibleObject, Specifications specifications)
         {
             Match m = _scenarioRegex.Match(line);
 
             if (m.Success)
             {
-                scenario.Name(m.Groups[1].Value);
+                specifications.Name(m.Groups[1].Value);
             }
             else
             {
@@ -76,7 +76,7 @@ namespace BehaveN
 
                 if (m.Success)
                 {
-                    scenario.Given(m.Groups[1].Value, convertibleObject);
+                    specifications.Given(m.Groups[1].Value, convertibleObject);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace BehaveN
 
                     if (m.Success)
                     {
-                        scenario.When(m.Groups[1].Value, convertibleObject);
+                        specifications.When(m.Groups[1].Value, convertibleObject);
                     }
                     else
                     {
@@ -92,7 +92,7 @@ namespace BehaveN
 
                         if (m.Success)
                         {
-                            scenario.Then(m.Groups[1].Value, convertibleObject);
+                            specifications.Then(m.Groups[1].Value, convertibleObject);
                         }
                         else
                         {
@@ -100,7 +100,7 @@ namespace BehaveN
 
                             if (m.Success)
                             {
-                                scenario.And(m.Groups[1].Value, convertibleObject);
+                                specifications.And(m.Groups[1].Value, convertibleObject);
                             }
                         }
                     }

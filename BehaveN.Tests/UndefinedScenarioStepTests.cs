@@ -10,11 +10,11 @@ namespace BehaveN.Tests
         [Test]
         public void Test()
         {
-            Scenario scenario = new Scenario();
+            Specifications specifications = new Specifications();
             StringWriter sw = new StringWriter();
-            scenario.Reporter = new PlainTextScenarioReporter(sw);
+            specifications.Reporter = new PlainTextScenarioReporter(sw);
 
-            Assert.Throws(typeof(VerificationException), () => scenario.VerifyText(
+            Assert.Throws(typeof(VerificationException), () => specifications.VerifyText(
                   "Given foo\r\n"
                 + "And bar baz\r\n"
                 + "And 123 as an integer and 4.56 as a decimal and \"abc xyz\" as a string\r\n"

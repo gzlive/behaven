@@ -14,7 +14,7 @@ namespace BehaveN.Tests
         [Test]
         public void GivenUnderscore()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -27,7 +27,7 @@ namespace BehaveN.Tests
         [Test]
         public void WhenUnderscore()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.whenInvoked = false;
 
@@ -40,7 +40,7 @@ namespace BehaveN.Tests
         [Test]
         public void ThenUnderscore()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.thenInvoked = false;
 
@@ -53,7 +53,7 @@ namespace BehaveN.Tests
         [Test]
         public void GivenWhenThenInText()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
             this.whenInvoked = false;
@@ -72,7 +72,7 @@ namespace BehaveN.Tests
         [Test]
         public void GivenCamelCase()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -85,7 +85,7 @@ namespace BehaveN.Tests
         [Test]
         public void IntArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -98,7 +98,7 @@ namespace BehaveN.Tests
         [Test]
         public void Int1stArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -111,7 +111,7 @@ namespace BehaveN.Tests
         [Test]
         public void Int2ndArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -124,7 +124,7 @@ namespace BehaveN.Tests
         [Test]
         public void Int3rdArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -137,7 +137,7 @@ namespace BehaveN.Tests
         [Test]
         public void Int4thArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -150,7 +150,7 @@ namespace BehaveN.Tests
         [Test]
         public void IntAndDecimalArgs()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -163,7 +163,7 @@ namespace BehaveN.Tests
         [Test]
         public void DecimalAndIntArgsDeclaredInDifferentOrder()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -176,7 +176,7 @@ namespace BehaveN.Tests
         [Test]
         public void DecimalArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -189,7 +189,7 @@ namespace BehaveN.Tests
         [Test]
         public void DecimalWithoutPointArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -202,7 +202,7 @@ namespace BehaveN.Tests
         [Test]
         public void DecimalWithDollarSignArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -215,7 +215,7 @@ namespace BehaveN.Tests
         [Test]
         public void DecimalWithDollarSignAndWithoutPointArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -228,7 +228,7 @@ namespace BehaveN.Tests
         [Test]
         public void StringArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -241,7 +241,7 @@ namespace BehaveN.Tests
         [Test]
         public void StringWithoutQuotesArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -254,7 +254,7 @@ namespace BehaveN.Tests
         [Test]
         public void StringWithSpaceAndWithoutQuotesAndIntArgs()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -267,7 +267,7 @@ namespace BehaveN.Tests
         [Test]
         public void EnumArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -280,7 +280,7 @@ namespace BehaveN.Tests
         [Test]
         public void EnumWithSpacesArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 
@@ -293,7 +293,7 @@ namespace BehaveN.Tests
         [Test]
         public void BadEnumArg()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenInvoked = false;
 

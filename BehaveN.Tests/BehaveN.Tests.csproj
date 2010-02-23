@@ -70,7 +70,6 @@
     <Compile Include="InterpreterTests.cs" />
     <Compile Include="FileTests.cs" />
     <Compile Include="Properties\VersionInfo.cs" />
-    <Compile Include="ScenarioOverloadsTests.cs" />
     <Compile Include="DateTimeParserTests.cs" />
     <Compile Include="StubReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

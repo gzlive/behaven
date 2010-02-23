@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -10,7 +9,7 @@ namespace BehaveN
     /// <summary>
     /// Represents the base verification engine for specifications.
     /// </summary>
-    public abstract class Specifications
+    public class Specifications
     {
         private readonly List<Interpreter> _interpreters = new List<Interpreter>();
         private readonly Dictionary<Type, object> _context = new Dictionary<Type, object>();
@@ -22,7 +21,7 @@ namespace BehaveN
         /// <summary>
         /// Initializes a new instance of the <see cref="Specifications"/> class.
         /// </summary>
-        protected Specifications()
+        public Specifications()
         {
             _interpreters.Add(new Interpreter(this));
         }
@@ -393,7 +392,10 @@ namespace BehaveN
         /// Reads the specifications in the text.
         /// </summary>
         /// <param name="text">The text.</param>
-        protected abstract void ReadSpecifications(string text);
+        protected virtual void ReadSpecifications(string text)
+        {
+            new PlainTextScenarioReader(text).ReadTo(this);
+        }
 
         /// <summary>
         /// Verifies this instance.
@@ -451,6 +453,7 @@ namespace BehaveN
         /// </summary>
         protected virtual void OnResetting()
         {
+            _lastStepType = StepType.Unspecified;
         }
 
         /// <summary>
@@ -477,7 +480,10 @@ namespace BehaveN
         /// Gets the default reporter.
         /// </summary>
         /// <returns>A <see cref="Reporter" /> object.</returns>
-        protected abstract Reporter GetDefaultReporter();
+        protected virtual Reporter GetDefaultReporter()
+        {
+            return new PlainTextScenarioReporter();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether verification should continue after executing a failed step.
@@ -489,6 +495,149 @@ namespace BehaveN
         {
             get { return _continueAfterFailedSteps; }
             set { _continueAfterFailedSteps = value; }
+        }
+
+        private StepType _lastStepType;
+
+        #region Methods for adding steps
+
+        /// <summary>
+        /// Names the scenario.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications Name(string name)
+        {
+            OnAddingStep(StepType.Name);
+            Steps.Add(StepType.Name, name);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "given" step using the specified description.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications Given(string description)
+        {
+            OnAddingStep(StepType.Given);
+            Steps.Add(StepType.Given, description, null);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "given" step using the specified description and convertible object.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <param name="convertibleObject">The convertible object.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications Given(string description, IConvertibleObject convertibleObject)
+        {
+            OnAddingStep(StepType.Given);
+            Steps.Add(StepType.Given, description, convertibleObject);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "when" step using the specified description.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications When(string description)
+        {
+            OnAddingStep(StepType.When);
+            Steps.Add(StepType.When, description, null);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "when" step using the specified description and convertible object.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <param name="convertibleObject">The convertible object.</param>
+        /// <returns>
+        /// The current <see cref="Specifications"/> object.
+        /// </returns>
+        public Specifications When(string description, IConvertibleObject convertibleObject)
+        {
+            OnAddingStep(StepType.When);
+            Steps.Add(StepType.When, description, convertibleObject);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "then" step using the specified description.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications Then(string description)
+        {
+            OnAddingStep(StepType.Then);
+            Steps.Add(StepType.Then, description, null);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "then" step using the specified description and convertible object.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <param name="convertibleObject">The convertible object.</param>
+        /// <returns>
+        /// The current <see cref="Specifications"/> object.
+        /// </returns>
+        public Specifications Then(string description, IConvertibleObject convertibleObject)
+        {
+            OnAddingStep(StepType.Then);
+            Steps.Add(StepType.Then, description, convertibleObject);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes a "given", "when", or "then" step using the specified description.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns>The current <see cref="Specifications"/> object.</returns>
+        public Specifications And(string description)
+        {
+            return And(description, null);
+        }
+
+        /// <summary>
+        /// Executes a "given", "when", or "then" step using the specified description and convertible object.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <param name="convertibleObject">The convertible object.</param>
+        /// <returns>
+        /// The current <see cref="Specifications"/> object.
+        /// </returns>
+        public Specifications And(string description, IConvertibleObject convertibleObject)
+        {
+            ValidateCurrentStepType();
+
+            if (_lastStepType == StepType.Given)
+                Given(description, convertibleObject);
+            else if (_lastStepType == StepType.When)
+                When(description, convertibleObject);
+            else
+                Then(description, convertibleObject);
+
+            return this;
+        }
+
+        private void ValidateCurrentStepType()
+        {
+            if (_lastStepType != StepType.Given && _lastStepType != StepType.When && _lastStepType != StepType.Then)
+                throw new InvalidOperationException("Use Given, When, or Then before And!");
+        }
+
+        #endregion
+
+        private void OnAddingStep(StepType stepType)
+        {
+            if (_lastStepType != stepType)
+            {
+                _lastStepType = stepType;
+            }
         }
     }
 }

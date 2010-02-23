@@ -13,7 +13,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_invokes_steps_defined_with_underscores_in_their_name()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenFooWasInvoked = false;
             this.whenBarWasInvoked = false;
@@ -32,7 +32,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_invokes_steps_defined_with_underscores_in_their_name_with_VerifyText()
         {
-            var s = new Scenario();
+            var s = new Specifications();
             s.UseStepDefinitionsFrom(this);
             this.givenFooWasInvoked = false;
             this.whenBarWasInvoked = false;
