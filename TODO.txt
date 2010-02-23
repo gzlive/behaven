@@ -1,0 +1,15 @@
+- Run all scenarios in a single file, even if some fail.
+- Create composite reporter.
+- Create reporters for XML and HTML.
+- Create default reporter that looks for setting in app.config.
+  - Creates another reporter based on file extension.
+    - .txt, .xml, or .html.
+  - Always writes to console.
+- Add support for nullable parameters.
+- Add new "list" convertible object.
+  - Leading "-" will indicate item in a list.
+  - Used for lists of primitive types.
+- Add new "text" convertible object.
+  - Leading ">" could be indicator.
+  - Or quote character.
+    - No need to end quote on each line.

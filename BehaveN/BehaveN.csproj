@@ -1,0 +1,87 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{339DB2FB-58FD-4448-9448-0634913584AC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BehaveN</RootNamespace>
+    <AssemblyName>BehaveN</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>BehaveN.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\BehaveN.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\BehaveN.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InlineType.cs" />
+    <Compile Include="InlineTypes.cs" />
+    <Compile Include="PatternMaker.cs" />
+    <Compile Include="TextParser.cs" />
+    <Compile Include="NameParser.cs" />
+    <Compile Include="Int32Parser.cs" />
+    <Compile Include="PlainTextStepResultSymbols.cs" />
+    <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="Scenario.cs" />
+    <Compile Include="DateTimeParser.cs" />
+    <Compile Include="NameComparer.cs" />
+    <Compile Include="Form.cs" />
+    <Compile Include="IConvertibleObject.cs" />
+    <Compile Include="StepCollection.cs" />
+    <Compile Include="Step.cs" />
+    <Compile Include="UndefinedException.cs" />
+    <Compile Include="StepMethod.cs" />
+    <Compile Include="Interpreter.cs" />
+    <Compile Include="PlainTextScenarioReader.cs" />
+    <Compile Include="StepType.cs" />
+    <Compile Include="PlainTextScenarioReporter.cs" />
+    <Compile Include="Reporter.cs" />
+    <Compile Include="Grid.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueParser.cs" />
+    <Compile Include="ValueSetter.cs" />
+    <Compile Include="Specifications.cs" />
+    <Compile Include="VerificationException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BehaveN.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

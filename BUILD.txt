@@ -1,0 +1,18 @@
+To build the code:
+
+  - You need Visual Studio 2008 or the .NET 3.5 SDK to build from the command prompt.
+
+To build the documentation:
+
+  - Download and install the HTML Help Workshop:
+    - http://msdn.microsoft.com/en-us/library/ms669985(VS.85).aspx
+
+  - Download and install Sandcastle:
+    - http://sandcastle.codeplex.com/
+
+  - Download and install the Sandcastle Help File Builder:
+    - http://shfb.codeplex.com/
+    - You don't really need this to just build, but it's nice to have to edit the .shfb file.
+
+  - Download and install the Sandcastle Styles:
+    - http://sandcastlestyles.codeplex.com/

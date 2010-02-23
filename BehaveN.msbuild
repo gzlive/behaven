@@ -1,0 +1,75 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>.</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <Import Project="3rdPartyBinaries\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+
+  <PropertyGroup>
+    <ReleaseFolder>Release</ReleaseFolder>
+    <IncludeDocumentationInRelease>False</IncludeDocumentationInRelease>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ReleaseFiles Include="BehaveN\bin\Debug\BehaveN.dll" />
+    <ReleaseFiles Include="BehaveN\bin\Debug\BehaveN.pdb" />
+    <ReleaseFiles Include="BehaveN\bin\Debug\BehaveN.xml" />
+    <ReleaseFiles Include="Help\BehaveN.chm" Condition="$(IncludeDocumentationInRelease) != 'False'" />
+    <ReleaseFiles Include="README.txt" />
+    <ReleaseFiles Include="LICENSE.txt" />
+    <ReleaseFiles Include="HISTORY.txt" />
+    <ReleaseFiles Include="VERSION.txt" />
+  </ItemGroup>
+
+  <Target Name="Build">
+    <MSBuild Projects="BehaveN.sln" Targets="Build" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="BehaveN.sln" Targets="Clean" />
+    <RemoveDir Directories="$(ReleaseFolder)" />
+  </Target>
+
+  <Target Name="Version">
+    <Version VersionFile="VERSION.txt">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
+
+    <AssemblyInfo CodeLanguage="CS"
+             OutputFile="BehaveN\Properties\VersionInfo.cs"
+             AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+             AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
+
+    <AssemblyInfo CodeLanguage="CS"
+             OutputFile="BehaveN.Tests\Properties\VersionInfo.cs"
+             AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+             AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
+  </Target>
+
+  <Target Name="Documentation">
+    <MSBuild Projects="BehaveN.shfbproj" />
+  </Target>
+
+  <Target Name="Zip">
+    <RemoveDir Directories="$(ReleaseFolder)" />
+    <Version VersionFile="VERSION.txt">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+    </Version>
+    <Copy SourceFiles="@(ReleaseFiles)" DestinationFolder="$(ReleaseFolder)\BehaveN-$(Major).$(Minor).$(Build)" />
+    <Exec Command="..\3rdPartyBinaries\7-Zip\7z.exe a BehaveN-$(Major).$(Minor).$(Build).zip Behaven-$(Major).$(Minor).$(Build)" WorkingDirectory="$(ReleaseFolder)" />
+  </Target>
+
+  <Target Name="Release" DependsOnTargets="Clean;Version;Build">
+    <CallTarget Targets="Documentation" Condition="$(IncludeDocumentationInRelease) != 'False'" />
+    <CallTarget Targets="Zip" />
+  </Target>
+
+</Project>

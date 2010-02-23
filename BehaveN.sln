@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95E28F56-DE37-4D17-AF4B-D39AD3A1E39E}"
+	ProjectSection(SolutionItems) = preProject
+		BehaveN.msbuild = BehaveN.msbuild
+		BehaveN.NDepend.xml = BehaveN.NDepend.xml
+		BehaveN.shfbproj = BehaveN.shfbproj
+		BUILD.txt = BUILD.txt
+		HISTORY.txt = HISTORY.txt
+		LICENSE.txt = LICENSE.txt
+		README.txt = README.txt
+		TODO.txt = TODO.txt
+		VERSION.txt = VERSION.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN", "BehaveN\BehaveN.csproj", "{339DB2FB-58FD-4448-9448-0634913584AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Tests", "BehaveN.Tests\BehaveN.Tests.csproj", "{717C86C8-2B22-420A-8AA6-9029320DA6DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Tool", "BehaveN.Tool\BehaveN.Tool.csproj", "{A0217D6C-3817-4E59-8321-FFDE89BD8491}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Examples", "BehaveN.Examples\BehaveN.Examples.csproj", "{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{339DB2FB-58FD-4448-9448-0634913584AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{339DB2FB-58FD-4448-9448-0634913584AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{339DB2FB-58FD-4448-9448-0634913584AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{339DB2FB-58FD-4448-9448-0634913584AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717C86C8-2B22-420A-8AA6-9029320DA6DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717C86C8-2B22-420A-8AA6-9029320DA6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717C86C8-2B22-420A-8AA6-9029320DA6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717C86C8-2B22-420A-8AA6-9029320DA6DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0217D6C-3817-4E59-8321-FFDE89BD8491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0217D6C-3817-4E59-8321-FFDE89BD8491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0217D6C-3817-4E59-8321-FFDE89BD8491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0217D6C-3817-4E59-8321-FFDE89BD8491}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\BehaveN.ndproj"
+	EndGlobalSection
+EndGlobal

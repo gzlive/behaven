@@ -1,0 +1,64 @@
+1.3.0 - 2009/09/25:
+
+  - Removed all step attributes. The regular expression patterns are
+    inferred now inferred from the method name.
+
+  - FromContext attribute is now required on parameters that get their
+    values from the hidden context.
+
+  - Removed Context/Specification-style tests since I'm not using them
+    and don't feel like supporting them.
+
+1.2.1 - 2009/08/20:
+
+  - Fixed bug with forms in tests that were skipping lines.
+
+  - Added some spaces around the output of forms and grids.
+
+  - Steps using the delegate syntax can now output formatted forms
+    and grids.
+
+1.2.0 - 2009/08/17:
+
+  - Reports now output sample code that can be used to define steps.
+
+  - The Pending() method was changed to a [Pending] attribute.
+
+  - Steps passed in with delegates are automatically formatted now.
+
+  - Added a bunch of Add overloads to Scenario for use with methods
+    that start with given, when, or then.
+
+  - Stack traces are filtered to remove BehaveN code.
+
+  - Exception messages are no longer reported since they're reported
+    by the test runners.
+
+  - Added ContinueAfterFailedSteps property to avoid skipping steps.
+
+  - Upgraded NUnit to 2.5.2.
+
+  - Added NUnitEx 1.0.5.
+
+1.1.1.4 - 2009/08/13:
+
+  - Fixed a bug in parsing forms that only grabbed the first
+    character of the value.
+
+  - Added VerifyEmbeddedResources method to run all resources in an
+    assembly matching an optional pattern.
+
+  - Integer values can now be set with strings like "1st", "2nd", etc.
+
+1.1.0.1 - 2009/08/07:
+
+  - Changed the way step definitions are added.
+
+  - Added virtual OnUndefined, OnPending, etc, methods.
+
+  - Fixed reporting of forms and grids so that they always get
+    reported even if the step didn't pass.
+
+1.0.0.19 - 2009/08/07:
+
+  - First public release.

@@ -1,0 +1,850 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">c:\program files\microsoft fxcop 1.36\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/BehaveN/bin/Debug/BehaveN.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36">
+  <Targets>
+   <Target Name="$(ProjectDir)/BehaveN/bin/Debug/BehaveN.dll">
+    <Modules>
+     <Module Name="behaven.dll">
+      <Namespaces>
+       <Namespace Name="BehaveN">
+        <Types>
+         <Type Name="ConvertAttribute">
+          <Messages>
+           <Message TypeName="AvoidUnsealedAttributes" Category="Microsoft.Performance" CheckId="CA1813" Created="2009-10-14 19:14:43Z">
+            <Issue>
+             <Item>'ConvertAttribute'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DateTimeParser">
+          <Members>
+           <Member Name="#ParseDateTime(System.String,System.DateTime)">
+            <Messages>
+             <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'int.Parse(string)'</Item>
+               <Item>'DateTimeParser.ParseDateTime(string, DateTime)'</Item>
+               <Item>'int.Parse(string, IFormatProvider)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'int.Parse(string)'</Item>
+               <Item>'DateTimeParser.ParseDateTime(string, DateTime)'</Item>
+               <Item>'int.Parse(string, IFormatProvider)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'int.Parse(string)'</Item>
+               <Item>'DateTimeParser.ParseDateTime(string, DateTime)'</Item>
+               <Item>'int.Parse(string, IFormatProvider)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'int.Parse(string)'</Item>
+               <Item>'DateTimeParser.ParseDateTime(string, DateTime)'</Item>
+               <Item>'int.Parse(string, IFormatProvider)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Form">
+          <Members>
+           <Member Name="#NextLineIsForm(System.Collections.Generic.List`1&lt;System.String&gt;,System.Int32)">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;string&gt;'</Item>
+               <Item>'Form.NextLineIsForm(List&lt;string&gt;, int)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="currentIndex+1" TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>currentIndex+1</Item>
+               <Item>'Form.NextLineIsForm(List&lt;string&gt;, int)'</Item>
+              </Issue>
+              <Issue>
+               <Item>currentIndex+1</Item>
+               <Item>'Form.NextLineIsForm(List&lt;string&gt;, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ParseForm(System.Collections.Generic.List`1&lt;System.String&gt;,System.Int32)">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;string&gt;'</Item>
+               <Item>'Form.ParseForm(List&lt;string&gt;, int)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2009-10-14 19:14:43Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Form.ParseForm(List&lt;string&gt;, int)'</Item>
+               <Item>'i'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToList`1()">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;T&gt;'</Item>
+               <Item>'Form.ToList&lt;T&gt;()'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Form.ToList&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToObject`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Form.ToObject&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FromContextAttribute">
+          <Messages>
+           <Message TypeName="AvoidUnsealedAttributes" Category="Microsoft.Performance" CheckId="CA1813" Created="2009-10-14 19:14:43Z">
+            <Issue>
+             <Item>'FromContextAttribute'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Grid">
+          <Members>
+           <Member Name="#AddValues(System.Collections.Generic.List`1&lt;System.String&gt;)">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;string&gt;'</Item>
+               <Item>'Grid.AddValues(List&lt;string&gt;)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#NextLineIsGrid(System.Collections.Generic.IList`1&lt;System.String&gt;,System.Int32)">
+            <Messages>
+             <Message Id="currentIndex+1" TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>currentIndex+1</Item>
+               <Item>'Grid.NextLineIsGrid(IList&lt;string&gt;, int)'</Item>
+              </Issue>
+              <Issue>
+               <Item>currentIndex+1</Item>
+               <Item>'Grid.NextLineIsGrid(IList&lt;string&gt;, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ParseGrid(System.Collections.Generic.IList`1&lt;System.String&gt;,System.Int32)">
+            <Messages>
+             <Message Id="i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2009-10-14 19:14:43Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Grid.ParseGrid(IList&lt;string&gt;, int)'</Item>
+               <Item>'i'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetHeaders(System.Collections.Generic.List`1&lt;System.String&gt;)">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;string&gt;'</Item>
+               <Item>'Grid.SetHeaders(List&lt;string&gt;)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToList`1()">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;T&gt;'</Item>
+               <Item>'Grid.ToList&lt;T&gt;()'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Grid.ToList&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToObject`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Grid.ToObject&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IConvertibleObject">
+          <Members>
+           <Member Name="#ToList`1()">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'List&lt;T&gt;'</Item>
+               <Item>'IConvertibleObject.ToList&lt;T&gt;()'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'IConvertibleObject.ToList&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToObject`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'IConvertibleObject.ToObject&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Int32Parser">
+          <Members>
+           <Member Name="#ParseInt32(System.String,System.Int32)">
+            <Messages>
+             <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'int.Parse(string)'</Item>
+               <Item>'Int32Parser.ParseInt32(string, int)'</Item>
+               <Item>'int.Parse(string, IFormatProvider)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Interpreter">
+          <Members>
+           <Member Name="#GetRegexForMethod(System.String,System.Reflection.MethodInfo)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'Interpreter.GetRegexForMethod(string, MethodInfo)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MethodNameParser">
+          <Members>
+           <Member Name="#FormatByAttribute(System.Reflection.MethodInfo,System.Object[])">
+            <Messages>
+             <Message Id="args" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'args'</Item>
+               <Item>'MethodNameParser.FormatByAttribute(MethodInfo, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="methodInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'methodInfo'</Item>
+               <Item>'MethodNameParser.FormatByAttribute(MethodInfo, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsStepDefinition(System.Reflection.MethodInfo)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'methodInfo'</Item>
+               <Item>'MethodNameParser.IsStepDefinition(MethodInfo)'</Item>
+               <Item>'MethodInfo'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Parse(System.Reflection.MethodInfo,System.Boolean)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'methodInfo'</Item>
+               <Item>'MethodNameParser.Parse(MethodInfo, bool)'</Item>
+               <Item>'MethodInfo'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2009-10-14 19:14:43Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'MethodNameParser.Parse(MethodInfo, bool)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Parse(System.String,System.Boolean)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2009-10-14 19:14:43Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'MethodNameParser.Parse(string, bool)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PatternMaker">
+          <Messages>
+           <Message Id="PatternMaker" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2009-10-14 19:14:43Z">
+            <Issue Name="TypeShouldBeDiscreteTerm">
+             <Item>PatternMaker</Item>
+             <Item>'PatternMaker'</Item>
+             <Item>Patternmaker</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="PendingException">
+          <Messages>
+           <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Created="2009-10-14 19:14:43Z">
+            <Issue Name="MissingConstructor">
+             <Item>'PendingException'</Item>
+             <Item>protected PendingException(SerializationInfo, StreamingContext)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'PendingException'</Item>
+             <Item>public PendingException(String)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'PendingException'</Item>
+             <Item>public PendingException(String, Exception)</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Created="2009-10-14 19:14:43Z">
+            <Issue Certainty="95" Level="Error">
+             <Item>'PendingException'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="PlainTextScenarioReader">
+          <Messages>
+           <Message Id="PlainText" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2009-10-14 19:14:43Z">
+            <Issue Name="TypeShouldBeDiscreteTerm">
+             <Item>PlainText</Item>
+             <Item>'PlainTextScenarioReader'</Item>
+             <Item>Plaintext</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#ParseLine(System.String,BehaveN.IConvertibleObject,BehaveN.Scenario)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PlainTextScenarioReader.ParseLine(string, IConvertibleObject, Scenario)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PlainTextScenarioReporter">
+          <Messages>
+           <Message Id="PlainText" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2009-10-14 19:14:43Z">
+            <Issue Name="TypeShouldBeDiscreteTerm">
+             <Item>PlainText</Item>
+             <Item>'PlainTextScenarioReporter'</Item>
+             <Item>Plaintext</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#GetParameters(System.String,BehaveN.IConvertibleObject)">
+            <Messages>
+             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'string.ToLower()'</Item>
+               <Item>'PlainTextScenarioReporter.GetParameters(string, IConvertibleObject)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'PlainTextScenarioReporter.GetParameters(string, IConvertibleObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'PlainTextScenarioReporter.GetParameters(string, IConvertibleObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'PlainTextScenarioReporter.GetParameters(string, IConvertibleObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'PlainTextScenarioReporter.GetParameters(string, IConvertibleObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsDecimal(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PlainTextScenarioReporter.IsDecimal(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsInteger(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PlainTextScenarioReporter.IsInteger(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsString(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PlainTextScenarioReporter.IsString(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReportUndefinedStep(BehaveN.PlainTextScenarioReporter+UndefinedStepInfo)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2009-10-14 19:14:43Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'PlainTextScenarioReporter.ReportUndefinedStep(PlainTextScenarioReporter.UndefinedStepInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Split(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PlainTextScenarioReporter.Split(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PlainTextStepResultSymbols">
+          <Messages>
+           <Message Id="PlainText" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2009-10-14 19:14:43Z">
+            <Issue Name="TypeShouldBeDiscreteTerm">
+             <Item>PlainText</Item>
+             <Item>'PlainTextStepResultSymbols'</Item>
+             <Item>Plaintext</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="PropertyDescriptorValueSetter">
+          <Members>
+           <Member Name="#GetPropertyDescriptorValueSetter(System.Object,System.String)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-10-14 19:14:43Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'ICustomTypeDescriptor'</Item>
+               <Item>'PropertyDescriptorValueSetter.GetPropertyDescriptorValueSetter(object, string)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Reporter">
+          <Members>
+           <Member Name="#ReportFailed(BehaveN.StepType,System.String,System.Exception)">
+            <Messages>
+             <Message Id="e" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2009-10-14 19:14:43Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Reporter.ReportFailed(StepType, string, Exception)'</Item>
+               <Item>'e'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Scenario">
+          <Members>
+           <Member Name="#Name(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'name'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Specifications">
+          <Members>
+           <Member Name="#ExecuteStep(BehaveN.StepType,System.String)">
+            <Messages>
+             <Message Id="stepType" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'stepType'</Item>
+               <Item>'Specifications.ExecuteStep(StepType, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetDefaultReporter()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2009-10-14 19:14:43Z">
+              <Issue Certainty="50">
+               <Item>'Specifications.GetDefaultReporter()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnFailed(BehaveN.StepType,System.String,System.Exception)">
+            <Messages>
+             <Message Id="e" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2009-10-14 19:14:43Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'Specifications.OnFailed(StepType, string, Exception)'</Item>
+               <Item>'e'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TypeHasStepDefinitions(System.Type)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2009-10-14 19:14:43Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'Specifications.TypeHasStepDefinitions(Type)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UseStepDefinitionsFrom(System.Object)">
+            <Messages>
+             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2009-10-14 19:14:43Z">
+              <Issue Name="LanguageIndependentMemberParameter">
+               <Item>'Specifications.UseStepDefinitionsFrom(object)'</Item>
+               <Item>Object</Item>
+               <Item>'someObject'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UseStepDefinitionsFromAssemblyOfType`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Specifications.UseStepDefinitionsFromAssemblyOfType&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UseStepDefinitionsFromType`1()">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Specifications.UseStepDefinitionsFromType&lt;T&gt;()'</Item>
+               <Item>'T'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#VerifyEmbeddedResource(System.Reflection.Assembly,System.String)">
+            <Messages>
+             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2009-10-14 19:14:43Z">
+              <Issue Name="IncorrectMessage">
+               <Item>'Specifications.VerifyEmbeddedResource(Assembly, string)'</Item>
+               <Item>name</Item>
+               <Item>'message'</Item>
+               <Item>'ArgumentException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Step">
+          <Messages>
+           <Message Id="Step" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Created="2009-10-14 19:14:43Z">
+            <Issue Name="Type">
+             <Item>'Step'</Item>
+             <Item>Step</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="StepCollection">
+          <Messages>
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2009-10-14 19:14:43Z">
+            <Issue Name="TypeNoAlternate">
+             <Item>'StepCollection'</Item>
+             <Item>Collection</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TextParser">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Created="2009-10-14 19:14:43Z">
+            <Issue>
+             <Item>'TextParser'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#GetLines(System.String)">
+            <Messages>
+             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2009-10-14 19:14:43Z">
+              <Issue Name="IsNullOrEmpty">
+               <Item>'string.operator !=(string, string)'</Item>
+               <Item>'TextParser.GetLines(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UndefinedException">
+          <Messages>
+           <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Created="2009-10-14 19:14:43Z">
+            <Issue Name="MissingConstructor">
+             <Item>'UndefinedException'</Item>
+             <Item>protected UndefinedException(SerializationInfo, StreamingContext)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'UndefinedException'</Item>
+             <Item>public UndefinedException(String)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'UndefinedException'</Item>
+             <Item>public UndefinedException(String, Exception)</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Created="2009-10-14 19:14:43Z">
+            <Issue Certainty="95" Level="Error">
+             <Item>'UndefinedException'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueParser">
+          <Members>
+           <Member Name="#ParseValue(System.String,System.Type)">
+            <Messages>
+             <Message Id="System.Convert.ChangeType(System.Object,System.Type)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'Convert.ChangeType(object, Type)'</Item>
+               <Item>'ValueParser.ParseValue(string, Type)'</Item>
+               <Item>'Convert.ChangeType(object, Type, IFormatProvider)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="VerificationException">
+          <Messages>
+           <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Created="2009-10-14 19:14:43Z">
+            <Issue Name="MissingConstructor">
+             <Item>'VerificationException'</Item>
+             <Item>protected VerificationException(SerializationInfo, StreamingContext)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'VerificationException'</Item>
+             <Item>public VerificationException()</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'VerificationException'</Item>
+             <Item>public VerificationException(String)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'VerificationException'</Item>
+             <Item>public VerificationException(String, Exception)</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Created="2009-10-14 19:14:43Z">
+            <Issue Certainty="95" Level="Error">
+             <Item>'VerificationException'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor(System.Exception)">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2009-10-14 19:14:43Z">
+              <Issue>
+               <Item>'VerificationException.VerificationException(Exception)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'VerificationException.VerificationException(Exception)'</Item>
+               <Item>'string.StartsWith(string)'</Item>
+               <Item>'string.StartsWith(string, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
+    <Resolution Name="Default">{0} is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUnsealedAttributes" Category="Microsoft.Performance" CheckId="CA1813">
+    <Resolution Name="Default">Seal {0}, if possible.</Resolution>
+   </Rule>
+   <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
+    <Resolution Name="TypeShouldBeDiscreteTerm">The compound word '{0}' in type name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
+    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
+   </Rule>
+   <Rule TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004">
+    <Resolution Name="Default">Consider a design where {0} doesn't require explicit type parameter {1} in any call to it.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720">
+    <Resolution Name="LanguageIndependentMemberParameter">In member {0}, consider replacing the data type identifier '{1}' in parameter name {2} with a more generic term, such as 'value'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711">
+    <Resolution Name="TypeNoAlternate">Rename type name {0} so that it does not end in '{1}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+    <Resolution Name="Type">Rename type {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a type makes it harder for consumers in other languages to use the type.</Resolution>
+   </Rule>
+   <Rule TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032">
+    <Resolution Name="MissingConstructor">Add the following constructor to {0}: {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208">
+    <Resolution Name="IncorrectMessage">Method {0} passes parameter name '{1}' as the {2} argument to a {3} constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237">
+    <Resolution Name="Default">Add [Serializable] to {0} as this type implements ISerializable.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
+    <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233">
+    <Resolution Name="Default">Correct the potential overflow in the operation '{0}' in {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719">
+    <Resolution Name="Default">Change either member or parameter name {0} so that one differs from the other.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307">
+    <Resolution Name="Default">{0} makes a call to {1} that does not explicitly provide a StringComparison. This should be replaced with a call to {2}.</Resolution>
+   </Rule>
+   <Rule TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820">
+    <Resolution Name="IsNullOrEmpty">Replace the call to {0} in {1} with a call to 'String.IsNullOrEmpty'.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
