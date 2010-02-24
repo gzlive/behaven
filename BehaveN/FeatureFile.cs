@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace BehaveN
 {
@@ -63,6 +64,16 @@ namespace BehaveN
         {
             string text = File.ReadAllText(path);
             LoadText(text);
+        }
+
+        public void LoadEmbeddedResource(Assembly assembly, string name)
+        {
+            using (Stream stream = assembly.GetManifestResourceStream(name))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string text = reader.ReadToEnd();
+                LoadText(text);
+            }
         }
 
         public void LoadText(string text)

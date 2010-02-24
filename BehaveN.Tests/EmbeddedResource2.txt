@@ -1,3 +1,0 @@
-Given some context
-When some event occurs
-Then some outcome should be true
