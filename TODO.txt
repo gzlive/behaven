@@ -1,10 +1,9 @@
-- Run all scenarios in a single file, even if some fail.
 - Create composite reporter.
 - Create reporters for XML and HTML.
-- Create default reporter that looks for setting in app.config.
+- Create default reporter that looks for output file somewhere.
   - Creates another reporter based on file extension.
     - .txt, .xml, or .html.
-  - Always writes to console.
+  - Always writes to console?
 - Add support for nullable parameters.
 - Add new "list" convertible object.
   - Leading "-" will indicate item in a list.

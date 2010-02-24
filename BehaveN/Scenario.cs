@@ -14,6 +14,7 @@ namespace BehaveN
         private readonly List<Step> _steps = new List<Step>();
         private bool _passed;
         private Exception _exception;
+        private Reporter _reporter;
 
         /// <summary>
         /// Gets or sets the name.
@@ -60,6 +61,16 @@ namespace BehaveN
         public Exception Exception
         {
             get { return _exception; }
+        }
+
+        /// <summary>
+        /// Gets or sets the reporter.
+        /// </summary>
+        /// <value>The reporter.</value>
+        public Reporter Reporter
+        {
+            get { return _reporter ?? (_reporter = new PlainTextReporter()); }
+            set { _reporter = value; }
         }
 
         internal void Add(string keyword, string step, IBlock block)
@@ -126,6 +137,22 @@ namespace BehaveN
                     }
                 }
             }
+        }
+
+        public void AssertPassed()
+        {
+            if (!_passed)
+            {
+                if (_exception != null)
+                    throw new VerificationException(_exception);
+
+                throw new VerificationException(new Exception("Scenario failed."));
+            }
+        }
+
+        public void Report()
+        {
+            Reporter.ReportScenario(this);
         }
     }
 }

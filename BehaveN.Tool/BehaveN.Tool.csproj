@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHelpers.cs" />
+    <Compile Include="GenerateCommand.cs" />
     <Compile Include="ListCommand.cs" />
     <Compile Include="SummaryAttribute.cs" />
     <Compile Include="HelpCommand.cs" />

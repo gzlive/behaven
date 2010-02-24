@@ -94,6 +94,8 @@ namespace BehaveN
                     ReportBlock(step.Block);
             }
 
+            _writer.WriteLine();
+
             ReportException(scenario);
 
             _scenarioNumber++;
@@ -101,7 +103,6 @@ namespace BehaveN
 
         private void WriteBorder()
         {
-            _writer.WriteLine();
             _writer.WriteLine("---");
             _writer.WriteLine();
         }
@@ -110,7 +111,6 @@ namespace BehaveN
         {
             if (scenario.Exception != null)
             {
-                _writer.WriteLine();
                 _writer.WriteLine(scenario.Exception.Message);
 
                 if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
@@ -118,6 +118,8 @@ namespace BehaveN
                     _writer.WriteLine();
                     _writer.WriteLine(GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
                 }
+
+                _writer.WriteLine();
             }
         }
 
@@ -130,8 +132,6 @@ namespace BehaveN
         {
             if (undefinedSteps.Count > 0)
             {
-                WriteBorder();
-
                 _writer.WriteLine("Your undefined steps can be defined with the following code:");
                 _writer.WriteLine();
 

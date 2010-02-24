@@ -9,7 +9,7 @@ namespace BehaveN
     {
         private string _name;
         private readonly StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
-        private List<Scenario> _scenarios = new List<Scenario>();
+        private ScenarioCollection _scenarios = new ScenarioCollection();
         private bool _passed;
         private Reporter _reporter;
 
@@ -36,7 +36,7 @@ namespace BehaveN
         /// Gets the scenarios.
         /// </summary>
         /// <value>The scenarios.</value>
-        public List<Scenario> Scenarios
+        public ScenarioCollection Scenarios
         {
             get { return _scenarios; }
         }
@@ -68,7 +68,23 @@ namespace BehaveN
 
         public void LoadEmbeddedResource(Assembly assembly, string name)
         {
-            using (Stream stream = assembly.GetManifestResourceStream(name))
+            string actualName = null;
+
+            foreach (string possibleName in assembly.GetManifestResourceNames())
+            {
+                if (possibleName == name || possibleName.EndsWith("." + name, StringComparison.OrdinalIgnoreCase))
+                {
+                    actualName = possibleName;
+                    break;
+                }
+            }
+
+            if (actualName == null)
+            {
+                throw new Exception(string.Format("Could not find embedded resource named \"{0}\" in assembly named \"{1}\".", name, assembly.FullName));
+            }
+
+            using (Stream stream = assembly.GetManifestResourceStream(actualName))
             using (StreamReader reader = new StreamReader(stream))
             {
                 string text = reader.ReadToEnd();
@@ -104,12 +120,24 @@ namespace BehaveN
 
             reporter.Begin();
 
+            foreach (Scenario scenario in _scenarios)
+            {
+                reporter.ReportScenario(scenario);
+            }
+
+            ReportUndefinedSteps();
+
+            reporter.End();
+        }
+
+        public void ReportUndefinedSteps()
+        {
+            Reporter reporter = this.Reporter;
+
             List<Step> undefinedSteps = new List<Step>();
 
             foreach (Scenario scenario in _scenarios)
             {
-                reporter.ReportScenario(scenario);
-
                 foreach (Step step in scenario.Steps)
                 {
                     if (step.Result == StepResult.Undefined)
@@ -126,8 +154,6 @@ namespace BehaveN
             {
                 reporter.ReportUndefinedSteps(undefinedSteps);
             }
-
-            reporter.End();
         }
     }
 }

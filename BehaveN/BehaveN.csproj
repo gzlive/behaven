@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BlockType.cs" />
     <Compile Include="BlockTypes.cs" />
+    <Compile Include="ScenarioCollection.cs" />
     <Compile Include="FeatureFile.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="StepDefinition.cs" />
