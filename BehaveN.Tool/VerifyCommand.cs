@@ -64,11 +64,6 @@ namespace BehaveN.Tool
             }
         }
 
-        private string GetMessageThatIsClickableInOutputWindow(VerificationException e)
-        {
-            return Regex.Replace(e.ToString(), @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
-        }
-
         private void WriteLineWithColor(ConsoleColor color, string format, params object[] args)
         {
             ConsoleColor oldColor = Console.ForegroundColor;

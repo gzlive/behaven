@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BehaveN
 {
@@ -62,7 +63,7 @@ namespace BehaveN
         {
             if (_scenarioNumber > 0)
             {
-                _writer.WriteLine();
+                WriteBorder();
             }
 
             _writer.WriteLine("Scenario: {0}", scenario.Name);
@@ -93,14 +94,44 @@ namespace BehaveN
                     ReportBlock(step.Block);
             }
 
+            ReportException(scenario);
+
             _scenarioNumber++;
+        }
+
+        private void WriteBorder()
+        {
+            _writer.WriteLine();
+            _writer.WriteLine("---");
+            _writer.WriteLine();
+        }
+
+        private void ReportException(Scenario scenario)
+        {
+            if (scenario.Exception != null)
+            {
+                _writer.WriteLine();
+                _writer.WriteLine(scenario.Exception.Message);
+
+                if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
+                {
+                    _writer.WriteLine();
+                    _writer.WriteLine(GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
+                }
+            }
+        }
+
+        private string GetStackTraceThatIsClickableInOutputWindow(Exception e)
+        {
+            return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
         }
 
         public override void ReportUndefinedSteps(List<Step> undefinedSteps)
         {
             if (undefinedSteps.Count > 0)
             {
-                _writer.WriteLine();
+                WriteBorder();
+
                 _writer.WriteLine("Your undefined steps can be defined with the following code:");
                 _writer.WriteLine();
 
