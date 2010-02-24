@@ -17,6 +17,11 @@ namespace BehaveN.Examples
             _result = _calculator.Add(a, b);
         }
 
+        public void When_dividing_a_by_b(int a, int b)
+        {
+            _result = _calculator.Divide(a, b);
+        }
+
         public void Then_the_result_should_be_n(int n)
         {
             _result.Should().Be(n);

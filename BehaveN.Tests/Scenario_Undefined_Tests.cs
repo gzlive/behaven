@@ -1,41 +1,28 @@
-using System;
 using NUnit.Framework;
+using SharpTestsEx;
 
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class Scenario_Undefined_Tests : BaseTests
+    public class Scenario_Undefined_Tests : BaseScenarioTests
     {
         [Test]
-        public void it_marks_the_first_undefined_step_with_a_question_mark_and_skips_the_rest()
+        public void it_skips_all_defined_steps_after_the_first_undefined_steps()
         {
-            VerifyText("Given some defined context",
+            VerifyText("Scenario: Undefined",
+                       "Given some context",
                        "When an undefined step is executed",
                        "Then other undefined steps get reported",
                        "And the remaining steps get skipped");
 
-            ShouldHaveFailed();
-            OutputShouldBe("  Given some defined context",
-                           "",
-                           "? When an undefined step is executed",
-                           "",
-                           "? Then other undefined steps get reported",
-                           "- And the remaining steps get skipped",
-                           "",
-                           "Your undefined steps can be defined with the following code:",
-                           "",
-                           "public void when_an_undefined_step_is_executed()",
-                           "{",
-                           "    throw new NotImplementedException();",
-                           "}",
-                           "",
-                           "public void then_other_undefined_steps_get_reported()",
-                           "{",
-                           "    throw new NotImplementedException();",
-                           "}");
+            TheScenario.Passed.Should().Be.False();
+            TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
+            TheScenario.Steps[1].Result.Should().Be(StepResult.Undefined);
+            TheScenario.Steps[2].Result.Should().Be(StepResult.Undefined);
+            TheScenario.Steps[3].Result.Should().Be(StepResult.Skipped);
         }
 
-        public void given_some_defined_context()
+        public void given_some_context()
         {
         }
 

@@ -5,19 +5,19 @@ using SharpTestsEx;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class Scenario_Pending_Tests : BaseScenarioTests
+    public class Scenario_Failed_Tests : BaseScenarioTests
     {
         [Test]
-        public void it_skips_all_steps_after_the_first_pending_step()
+        public void it_skips_all_steps_after_the_first_failed_step()
         {
-            VerifyText("Scenario: Pending",
+            VerifyText("Scenario: Failed",
                        "Given some context",
-                       "When a pending step is executed",
+                       "When a step fails",
                        "Then the remaining steps get skipped");
 
             TheScenario.Passed.Should().Be.False();
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
-            TheScenario.Steps[1].Result.Should().Be(StepResult.Pending);
+            TheScenario.Steps[1].Result.Should().Be(StepResult.Failed);
             TheScenario.Steps[2].Result.Should().Be(StepResult.Skipped);
         }
 
@@ -25,14 +25,13 @@ namespace BehaveN.Tests
         {
         }
 
-        public void when_a_pending_step_is_executed()
+        public void when_a_step_fails()
         {
-            throw new NotImplementedException();
+            throw new Exception("Failed!");
         }
 
         public void then_the_remaining_steps_get_skipped()
         {
-            throw new NotImplementedException();
         }
     }
 }

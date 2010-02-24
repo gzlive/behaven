@@ -9,10 +9,9 @@ namespace BehaveN
             return GetCollectionItemType(type) != null;
         }
 
-        public override object GetObject(Type type, IConvertibleObject convertibleObject)
+        public override object GetObject(Type type, IBlock block)
         {
-            Type itemType = GetCollectionItemType(type);
-            return convertibleObject.ToList(itemType);
+            return block.ConvertTo(type);
         }
     }
 }

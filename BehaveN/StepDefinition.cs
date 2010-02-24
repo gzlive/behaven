@@ -4,74 +4,54 @@ using System.Text.RegularExpressions;
 
 namespace BehaveN
 {
-    /// <summary>
-    /// Represents a step definition.
-    /// </summary>
-    public class StepMethod
+    public class StepDefinition
     {
-        private readonly object _target;
-        private readonly MethodInfo _methodInfo;
-        private readonly StepType _stepType;
-        private readonly Regex _regex;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="StepMethod"/> class.
+        /// Initializes a new instance of the <see cref="StepDefinition"/> class.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="methodInfo">The method info.</param>
-        /// <param name="stepType">The step type.</param>
-        /// <param name="regex">The regex.</param>
-        public StepMethod(object target, MethodInfo methodInfo, StepType stepType, Regex regex)
+        public StepDefinition(object target, MethodInfo methodInfo)
         {
             _target = target;
             _methodInfo = methodInfo;
-            _stepType = stepType;
-            _regex = regex;
+            _regex = new Regex("^" + PatternMaker.GetPattern(_methodInfo) + "$", RegexOptions.IgnoreCase);
         }
 
-        /// <summary>
-        /// Invokes if matching.
-        /// </summary>
-        /// <param name="description">The description.</param>
-        /// <param name="stepType">Type of the step.</param>
-        /// <param name="convertibleObject">The convertible object.</param>
-        /// <returns>Whether the step method was invoked or not.</returns>
-        public bool InvokeIfMatching(ref string description, StepType stepType, IConvertibleObject convertibleObject)
+        private object _target;
+        private MethodInfo _methodInfo;
+        private Regex _regex;
+
+        internal bool TryExecute(Step step)
         {
-            Match m = Match(description, stepType);
+            Match m = GetMatch(step);
 
-            if (m != null && m.Success)
-            {
-                object[] parameters = GetParametersForMethodFromMatch(m, convertibleObject);
+            if (!m.Success)
+                return false;
 
-                Invoke(parameters);
+            object[] parameters = GetParametersForMethodFromMatch(m, step.Block);
 
-                AssertOnOutputParameters(m, convertibleObject, parameters, ref description);
+            Invoke(parameters);
 
-                return true;
-            }
+            AssertOnOutputParameters(m, step.Block, parameters, ref step.Text);
 
-            return false;
+            return true;
         }
 
-        internal bool Matches(StepType stepType, string description, IConvertibleObject convertibleObject)
+        internal bool Matches(Step step)
         {
-            Match m = Match(description, stepType);
-
-            return m != null && m.Success;
+            return GetMatch(step).Success;
         }
 
-        private Match Match(string description, StepType stepType)
+        private Regex firstWordReplacer = new Regex(@"^\S+");
+
+        private Match GetMatch(Step step)
         {
-            if (_stepType != StepType.Unspecified && _stepType != stepType)
-            {
-                return null;
-            }
-
-            return _regex.Match(description);
+            string text = firstWordReplacer.Replace(step.Text, step.Keyword);
+            return _regex.Match(text);
         }
 
-        private object[] GetParametersForMethodFromMatch(Match match, IConvertibleObject convertibleObject)
+        private object[] GetParametersForMethodFromMatch(Match match, IBlock block)
         {
             object[] parameters = null;
 
@@ -85,10 +65,10 @@ namespace BehaveN
                 {
                     if (!pi.IsOut)
                     {
-                        if (convertibleObject != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
+                        if (block != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
                         {
                             BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
-                            parameters[i] = blockType.GetObject(pi.ParameterType, convertibleObject);
+                            parameters[i] = blockType.GetObject(pi.ParameterType, block);
                         }
                         else
                         {
@@ -107,7 +87,12 @@ namespace BehaveN
             return parameters;
         }
 
-        private void AssertOnOutputParameters(Match match, IConvertibleObject convertibleObject, object[] parameters, ref string description)
+        private void Invoke(object[] parameters)
+        {
+            _methodInfo.Invoke(_target, parameters);
+        }
+
+        private void AssertOnOutputParameters(Match match, IBlock block, object[] parameters, ref string description)
         {
             bool passed = true;
 
@@ -121,9 +106,9 @@ namespace BehaveN
                     {
                         Type type = pi.ParameterType.GetElementType();
 
-                        if (convertibleObject != null && !InlineTypes.InlineTypeExistsFor(type))
+                        if (block != null && !InlineTypes.InlineTypeExistsFor(type))
                         {
-                            passed &= convertibleObject.Check(parameters[i]);
+                            passed &= block.Check(parameters[i]);
                         }
                         else if (InlineTypes.InlineTypeExistsFor(type))
                         {
@@ -150,11 +135,6 @@ namespace BehaveN
             {
                 throw new VerificationException(new Exception("One or more output parameters did not pass."));
             }
-        }
-
-        private void Invoke(object[] parameters)
-        {
-            _methodInfo.Invoke(_target, parameters);
         }
     }
 }

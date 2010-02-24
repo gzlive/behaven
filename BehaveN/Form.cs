@@ -10,24 +10,14 @@ namespace BehaveN
     /// <summary>
     /// Represents a form.
     /// </summary>
-    public class Form : IConvertibleObject
+    public class Form : IBlock
     {
         /// <summary>
-        /// Converts the convertible object into an object.
-        /// </summary>
-        /// <typeparam name="T">The type of object to convert to.</typeparam>
-        /// <returns>The new object.</returns>
-        public T ToObject<T>()
-        {
-            return (T)this.ToObject(typeof(T));
-        }
-
-        /// <summary>
-        /// Converts the convertible object into an object.
+        /// Converts the block into an object.
         /// </summary>
         /// <param name="type">The type of object to convert to.</param>
         /// <returns>The new object.</returns>
-        public object ToObject(Type type)
+        public object ConvertTo(Type type)
         {
             if (type == null) return null;
 
@@ -44,32 +34,6 @@ namespace BehaveN
             }
 
             return theObject;
-        }
-
-        /// <summary>
-        /// Converts the convertible object into a list of objects.
-        /// </summary>
-        /// <typeparam name="T">The type of objects to convert to.</typeparam>
-        /// <returns>A list of objects.</returns>
-        public List<T> ToList<T>()
-        {
-            return (List<T>)this.ToList(typeof(T));
-        }
-
-        /// <summary>
-        /// Converts the convertible object into a list of objects.
-        /// </summary>
-        /// <param name="itemType">The type of objects to convert to.</param>
-        /// <returns>A list of objects.</returns>
-        public IList ToList(Type itemType)
-        {
-            if (itemType == null) return null;
-
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
-
-            list.Add(this.ToObject(itemType));
-
-            return list;
         }
 
         /// <summary>
@@ -236,7 +200,7 @@ namespace BehaveN
             return (currentIndex + 1) < lines.Count && _formRegex.IsMatch(lines[currentIndex + 1]);
         }
 
-        internal static IConvertibleObject FromObject(object item, Type itemType)
+        internal static IBlock FromObject(object item, Type itemType)
         {
             Form form = new Form();
 

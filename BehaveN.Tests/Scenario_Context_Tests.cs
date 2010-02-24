@@ -4,18 +4,19 @@ using SharpTestsEx;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class Scenario_Context_Tests : BaseTests
+    public class Scenario_Context_Tests : BaseScenarioTests
     {
         [Test]
         public void it_passes_when_all_of_the_outputs_are_correct()
         {
-            s.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
-            s.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
+            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
+            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
 
-            VerifyText("Given this foo",
+            VerifyText("Scenario: Context",
+                       "Given this foo",
                        "Then the value should be foo");
 
-            ShouldHavePassed();
+            TheScenario.Passed.Should().Be.True();
         }
     }
 

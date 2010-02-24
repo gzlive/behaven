@@ -16,12 +16,12 @@ namespace BehaveN
         public abstract bool HandlesType(Type type);
 
         /// <summary>
-        /// Converts a convertible object into a real object.
+        /// Converts a block into a real object.
         /// </summary>
         /// <param name="type">The type of object to convert to.</param>
-        /// <param name="convertibleObject">The convertible object to convert.</param>
+        /// <param name="block">The block to convert.</param>
         /// <returns>The real object.</returns>
-        public abstract object GetObject(Type type, IConvertibleObject convertibleObject);
+        public abstract object GetObject(Type type, IBlock block);
 
         internal static Type GetCollectionItemType(Type type)
         {

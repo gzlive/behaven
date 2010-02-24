@@ -16,7 +16,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "an int 123");
+            var groups = ApplyPattern(pattern, "given an int 123");
             groups["n"].Value.Should().Be("123");
         }
 
@@ -27,7 +27,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "an int -123");
+            var groups = ApplyPattern(pattern, "given an int -123");
             groups["n"].Value.Should().Be("-123");
         }
 
@@ -42,7 +42,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a decimal 123.456");
+            var groups = ApplyPattern(pattern, "given a decimal 123.456");
             groups["d"].Value.Should().Be("123.456");
         }
 
@@ -53,7 +53,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a decimal -123.456");
+            var groups = ApplyPattern(pattern, "given a decimal -123.456");
             groups["d"].Value.Should().Be("-123.456");
         }
 
@@ -64,7 +64,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a decimal $123.456");
+            var groups = ApplyPattern(pattern, "given a decimal $123.456");
             groups["d"].Value.Should().Be("123.456");
         }
 
@@ -75,7 +75,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a decimal 123");
+            var groups = ApplyPattern(pattern, "given a decimal 123");
             groups["d"].Value.Should().Be("123");
         }
 
@@ -90,7 +90,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a string foo bar baz");
+            var groups = ApplyPattern(pattern, "given a string foo bar baz");
             groups["s"].Value.Should().Be("foo bar baz");
         }
 
@@ -101,7 +101,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a string \"foo bar baz\"");
+            var groups = ApplyPattern(pattern, "given a string \"foo bar baz\"");
             groups["s"].Value.Should().Be("foo bar baz");
         }
 
@@ -116,7 +116,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a date time 2009-10-16");
+            var groups = ApplyPattern(pattern, "given a date time 2009-10-16");
             groups["dt"].Value.Should().Be("2009-10-16");
         }
 
@@ -131,7 +131,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "an enum Foo");
+            var groups = ApplyPattern(pattern, "given an enum Foo");
             groups["e"].Value.Should().Be("Foo");
         }
 
@@ -142,7 +142,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "an enum Baz Quux");
+            var groups = ApplyPattern(pattern, "given an enum Baz Quux");
             groups["e"].Value.Should().Be("Baz Quux");
         }
 
@@ -153,7 +153,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "an enum abc");
+            var groups = ApplyPattern(pattern, "given an enum abc");
             groups["e"].Value.Should().Be("");
         }
 
@@ -170,7 +170,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "foo my foo and bar my bar");
+            var groups = ApplyPattern(pattern, "given foo my foo and bar my bar");
             groups["fooName"].Value.Should().Be("my foo");
             groups["barName"].Value.Should().Be("my bar");
         }
@@ -186,7 +186,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "bar my bar and foo my foo");
+            var groups = ApplyPattern(pattern, "given bar my bar and foo my foo");
             groups["fooName"].Value.Should().Be("my foo");
             groups["barName"].Value.Should().Be("my bar");
         }
@@ -202,7 +202,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "  a whatever");
+            var groups = ApplyPattern(pattern, "  given a whatever");
             groups[0].Success.Should().Be.True();
         }
 
@@ -213,7 +213,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a  whatever");
+            var groups = ApplyPattern(pattern, "given  a  whatever");
             groups[0].Success.Should().Be.True();
         }
 
@@ -224,7 +224,7 @@ namespace BehaveN.Tests
 
             string pattern = PatternMaker.GetPattern(method);
 
-            var groups = ApplyPattern(pattern, "a whatever  ");
+            var groups = ApplyPattern(pattern, "given a whatever  ");
             groups[0].Success.Should().Be.True();
         }
 

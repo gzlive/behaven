@@ -46,27 +46,21 @@ namespace BehaveN.Tool
         {
             foreach (var scenarioFile in scenarioFiles)
             {
-                var scenario = new Specifications();
+                var featureFile = new FeatureFile();
 
                 foreach (var assembly in _assemblies)
                 {
-                    scenario.UseStepDefinitionsFromAssembly(assembly);
+                    featureFile.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
                 }
 
-                try
-                {
-                    scenario.VerifyFile(scenarioFile);
+                featureFile.LoadFile(scenarioFile);
+                featureFile.Verify();
+                featureFile.Report();
 
+                if (featureFile.Passed)
                     WriteLineWithColor(ConsoleColor.Green, Passed);
-                }
-                catch (VerificationException e)
-                {
-                    string message = GetMessageThatIsClickableInOutputWindow(e);
-
-                    Console.WriteLine(message);
-
+                else
                     WriteLineWithColor(ConsoleColor.Red, Failed);
-                }
             }
         }
 

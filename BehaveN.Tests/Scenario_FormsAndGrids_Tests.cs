@@ -5,7 +5,7 @@ using SharpTestsEx;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class Scenario_FormsAndGrids_Tests : BaseTests
+    public class Scenario_FormsAndGrids_Tests : BaseScenarioTests
     {
         [SetUp]
         public void SetUp()
@@ -20,7 +20,8 @@ namespace BehaveN.Tests
         [Test]
         public void it_converts_a_form_into_a_single_object()
         {
-            VerifyText("Given an object",
+            VerifyText("Scenario: Form",
+                       "Given an object",
                        "  : String Property : foo",
                        "  :    Int Property : 1");
 
@@ -32,7 +33,8 @@ namespace BehaveN.Tests
         [Test]
         public void it_converts_a_grid_into_a_list_of_objects()
         {
-            VerifyText("Given a list of objects",
+            VerifyText("Scenario: Grid",
+                       "Given a list of objects",
                        "  | String Property | Int Property |",
                        "  |             foo |            1 |",
                        "  |             bar |            2 |");

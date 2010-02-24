@@ -10,7 +10,7 @@ namespace BehaveN
     /// <summary>
     /// Represents a grid.
     /// </summary>
-    public class Grid : IConvertibleObject
+    public class Grid : IBlock
     {
         private List<string> _headers = new List<string>();
         private List<List<string>> _rows = new List<List<string>>();
@@ -88,42 +88,14 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Converts the convertible object into an object.
-        /// </summary>
-        /// <typeparam name="T">The type of object to convert to.</typeparam>
-        /// <returns>The new object.</returns>
-        public T ToObject<T>()
-        {
-            return (T)ToObject(typeof(T));
-        }
-
-        /// <summary>
-        /// Converts the convertible object into an object.
+        /// Converts the block into an object.
         /// </summary>
         /// <param name="type">The type of object to convert to.</param>
         /// <returns>The new object.</returns>
-        public object ToObject(Type type)
+        public object ConvertTo(Type type)
         {
-            return ToList(type)[0];
-        }
+            Type itemType = BlockType.GetCollectionItemType(type);
 
-        /// <summary>
-        /// Converts the grid into a list of objects.
-        /// </summary>
-        /// <typeparam name="T">The type of objects to convert to.</typeparam>
-        /// <returns>A list of objects.</returns>
-        public List<T> ToList<T>()
-        {
-            return (List<T>)this.ToList(typeof(T));
-        }
-
-        /// <summary>
-        /// Converts the grid into a list of objects.
-        /// </summary>
-        /// <param name="itemType">The type of objects to convert to.</param>
-        /// <returns>A list of objects.</returns>
-        public IList ToList(Type itemType)
-        {
             if (itemType == null) return null;
 
             IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
