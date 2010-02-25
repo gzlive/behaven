@@ -96,6 +96,16 @@ namespace BehaveN
             return passed;
         }
 
+        public string GetSuggesterParameterType()
+        {
+            return "Foo";
+        }
+
+        public string GetSuggesterParameterName()
+        {
+            return "foo";
+        }
+
         private static readonly Regex _formRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
 
         /// <summary>

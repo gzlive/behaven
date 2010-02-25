@@ -298,6 +298,16 @@ namespace BehaveN
             return passed;
         }
 
+        public string GetSuggesterParameterType()
+        {
+            return "List<Foo>";
+        }
+
+        public string GetSuggesterParameterName()
+        {
+            return "foos";
+        }
+
         private object GetPropertyValue(string header, object current)
         {
             Type type = current.GetType();

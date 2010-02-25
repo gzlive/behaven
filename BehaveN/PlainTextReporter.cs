@@ -53,19 +53,21 @@ namespace BehaveN
         }
 
         private TextWriter _writer;
-        private int _scenarioNumber;
 
-        public override void Begin()
+        public override void ReportFeatureFile(FeatureFile featureFile)
         {
+            foreach (Scenario scenario in featureFile.Scenarios)
+            {
+                ReportScenario(scenario);
+
+                WriteDivider();
+            }
+
+            ReportUndefinedSteps(featureFile.GetUndefinedSteps());
         }
 
         public override void ReportScenario(Scenario scenario)
         {
-            if (_scenarioNumber > 0)
-            {
-                WriteBorder();
-            }
-
             _writer.WriteLine("Scenario: {0}", scenario.Name);
             _writer.WriteLine();
 
@@ -97,11 +99,9 @@ namespace BehaveN
             _writer.WriteLine();
 
             ReportException(scenario);
-
-            _scenarioNumber++;
         }
 
-        private void WriteBorder()
+        private void WriteDivider()
         {
             _writer.WriteLine("---");
             _writer.WriteLine();
@@ -128,7 +128,7 @@ namespace BehaveN
             return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
         }
 
-        public override void ReportUndefinedSteps(List<Step> undefinedSteps)
+        public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
             if (undefinedSteps.Count > 0)
             {
@@ -140,10 +140,6 @@ namespace BehaveN
                     ReportUndefinedStep(undefinedStep);
                 }
             }
-        }
-
-        public override void End()
-        {
         }
 
         private void ReportUndefined(Step step)
@@ -208,7 +204,7 @@ namespace BehaveN
 
                 if (IsInteger(part) || IsDecimal(part) || IsString(part))
                 {
-                    sb.AppendFormat("x{0}", i++);
+                    sb.AppendFormat("arg{0}", i++);
                 }
                 else
                 {
@@ -229,21 +225,21 @@ namespace BehaveN
             {
                 if (IsInteger(part))
                 {
-                    parameters.Add(string.Format("int x{0}", i++));
+                    parameters.Add(string.Format("int arg{0}", i++));
                 }
                 else if (IsDecimal(part))
                 {
-                    parameters.Add(string.Format("decimal x{0}", i++));
+                    parameters.Add(string.Format("decimal arg{0}", i++));
                 }
                 else if (IsString(part))
                 {
-                    parameters.Add(string.Format("string x{0}", i++));
+                    parameters.Add(string.Format("string arg{0}", i++));
                 }
             }
 
             if (block != null)
             {
-                parameters.Add(string.Format("{0} {1}", block.GetType().Name, block.GetType().Name.ToLower()));
+                parameters.Add(string.Format("{0} {1}", block.GetSuggesterParameterType(), block.GetSuggesterParameterName()));
             }
 
             return string.Join(", ", parameters.ToArray());

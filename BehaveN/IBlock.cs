@@ -25,5 +25,9 @@ namespace BehaveN
         /// </summary>
         /// <param name="actual">The object to check against.</param>
         bool Check(object actual);
+
+        string GetSuggesterParameterType();
+
+        string GetSuggesterParameterName();
     }
 }

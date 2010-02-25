@@ -116,24 +116,16 @@ namespace BehaveN
 
         public void Report()
         {
-            Reporter reporter = this.Reporter;
-
-            reporter.Begin();
-
-            foreach (Scenario scenario in _scenarios)
-            {
-                reporter.ReportScenario(scenario);
-            }
-
-            ReportUndefinedSteps();
-
-            reporter.End();
+            Reporter.ReportFeatureFile(this);
         }
 
         public void ReportUndefinedSteps()
         {
-            Reporter reporter = this.Reporter;
+            Reporter.ReportUndefinedSteps(GetUndefinedSteps());
+        }
 
+        public ICollection<Step> GetUndefinedSteps()
+        {
             List<Step> undefinedSteps = new List<Step>();
 
             foreach (Scenario scenario in _scenarios)
@@ -150,10 +142,7 @@ namespace BehaveN
                 }
             }
 
-            if (undefinedSteps.Count > 0)
-            {
-                reporter.ReportUndefinedSteps(undefinedSteps);
-            }
+            return undefinedSteps;
         }
     }
 }
