@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BaseFeatureFileTests.cs" />
     <Compile Include="BaseScenarioTests.cs" />
+    <Compile Include="PlainTextReporter_Tests.cs" />
     <Compile Include="Scenario_Failed_Tests.cs" />
     <Compile Include="FeatureFile_Load_Tests.cs" />
     <Compile Include="Scenario_Undefined_Tests.cs" />
