@@ -65,18 +65,18 @@ namespace BehaveN
                 {
                     if (!pi.IsOut)
                     {
-                        if (block != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
-                        {
-                            BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
-                            parameters[i] = blockType.GetObject(pi.ParameterType, block);
-                        }
-                        else
+                        if (InlineTypes.InlineTypeExistsFor(pi.ParameterType))
                         {
                             if (match.Groups[pi.Name].Success)
                             {
                                 string value = match.Groups[pi.Name].Value;
                                 parameters[i] = ValueParser.ParseValue(value, pi.ParameterType);
                             }
+                        }
+                        else if (block != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
+                        {
+                            BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
+                            parameters[i] = blockType.GetObject(pi.ParameterType, block);
                         }
                     }
 

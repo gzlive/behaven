@@ -41,50 +41,50 @@ namespace BehaveN
                 }
                 else
                 {
-                    m = _gwtRegex.Match(line);
-
-                    if (m.Success)
-                    {
-                        keyword = m.Groups[1].Value.ToLower();
-                    }
-                    else
-                    {
-                        m = _andRegex.Match(line);
-
-                        if (!m.Success)
-                        {
-                            keyword = null;
-                        }
-                    }
-
-                    if (keyword == null)
-                    {
-                        // Do what? Throw an exception?
-                    }
-                    else
-                    {
-                        if (scenario == null)
-                            throw new Exception("Steps cannot appear before a scenario is started.");
-
-                        IBlock block = null;
-
-                        if (Form.NextLineIsForm(lines, i))
-                        {
-                            Form form = Form.ParseForm(lines, ++i);
-                            i += form.Size - 1;
-                            block = form;
-                        }
-                        else if (Grid.NextLineIsGrid(lines, i))
-                        {
-                            Grid grid = Grid.ParseGrid(lines, ++i);
-                            i += grid.RowCount;
-                            block = grid;
-                        }
-
-                        scenario.Add(keyword, line, block);
-                    }
+                    ParseStep(lines, scenario, ref keyword, ref i, line);
                 }
             }
+        }
+
+        private void ParseStep(List<string> lines, Scenario scenario, ref string keyword, ref int i, string line)
+        {
+            Match m = _gwtRegex.Match(line);
+
+            if (m.Success)
+            {
+                keyword = m.Groups[1].Value.ToLower();
+            }
+            else
+            {
+                m = _andRegex.Match(line);
+            }
+
+            if (scenario == null)
+                throw new Exception("Steps cannot appear before a scenario is started.");
+
+            IBlock block = ParseBlock(lines, ref i);
+
+            scenario.Add(keyword, line, block);
+        }
+
+        private IBlock ParseBlock(List<string> lines, ref int i)
+        {
+            IBlock block = null;
+
+            if (Form.NextLineIsForm(lines, i))
+            {
+                Form form = Form.ParseForm(lines, ++i);
+                i += form.Size - 1;
+                block = form;
+            }
+            else if (Grid.NextLineIsGrid(lines, i))
+            {
+                Grid grid = Grid.ParseGrid(lines, ++i);
+                i += grid.RowCount;
+                block = grid;
+            }
+
+            return block;
         }
 
         private static readonly Regex _scenarioRegex = new Regex(@"^\s*Scenario\s*\d*\s*:\s*(.+)", RegexOptions.IgnoreCase);

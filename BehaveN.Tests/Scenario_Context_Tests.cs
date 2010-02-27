@@ -29,7 +29,7 @@ namespace BehaveN.Tests
             this.myContext = myContext;
         }
 
-        public void Given_this_value(string value)
+        public void Given_this_arg1(string value)
         {
             this.myContext.MyString = value;
         }
@@ -44,9 +44,9 @@ namespace BehaveN.Tests
             this.myContext = myContext;
         }
 
-        public void Then_the_value_should_be_this(string @this)
+        public void Then_the_value_should_be_arg1(string value)
         {
-            this.myContext.MyString.Should().Be(@this);
+            this.myContext.MyString.Should().Be(value);
         }
     }
 

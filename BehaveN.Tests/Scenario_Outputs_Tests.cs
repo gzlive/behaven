@@ -26,9 +26,9 @@ namespace BehaveN.Tests
             TheScenario.Steps[0].Text.Should().Be("Then the string should be string (was foo)");
         }
 
-        public void then_the_string_should_be_this(out string @this)
+        public void then_the_string_should_be_arg1(out string value)
         {
-            @this = "foo";
+            value = "foo";
         }
     }
 }

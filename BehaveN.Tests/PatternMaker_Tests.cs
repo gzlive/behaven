@@ -12,7 +12,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_for_int_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_an_int_n");
+            MethodInfo method = this.GetType().GetMethod("given_an_int_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -23,7 +23,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_support_negatives_for_int_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_an_int_n");
+            MethodInfo method = this.GetType().GetMethod("given_an_int_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -31,14 +31,14 @@ namespace BehaveN.Tests
             groups["n"].Value.Should().Be("-123");
         }
 
-        public void given_an_int_n(int n)
+        public void given_an_int_arg1(int n)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_decimal_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_decimal_d");
+            MethodInfo method = this.GetType().GetMethod("given_a_decimal_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -49,7 +49,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_support_negatives_for_decimal_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_decimal_d");
+            MethodInfo method = this.GetType().GetMethod("given_a_decimal_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -60,7 +60,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_support_dollar_signs_for_decimal_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_decimal_d");
+            MethodInfo method = this.GetType().GetMethod("given_a_decimal_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -71,7 +71,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_do_not_require_dots_for_decimal_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_decimal_d");
+            MethodInfo method = this.GetType().GetMethod("given_a_decimal_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -79,14 +79,14 @@ namespace BehaveN.Tests
             groups["d"].Value.Should().Be("123");
         }
 
-        public void given_a_decimal_d(decimal d)
+        public void given_a_decimal_arg1(decimal d)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_string_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_string_s");
+            MethodInfo method = this.GetType().GetMethod("given_a_string_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -97,7 +97,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_support_quotes_for_string_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_string_s");
+            MethodInfo method = this.GetType().GetMethod("given_a_string_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -105,14 +105,14 @@ namespace BehaveN.Tests
             groups["s"].Value.Should().Be("foo bar baz");
         }
 
-        public void given_a_string_s(string s)
+        public void given_a_string_arg1(string s)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_date_time_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_date_time_dt");
+            MethodInfo method = this.GetType().GetMethod("given_a_date_time_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -120,14 +120,14 @@ namespace BehaveN.Tests
             groups["dt"].Value.Should().Be("2009-10-16");
         }
 
-        public void given_a_date_time_dt(DateTime dt)
+        public void given_a_date_time_arg1(DateTime dt)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_enum_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_an_enum_e");
+            MethodInfo method = this.GetType().GetMethod("given_an_enum_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -138,7 +138,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_support_spaces_for_enum_arguments()
         {
-            MethodInfo method = this.GetType().GetMethod("given_an_enum_e");
+            MethodInfo method = this.GetType().GetMethod("given_an_enum_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -149,7 +149,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_generates_patterns_that_do_not_match_when_an_enum_argument_is_wrong()
         {
-            MethodInfo method = this.GetType().GetMethod("given_an_enum_e");
+            MethodInfo method = this.GetType().GetMethod("given_an_enum_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -159,14 +159,14 @@ namespace BehaveN.Tests
 
         public enum MyEnum { Foo, Bar, BazQuux }
 
-        public void given_an_enum_e(MyEnum e)
+        public void given_an_enum_arg1(MyEnum e)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_methods_with_two_arguments_in_the_same_order_as_the_method_name()
         {
-            MethodInfo method = this.GetType().GetMethod("given_foo_fooName_and_bar_barName");
+            MethodInfo method = this.GetType().GetMethod("given_foo_arg1_and_bar_arg2");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -175,14 +175,14 @@ namespace BehaveN.Tests
             groups["barName"].Value.Should().Be("my bar");
         }
 
-        public void given_foo_fooName_and_bar_barName(string fooName, string barName)
+        public void given_foo_arg1_and_bar_arg2(string fooName, string barName)
         {
         }
 
         [Test]
         public void it_generates_patterns_for_methods_with_two_arguments_not_in_the_same_order_as_the_method_name()
         {
-            MethodInfo method = this.GetType().GetMethod("given_bar_barName_and_foo_fooName");
+            MethodInfo method = this.GetType().GetMethod("given_bar_arg2_and_foo_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -191,14 +191,14 @@ namespace BehaveN.Tests
             groups["barName"].Value.Should().Be("my bar");
         }
 
-        public void given_bar_barName_and_foo_fooName(string fooName, string barName)
+        public void given_bar_arg2_and_foo_arg1(string fooName, string barName)
         {
         }
 
         [Test]
         public void it_allows_extra_spaces_in_the_step_an_the_beginning()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_whatever");
+            MethodInfo method = this.GetType().GetMethod("given_a_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -209,7 +209,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_allows_extra_spaces_in_the_step_in_the_middle()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_whatever");
+            MethodInfo method = this.GetType().GetMethod("given_a_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -220,7 +220,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_allows_extra_spaces_in_the_step_an_the_end()
         {
-            MethodInfo method = this.GetType().GetMethod("given_a_whatever");
+            MethodInfo method = this.GetType().GetMethod("given_a_arg1");
 
             string pattern = PatternMaker.GetPattern(method);
 
@@ -228,7 +228,7 @@ namespace BehaveN.Tests
             groups[0].Success.Should().Be.True();
         }
 
-        public void given_a_whatever()
+        public void given_a_arg1(string whatever)
         {
         }
 

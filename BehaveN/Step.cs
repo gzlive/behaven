@@ -6,5 +6,10 @@ namespace BehaveN
         public string Text;
         public IBlock Block;
         public StepResult Result;
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 }

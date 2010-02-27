@@ -45,6 +45,25 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_ignores_comments()
+        {
+            LoadText("Scenario: A",
+                     "Given B",
+                     "When C",
+                     "Then D",
+                     "# Comment", 
+                     "And E");
+
+            TheFeatureFile.Scenarios.Count.Should().Be(1);
+            TheFeatureFile.Scenarios[0].Name.Should().Be("A");
+            TheFeatureFile.Scenarios[0].Steps.Count.Should().Be(4);
+            TheFeatureFile.Scenarios[0].Steps[0].Text.Should().Be("Given B");
+            TheFeatureFile.Scenarios[0].Steps[1].Text.Should().Be("When C");
+            TheFeatureFile.Scenarios[0].Steps[2].Text.Should().Be("Then D");
+            TheFeatureFile.Scenarios[0].Steps[3].Text.Should().Be("And E");
+        }
+
+        [Test]
         public void it_throws_when_a_step_appears_before_a_scenario()
         {
             ActionAssert.Throws<Exception>(() =>

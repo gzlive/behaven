@@ -18,17 +18,23 @@ namespace BehaveN
         {
             List<string> splits = new List<string>(NameParser.Parse(methodInfo, false).Split());
 
+            int i = 1;
+
             foreach (var pi in methodInfo.GetParameters())
             {
                 if (InlineTypes.InlineTypeExistsFor(pi.ParameterType))
                 {
-                    int parameterIndex = splits.FindIndex(delegate(string s) { return s.Equals(pi.Name, StringComparison.OrdinalIgnoreCase); });
+                    string argPlaceholder = "arg" + i;
+
+                    int parameterIndex = splits.FindIndex(delegate(string s) { return s.Equals(argPlaceholder, StringComparison.OrdinalIgnoreCase); });
 
                     if (parameterIndex != -1)
                     {
                         splits[parameterIndex] = GetPatternForParameter(pi);
                     }
                 }
+
+                i++;
             }
 
             return string.Format(@"\s*{0}\s*", string.Join(@"\s+", splits.ToArray()));

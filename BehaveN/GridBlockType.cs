@@ -6,7 +6,7 @@ namespace BehaveN
     {
         public override bool HandlesType(Type type)
         {
-            return GetCollectionItemType(type) != null;
+            return type != typeof(string) && GetCollectionItemType(type) != null;
         }
 
         public override object GetObject(Type type, IBlock block)

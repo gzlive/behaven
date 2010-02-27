@@ -22,11 +22,6 @@ namespace BehaveN
 
         private bool TypeHasStepDefinitions(Type type)
         {
-            if (type.GetConstructor(Type.EmptyTypes) == null)
-            {
-                return false;
-            }
-
             foreach (MethodInfo mi in type.GetMethods())
             {
                 if (NameParser.IsStepDefinition(mi))
@@ -69,7 +64,7 @@ namespace BehaveN
 
             foreach (ParameterInfo pi in constructor.GetParameters())
             {
-                parameters[i++] = GetContextObject(pi.ParameterType);
+                parameters[i++] = CreateOrGetContextObject(pi.ParameterType);
             }
 
             return Activator.CreateInstance(type, parameters);
@@ -89,7 +84,7 @@ namespace BehaveN
             }
         }
 
-        private object GetContextObject(Type type)
+        private object CreateOrGetContextObject(Type type)
         {
             object contextObject;
 
@@ -122,6 +117,21 @@ namespace BehaveN
             }
 
             return false;
+        }
+
+        public void RegisterContextObject(object contextObject)
+        {
+            _context.Add(contextObject.GetType(), contextObject);
+        }
+
+        public void RegisterContextObject(Type type, object contextObject)
+        {
+            _context.Add(type, contextObject);
+        }
+
+        public object GetContextObject(Type type)
+        {
+            return _context[type];
         }
     }
 }

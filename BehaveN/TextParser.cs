@@ -17,7 +17,7 @@ namespace BehaveN
                 {
                     line = line.Trim();
 
-                    if (line != "")
+                    if (LineIsNotEmptyAndNotAComment(line))
                     {
                         lines.Add(line);
                     }
@@ -25,6 +25,11 @@ namespace BehaveN
             }
 
             return lines;
+        }
+
+        private static bool LineIsNotEmptyAndNotAComment(string line)
+        {
+            return line != "" && !line.StartsWith("#");
         }
     }
 }
