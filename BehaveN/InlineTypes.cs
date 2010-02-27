@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BehaveN
 {
@@ -36,6 +35,9 @@ namespace BehaveN
         {
             if (type.IsByRef)
                 type = type.GetElementType();
+
+            if (TypeExtensions.IsNullable(type))
+                type = Nullable.GetUnderlyingType(type);
 
             return inlineTypes.Find(delegate(InlineType it) { return it.HandlesType(type); });
         }

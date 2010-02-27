@@ -36,6 +36,32 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_generates_patterns_for_nullable_int_arguments()
+        {
+            MethodInfo method = this.GetType().GetMethod("given_a_nullable_int_arg1");
+
+            string pattern = PatternMaker.GetPattern(method);
+
+            var groups = ApplyPattern(pattern, "given a nullable int 123");
+            groups["n"].Value.Should().Be("123");
+        }
+
+        [Test]
+        public void it_generates_patterns_that_support_null_for_nullable_int_arguments()
+        {
+            MethodInfo method = this.GetType().GetMethod("given_a_nullable_int_arg1");
+
+            string pattern = PatternMaker.GetPattern(method);
+
+            var groups = ApplyPattern(pattern, "given a nullable int null");
+            groups["n"].Value.Should().Be("null");
+        }
+
+        public void given_a_nullable_int_arg1(int? n)
+        {
+        }
+
+        [Test]
         public void it_generates_patterns_for_decimal_arguments()
         {
             MethodInfo method = this.GetType().GetMethod("given_a_decimal_arg1");

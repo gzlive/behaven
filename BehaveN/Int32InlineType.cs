@@ -11,6 +11,9 @@ namespace BehaveN
 
         public override string GetPattern(Type type)
         {
+            if (TypeExtensions.IsNullable(type))
+                return @"(?<{0}>(?:-?\d+)|(?:null))(?:st|nd|rd|th)?";
+
             return @"(?<{0}>-?\d+)(?:st|nd|rd|th)?";
         }
     }
