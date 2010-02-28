@@ -113,7 +113,7 @@ namespace BehaveN
                         else if (InlineTypes.InlineTypeExistsFor(type))
                         {
                             string expectedValue = match.Groups[pi.Name].Value;
-                            string actualValue = parameters[i] != null ? parameters[i].ToString() : null;
+                            string actualValue = parameters[i] != null ? parameters[i].ToString() : "null";
 
                             if (expectedValue != string.Format("{0}", actualValue))
                             {
@@ -135,6 +135,11 @@ namespace BehaveN
             {
                 throw new VerificationException(new Exception("One or more output parameters did not pass."));
             }
+        }
+
+        public override string ToString()
+        {
+            return _methodInfo.ToString();
         }
     }
 }

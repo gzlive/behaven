@@ -27,11 +27,14 @@ namespace BehaveN
                 return null;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (TypeExtensions.IsNullable(type))
             {
-                Type innerType = type.GetGenericArguments()[0];
+                if (value == "null")
+                {
+                    return null;
+                }
 
-                type = innerType;
+                type = Nullable.GetUnderlyingType(type);
             }
 
             if (type.IsEnum)

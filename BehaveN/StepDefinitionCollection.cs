@@ -79,7 +79,7 @@ namespace BehaveN
         {
             foreach (MethodInfo mi in target.GetType().GetMethods())
             {
-                if (mi.DeclaringType.Namespace != "BehaveN")
+                if (mi.DeclaringType.Namespace != "BehaveN" && NameParser.IsStepDefinition(mi))
                     yield return new StepDefinition(target, mi);
             }
         }
