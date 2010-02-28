@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorScenarios.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />

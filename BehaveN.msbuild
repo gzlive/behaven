@@ -42,12 +42,7 @@
     <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
 
     <AssemblyInfo CodeLanguage="CS"
-             OutputFile="BehaveN\Properties\VersionInfo.cs"
-             AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
-             AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
-
-    <AssemblyInfo CodeLanguage="CS"
-             OutputFile="BehaveN.Tests\Properties\VersionInfo.cs"
+             OutputFile="VersionInfo.cs"
              AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
              AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
   </Target>

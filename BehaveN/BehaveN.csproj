@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="BlockType.cs" />
     <Compile Include="BlockTypes.cs" />
     <Compile Include="ScenarioCollection.cs" />
@@ -67,7 +70,6 @@
     <Compile Include="TextParser.cs" />
     <Compile Include="NameParser.cs" />
     <Compile Include="Int32Parser.cs" />
-    <Compile Include="Properties\VersionInfo.cs" />
     <Compile Include="DateTimeParser.cs" />
     <Compile Include="NameComparer.cs" />
     <Compile Include="Form.cs" />
