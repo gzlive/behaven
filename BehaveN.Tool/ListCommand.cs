@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace BehaveN.Tool
@@ -49,25 +48,34 @@ namespace BehaveN.Tool
 
         private void WriteStepDefinitions()
         {
-            var stepDefinitions = from a in _assemblies
-                                  from t in a.GetTypes()
-                                  from m in t.GetMethods()
-                                  where NameParser.IsStepDefinition(m)
-                                  let n = NameParser.Parse(m, false)
-                                  group n by n.Split()[0].ToLowerInvariant();
-
-            var givens = stepDefinitions.Where(g => g.Key == "given").SelectMany(g => g).OrderBy(s => s);
-            var whens = stepDefinitions.Where(g => g.Key == "when").SelectMany(g => g).OrderBy(s => s);
-            var thens = stepDefinitions.Where(g => g.Key == "then").SelectMany(g => g).OrderBy(s => s);
-
             Console.WriteLine("Givens:");
-            foreach (var given in givens) Console.WriteLine("   " + given);
+            foreach (var given in GetStepDefinitions("given")) Console.WriteLine("   " + given);
 
             Console.WriteLine("Whens:");
-            foreach (var when in whens) Console.WriteLine("   " + when);
+            foreach (var when in GetStepDefinitions("when")) Console.WriteLine("   " + when);
 
             Console.WriteLine("Thens:");
-            foreach (var then in thens) Console.WriteLine("   " + then);
+            foreach (var then in GetStepDefinitions("then")) Console.WriteLine("   " + then);
+        }
+
+        private IEnumerable<string> GetStepDefinitions(string keyword)
+        {
+            var names = new List<string>();
+
+            foreach (var a in _assemblies)
+                foreach (var t in a.GetTypes())
+                    foreach (var m in t.GetMethods())
+                        if (NameParser.IsStepDefinition(m))
+                        {
+                            string name = NameParser.Parse(m, false);
+
+                            if (name.StartsWith(keyword, StringComparison.OrdinalIgnoreCase))
+                                names.Add(name);
+                        }
+
+            names.Sort();
+
+            return names;
         }
     }
 }

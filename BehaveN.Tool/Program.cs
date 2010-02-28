@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace BehaveN.Tool
 {
@@ -33,7 +32,7 @@ namespace BehaveN.Tool
 
                 var command = (ICommand)Activator.CreateInstance(commandType);
 
-                return command.Run(args.Skip(1).ToArray());
+                return command.Run(new List<string>(args).GetRange(1, args.Length - 1).ToArray());
             }
             catch (Exception e)
             {

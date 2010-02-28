@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace BehaveN.Tool
@@ -22,8 +21,10 @@ namespace BehaveN.Tool
 
         public int Run(string[] args)
         {
-            var assemblyFiles = args.Where(arg => arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
-            var scenarioFiles = args.Where(arg => !arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
+            List<string> argsList = new List<string>(args);
+
+            List<string> assemblyFiles = argsList.FindAll(arg => arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
+            List<string> scenarioFiles = argsList.FindAll(arg => !arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
 
             LoadAssemblies(assemblyFiles);
             VerifyScenarios(scenarioFiles);

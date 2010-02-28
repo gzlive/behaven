@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace BehaveN.Tool
@@ -13,17 +12,25 @@ namespace BehaveN.Tool
 
             if (commandType == null) return null;
 
-            if (!commandType.GetInterfaces().Contains(typeof(ICommand))) return null;
+            if (!typeof(ICommand).IsAssignableFrom(commandType))
+                return null;
 
             return commandType;
         }
 
         public static IEnumerable<Type> GetCommandTypes()
         {
-            return from t in typeof(Program).Assembly.GetTypes()
-                   where t.Name.EndsWith("Command") && t.GetInterfaces().Contains(typeof(ICommand))
-                   orderby t.Name
-                   select t;
+            var commandTypes = new List<Type>();
+
+            foreach (var type in typeof(Program).Assembly.GetTypes())
+            {
+                if (type.Name.EndsWith("Command") && typeof(ICommand).IsAssignableFrom(type) && !type.IsAbstract)
+                    commandTypes.Add(type);
+            }
+
+            commandTypes.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+            return commandTypes;
         }
 
         public static string GetSummary(Type commandType)
