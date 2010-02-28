@@ -1,14 +1,26 @@
-- Create composite reporter.
-- Create reporters for XML and HTML.
-- Create default reporter that looks for output file somewhere.
-  - Creates another reporter based on file extension.
-    - .txt, .xml, or .html.
-  - Always writes to console?
+Required for final 2.0 release:
+
+- Support steps in other languages.
+- Create facade class so that running a scenario takes a single method call.
 - Add support for nullable parameters.
+  - Int32 and Decimal are done.
+  - Still need to do DateTime and enums.
+- Add a Boolean inline type?
 - Add new "list" convertible object.
   - Leading "-" will indicate item in a list.
   - Used for lists of primitive types.
 - Add new "text" convertible object.
+  - Parameter type should be StringBuilder.
   - Leading ">" could be indicator.
   - Or quote character.
     - No need to end quote on each line.
+- Create composite reporter.
+- Create reporters for XML and HTML.
+- Create default reporter that can be given output file.
+  - Creates another reporter based on file extension.
+    - .txt, .xml, or .html.
+  - Always writes to console?
+- Parse feature information out of file, if available.
+- Do much stricter error checking when parsing files.
+- Create tool command to find unused steps.
+- Create tool command to find undefined steps (without running).
