@@ -20,6 +20,10 @@ namespace BehaveN
             _text = text;
         }
 
+        /// <summary>
+        /// Reads the contents of the file to the feature file.
+        /// </summary>
+        /// <param name="featureFile">The feature file.</param>
         public void ReadTo(FeatureFile featureFile)
         {
             List<string> lines = TextParser.GetLines(_text);

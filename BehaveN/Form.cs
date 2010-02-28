@@ -96,12 +96,20 @@ namespace BehaveN
             return passed;
         }
 
-        public string GetSuggesterParameterType()
+        /// <summary>
+        /// Gets the suggested type for the parameter.
+        /// </summary>
+        /// <returns>The type.</returns>
+        public string GetSuggestedParameterType()
         {
             return "Foo";
         }
 
-        public string GetSuggesterParameterName()
+        /// <summary>
+        /// Gets the suggested name for the parameter.
+        /// </summary>
+        /// <returns>The name.</returns>
+        public string GetSuggestedParameterName()
         {
             return "foo";
         }

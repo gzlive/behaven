@@ -2,6 +2,9 @@ To build the code:
 
   - You need Visual Studio 2008 or the .NET 3.5 SDK to build from the command prompt.
 
+  - To build from the command prompt, use MSBuild.exe. The default target is Build. Look
+    in BehaveN.msbuild to see what the other targets do.
+
 To build the documentation:
 
   - Download and install the HTML Help Workshop:
@@ -16,3 +19,13 @@ To build the documentation:
 
   - Download and install the Sandcastle Styles:
     - http://sandcastlestyles.codeplex.com/
+
+  - Use MSBuild.exe /t:Documentation to make the CHM file.
+
+To make a release:
+
+  - Update the version number in VERSION.txt.
+
+  - Run MSBuild.exe /t:Release to make the ZIP file.
+
+  - Upload the ZIP file to Google Code.

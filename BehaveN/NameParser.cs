@@ -28,10 +28,11 @@ namespace BehaveN
         /// Parses the specified method's name.
         /// </summary>
         /// <param name="methodInfo">The method info.</param>
+        /// <param name="removePrefix">if set to <c>true</c>, given/when/then prefixes are removed.</param>
         /// <returns>The parsed name.</returns>
-        public static string Parse(MethodInfo methodInfo)
+        public static string Parse(MethodInfo methodInfo, bool removePrefix)
         {
-            return Parse(methodInfo, true);
+            return Parse(methodInfo.Name);
         }
 
         /// <summary>
@@ -40,46 +41,6 @@ namespace BehaveN
         /// <param name="name">The name.</param>
         /// <returns>The parsed name.</returns>
         public static string Parse(string name)
-        {
-            if (name == null) throw new ArgumentNullException("name");
-
-            return Parse(name, false);
-        }
-
-        /// <summary>
-        /// Parses the specified method's name.
-        /// </summary>
-        /// <param name="methodInfo">The method info.</param>
-        /// <param name="removePrefix">if set to <c>true</c>, given/when/then prefixes are removed.</param>
-        /// <returns>The parsed name.</returns>
-        public static string Parse(MethodInfo methodInfo, bool removePrefix)
-        {
-            string result = methodInfo.Name;
-
-            if (result.Contains("_"))
-            {
-                result = string.Join(" ", _underscoreSplitter.Split(result.Trim('_')));
-            }
-            else
-            {
-                result = string.Join(" ", _camelCaseSplitter.Split(result));
-            }
-
-            if (removePrefix)
-            {
-                result = _prefixRemover.Replace(result, "").ToLowerInvariant();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Parses the specified name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="removePrefix">if set to <c>true</c>, given/when/then prefixes are removed.</param>
-        /// <returns>The parsed name.</returns>
-        public static string Parse(string name, bool removePrefix)
         {
             string result = name;
 
@@ -90,11 +51,6 @@ namespace BehaveN
             else
             {
                 result = string.Join(" ", _camelCaseSplitter.Split(result));
-            }
-
-            if (removePrefix)
-            {
-                result = _prefixRemover.Replace(result, "").ToLowerInvariant();
             }
 
             return result;

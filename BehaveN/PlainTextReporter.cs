@@ -54,6 +54,10 @@ namespace BehaveN
 
         private TextWriter _writer;
 
+        /// <summary>
+        /// Reports the feature file.
+        /// </summary>
+        /// <param name="featureFile">The feature file.</param>
         public override void ReportFeatureFile(FeatureFile featureFile)
         {
             foreach (Scenario scenario in featureFile.Scenarios)
@@ -66,6 +70,10 @@ namespace BehaveN
             ReportUndefinedSteps(featureFile.GetUndefinedSteps());
         }
 
+        /// <summary>
+        /// Reports the scenario.
+        /// </summary>
+        /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
             _writer.WriteLine("Scenario: {0}", scenario.Name);
@@ -128,6 +136,10 @@ namespace BehaveN
             return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
         }
 
+        /// <summary>
+        /// Reports the undefined steps.
+        /// </summary>
+        /// <param name="undefinedSteps">The undefined steps.</param>
         public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
             if (undefinedSteps.Count > 0)
@@ -239,7 +251,7 @@ namespace BehaveN
 
             if (block != null)
             {
-                parameters.Add(string.Format("{0} {1}", block.GetSuggesterParameterType(), block.GetSuggesterParameterName()));
+                parameters.Add(string.Format("{0} {1}", block.GetSuggestedParameterType(), block.GetSuggestedParameterName()));
             }
 
             return string.Join(", ", parameters.ToArray());

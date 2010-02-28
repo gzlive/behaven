@@ -26,8 +26,16 @@ namespace BehaveN
         /// <param name="actual">The object to check against.</param>
         bool Check(object actual);
 
-        string GetSuggesterParameterType();
+        /// <summary>
+        /// Gets the suggested type for the parameter.
+        /// </summary>
+        /// <returns>The type.</returns>
+        string GetSuggestedParameterType();
 
-        string GetSuggesterParameterName();
+        /// <summary>
+        /// Gets the suggested name for the parameter.
+        /// </summary>
+        /// <returns>The name.</returns>
+        string GetSuggestedParameterName();
     }
 }

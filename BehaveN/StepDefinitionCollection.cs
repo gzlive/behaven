@@ -4,11 +4,18 @@ using System.Reflection;
 
 namespace BehaveN
 {
+    /// <summary>
+    /// Represents a collection of StepDefinition objects.
+    /// </summary>
     public class StepDefinitionCollection
     {
         private readonly List<StepDefinition> _stepDefinitions = new List<StepDefinition>();
         private readonly Dictionary<Type, object> _context = new Dictionary<Type, object>();
 
+        /// <summary>
+        /// Uses the step definitions from the specified assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
         public void UseStepDefinitionsFromAssembly(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
@@ -33,11 +40,19 @@ namespace BehaveN
             return false;
         }
 
+        /// <summary>
+        /// Uses the step definitions from the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
         public void UseStepDefinitionsFromType<T>()
         {
             UseStepDefinitionsFromType(typeof(T));
         }
 
+        /// <summary>
+        /// Uses the step definitions from the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
         public void UseStepDefinitionsFromType(Type type)
         {
             UseStepDefinitionsFromObject(CreateStepDefinitionsObject(type));
@@ -70,6 +85,10 @@ namespace BehaveN
             return Activator.CreateInstance(type, parameters);
         }
 
+        /// <summary>
+        /// Uses the step definitions from the specified object.
+        /// </summary>
+        /// <param name="target">The target.</param>
         public void UseStepDefinitionsFromObject(object target)
         {
             _stepDefinitions.AddRange(GetStepDefinitionsFrom(target));
@@ -97,6 +116,11 @@ namespace BehaveN
             return contextObject;
         }
 
+        /// <summary>
+        /// Tries to execute a step.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns>True if the step was executed.</returns>
         public bool TryExecute(Step step)
         {
             foreach (StepDefinition stepDefinition in _stepDefinitions)
@@ -108,6 +132,13 @@ namespace BehaveN
             return false;
         }
 
+        /// <summary>
+        /// Determines whether there is a match for the specified step.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns>
+        /// 	<c>true</c> if there is a match; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasMatchFor(Step step)
         {
             foreach (StepDefinition stepDefinition in _stepDefinitions)
@@ -119,16 +150,30 @@ namespace BehaveN
             return false;
         }
 
+        /// <summary>
+        /// Registers the context object.
+        /// </summary>
+        /// <param name="contextObject">The context object.</param>
         public void RegisterContextObject(object contextObject)
         {
             _context.Add(contextObject.GetType(), contextObject);
         }
 
+        /// <summary>
+        /// Registers the context object.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="contextObject">The context object.</param>
         public void RegisterContextObject(Type type, object contextObject)
         {
             _context.Add(type, contextObject);
         }
 
+        /// <summary>
+        /// Gets the context object.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public object GetContextObject(Type type)
         {
             return _context[type];

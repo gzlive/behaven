@@ -139,17 +139,9 @@ namespace BehaveN
             }
         }
 
-        public void AssertPassed()
-        {
-            if (!_passed)
-            {
-                if (_exception != null)
-                    throw new VerificationException(_exception);
-
-                throw new VerificationException(new Exception("Scenario failed."));
-            }
-        }
-
+        /// <summary>
+        /// Reports this instance.
+        /// </summary>
         public void Report()
         {
             Reporter.ReportScenario(this);

@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace BehaveN
 {
+    /// <summary>
+    /// Represents a feature file.
+    /// </summary>
     public class FeatureFile
     {
         private string _name;
@@ -60,12 +63,21 @@ namespace BehaveN
             set { _reporter = value; }
         }
 
+        /// <summary>
+        /// Loads the file.
+        /// </summary>
+        /// <param name="path">The path.</param>
         public void LoadFile(string path)
         {
             string text = File.ReadAllText(path);
             LoadText(text);
         }
 
+        /// <summary>
+        /// Loads the embedded resource.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="name">The name.</param>
         public void LoadEmbeddedResource(Assembly assembly, string name)
         {
             string actualName = null;
@@ -92,6 +104,10 @@ namespace BehaveN
             }
         }
 
+        /// <summary>
+        /// Loads the text.
+        /// </summary>
+        /// <param name="text">The text.</param>
         public void LoadText(string text)
         {
             PlainTextReader reader = new PlainTextReader(text);
@@ -103,6 +119,9 @@ namespace BehaveN
             }
         }
 
+        /// <summary>
+        /// Verifies this instance.
+        /// </summary>
         public void Verify()
         {
             _passed = true;
@@ -114,16 +133,26 @@ namespace BehaveN
             }
         }
 
+        /// <summary>
+        /// Reports this instance.
+        /// </summary>
         public void Report()
         {
             Reporter.ReportFeatureFile(this);
         }
 
+        /// <summary>
+        /// Reports the undefined steps.
+        /// </summary>
         public void ReportUndefinedSteps()
         {
             Reporter.ReportUndefinedSteps(GetUndefinedSteps());
         }
 
+        /// <summary>
+        /// Gets the undefined steps.
+        /// </summary>
+        /// <returns>The union of undefined steps for all scenarios.</returns>
         public ICollection<Step> GetUndefinedSteps()
         {
             List<Step> undefinedSteps = new List<Step>();

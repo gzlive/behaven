@@ -17,7 +17,7 @@ namespace BehaveN
 
             foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Public | BindingFlags.Static))
             {
-                string parsed = NameParser.Parse(fieldInfo.Name, false);
+                string parsed = NameParser.Parse(fieldInfo.Name);
                 subPatterns.Add("(?:" + string.Join(@"\s*", parsed.Split()) + ")");
             }
 
