@@ -12,7 +12,6 @@ namespace BehaveN
         private static readonly Regex _stepDefinitionTester = new Regex(@"^([Gg]iven|[Ww]hen|[Tt]hen)(_|[A-Z])");
         private static readonly Regex _underscoreSplitter = new Regex(@"_+");
         private static readonly Regex _camelCaseSplitter = new Regex(@"(?<!^)(?=[A-Z])");
-        private static readonly Regex _prefixRemover = new Regex(@"^(given|when|then) ", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Determines if the specified method is a step definition.
@@ -28,9 +27,8 @@ namespace BehaveN
         /// Parses the specified method's name.
         /// </summary>
         /// <param name="methodInfo">The method info.</param>
-        /// <param name="removePrefix">if set to <c>true</c>, given/when/then prefixes are removed.</param>
         /// <returns>The parsed name.</returns>
-        public static string Parse(MethodInfo methodInfo, bool removePrefix)
+        public static string Parse(MethodInfo methodInfo)
         {
             return Parse(methodInfo.Name);
         }
@@ -42,6 +40,9 @@ namespace BehaveN
         /// <returns>The parsed name.</returns>
         public static string Parse(string name)
         {
+            if (name == null)
+                throw new ArgumentNullException("name");
+
             string result = name;
 
             if (result.Contains("_"))

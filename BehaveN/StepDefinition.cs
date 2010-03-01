@@ -109,11 +109,7 @@ namespace BehaveN
                     {
                         Type type = pi.ParameterType.GetElementType();
 
-                        if (block != null && !InlineTypes.InlineTypeExistsFor(type))
-                        {
-                            passed &= block.Check(parameters[i]);
-                        }
-                        else if (InlineTypes.InlineTypeExistsFor(type))
+                        if (InlineTypes.InlineTypeExistsFor(type))
                         {
                             string expectedValue = match.Groups[pi.Name].Value;
                             string actualValue = parameters[i] != null ? parameters[i].ToString() : "null";
@@ -127,6 +123,10 @@ namespace BehaveN
                                               + description.Substring(group.Index + group.Length);
                                 passed = false;
                             }
+                        }
+                        else if (block != null && BlockTypes.BlockTypeExistsFor(type))
+                        {
+                            passed &= block.Check(parameters[i]);
                         }
                     }
 

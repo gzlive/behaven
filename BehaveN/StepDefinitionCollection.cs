@@ -9,6 +9,7 @@ namespace BehaveN
     /// </summary>
     public class StepDefinitionCollection
     {
+        private readonly List<object> _stepDefinitionObjects = new List<object>();
         private readonly List<StepDefinition> _stepDefinitions = new List<StepDefinition>();
         private readonly Dictionary<Type, object> _context = new Dictionary<Type, object>();
 
@@ -55,7 +56,37 @@ namespace BehaveN
         /// <param name="type">The type.</param>
         public void UseStepDefinitionsFromType(Type type)
         {
-            UseStepDefinitionsFromObject(CreateStepDefinitionsObject(type));
+            _stepDefinitionObjects.Add(type);
+        }
+
+        /// <summary>
+        /// Uses the step definitions from the specified object.
+        /// </summary>
+        /// <param name="object">The @object.</param>
+        public void UseStepDefinitionsFromObject(object @object)
+        {
+            _stepDefinitionObjects.Add(@object);
+        }
+
+        /// <summary>
+        /// Creates the context including all of the step definitions.
+        /// </summary>
+        public void CreateContext()
+        {
+            _context.Clear();
+            _stepDefinitions.Clear();
+
+            foreach (object @object in _stepDefinitionObjects)
+            {
+                if (@object is Type)
+                {
+                    _stepDefinitions.AddRange(GetStepDefinitionsFrom(CreateStepDefinitionsObject((Type)@object)));
+                }
+                else
+                {
+                    _stepDefinitions.AddRange(GetStepDefinitionsFrom(@object));
+                }
+            }
         }
 
         private object CreateStepDefinitionsObject(Type type)
@@ -83,15 +114,6 @@ namespace BehaveN
             }
 
             return Activator.CreateInstance(type, parameters);
-        }
-
-        /// <summary>
-        /// Uses the step definitions from the specified object.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        public void UseStepDefinitionsFromObject(object target)
-        {
-            _stepDefinitions.AddRange(GetStepDefinitionsFrom(target));
         }
 
         private IEnumerable<StepDefinition> GetStepDefinitionsFrom(object target)

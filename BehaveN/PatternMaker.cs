@@ -16,7 +16,7 @@ namespace BehaveN
         /// <returns>A regular expression pattern.</returns>
         public static string GetPattern(MethodInfo methodInfo)
         {
-            List<string> splits = new List<string>(NameParser.Parse(methodInfo, false).Split());
+            List<string> splits = new List<string>(NameParser.Parse(methodInfo).Split());
 
             int i = 1;
 

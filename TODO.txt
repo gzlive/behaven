@@ -1,5 +1,6 @@
 Required for final 2.0 release:
 
+- Context and step definitions should get reset for each scenario.
 - Support steps in other languages.
 - Create facade class so that running a scenario takes a single method call.
 - Add support for nullable parameters.

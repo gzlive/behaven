@@ -87,6 +87,8 @@ namespace BehaveN
         /// </summary>
         public void Verify()
         {
+            StepDefinitions.CreateContext();
+
             _passed = true;
             _exception = null;
 

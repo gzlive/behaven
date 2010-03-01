@@ -67,7 +67,7 @@ namespace BehaveN.Tool
                     foreach (var m in t.GetMethods())
                         if (NameParser.IsStepDefinition(m))
                         {
-                            string name = NameParser.Parse(m, false);
+                            string name = NameParser.Parse(m);
 
                             if (name.StartsWith(keyword, StringComparison.OrdinalIgnoreCase))
                                 names.Add(name);
