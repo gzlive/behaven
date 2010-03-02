@@ -9,12 +9,12 @@ namespace BehaveN.Tests
         [Test]
         public void it_knows_how_to_read_latvian()
         {
-            VerifyText("# language: lv",
-                       "Scenārijs: latviešu",
-                       "Kad foo",
-                       "Ja bar",
-                       "Tad baz",
-                       "Un quux");
+            ExecuteText("# language: lv",
+                        "Scenārijs: latviešu",
+                        "Kad foo",
+                        "Ja bar",
+                        "Tad baz",
+                        "Un quux");
 
             TheScenario.Steps.Count.Should().Be(4);
             TheScenario.Passed.Should().Be.True();

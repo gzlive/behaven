@@ -32,18 +32,21 @@ namespace BehaveN
 
         private string FilterStackTrace()
         {
-            if (_stackTrace == null) return null;
-
             StringBuilder sb = new StringBuilder();
-            StringReader sr = new StringReader(_stackTrace);
 
+            StringReader sr;
             string line;
 
-            while ((line = sr.ReadLine()) != null)
+            if (_stackTrace != null)
             {
-                if (!_stackTraceFilter.IsMatch(line))
+                sr = new StringReader(_stackTrace);
+
+                while ((line = sr.ReadLine()) != null)
                 {
-                    sb.AppendLine(line);
+                    if (!_stackTraceFilter.IsMatch(line))
+                    {
+                        sb.AppendLine(line);
+                    }
                 }
             }
 

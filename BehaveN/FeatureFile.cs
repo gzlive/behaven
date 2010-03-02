@@ -120,15 +120,15 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Verifies this instance.
+        /// Executes the scenarios.
         /// </summary>
-        public void Verify()
+        public void Execute()
         {
             _passed = true;
 
             foreach (Scenario scenario in _scenarios)
             {
-                scenario.Verify();
+                scenario.Execute();
                 _passed &= scenario.Passed;
             }
         }

@@ -84,7 +84,7 @@ namespace BehaveN
 
             IBlock block = ParseBlock(lines, ref i);
 
-            scenario.Add(keyword, line, block);
+            scenario.Steps.Add(keyword, line, block);
         }
 
         private IBlock ParseBlock(List<string> lines, ref int i)

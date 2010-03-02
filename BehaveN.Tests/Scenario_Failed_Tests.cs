@@ -10,10 +10,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_skips_all_steps_after_the_first_failed_step()
         {
-            VerifyText("Scenario: Failed",
-                       "Given some context",
-                       "When a step fails",
-                       "Then the remaining steps get skipped");
+            ExecuteText("Scenario: Failed",
+                        "Given some context",
+                        "When a step fails",
+                        "Then the remaining steps get skipped");
 
             TheScenario.Passed.Should().Be.False();
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);

@@ -11,8 +11,8 @@ namespace BehaveN.Tests
         {
             theDecimal = 0;
 
-            VerifyText("Scenario: Decimal",
-                       "Given the decimal 1.23");
+            ExecuteText("Scenario: Decimal",
+                        "Given the decimal 1.23");
 
             theDecimal.Should().Be(1.23m);
         }
@@ -22,8 +22,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = null;
 
-            VerifyText("Scenario: Nullable decimal with a value",
-                       "Given the nullable decimal 1.23");
+            ExecuteText("Scenario: Nullable decimal with a value",
+                        "Given the nullable decimal 1.23");
 
             theNullabelDecimal.Should().Be(1.23m);
         }
@@ -33,8 +33,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = 1.23m;
 
-            VerifyText("Scenario: Nullable decimal with a value",
-                       "Given the nullable decimal null");
+            ExecuteText("Scenario: Nullable decimal with a value",
+                        "Given the nullable decimal null");
 
             theNullabelDecimal.Should().Be(null);
         }
@@ -44,8 +44,8 @@ namespace BehaveN.Tests
         {
             theDecimal = 1.23m;
 
-            VerifyText("Scenario: Output decimal ",
-                       "Then the decimal should be 1.23");
+            ExecuteText("Scenario: Output decimal ",
+                        "Then the decimal should be 1.23");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -55,8 +55,8 @@ namespace BehaveN.Tests
         {
             theDecimal = 4.56m;
 
-            VerifyText("Scenario: Output decimal",
-                       "Then the decimal should be 1.23");
+            ExecuteText("Scenario: Output decimal",
+                        "Then the decimal should be 1.23");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }
@@ -66,8 +66,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = 1.23m;
 
-            VerifyText("Scenario: Output nullable decimal",
-                       "Then the nullable decimal should be 1.23");
+            ExecuteText("Scenario: Output nullable decimal",
+                        "Then the nullable decimal should be 1.23");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -77,8 +77,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = 4.56m;
 
-            VerifyText("Scenario: Output nullable decimal",
-                       "Then the nullable decimal should be 1.23");
+            ExecuteText("Scenario: Output nullable decimal",
+                        "Then the nullable decimal should be 1.23");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }
@@ -88,8 +88,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = null;
 
-            VerifyText("Scenario: Output nullable decimal",
-                       "Then the nullable decimal should be null");
+            ExecuteText("Scenario: Output nullable decimal",
+                        "Then the nullable decimal should be null");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -99,8 +99,8 @@ namespace BehaveN.Tests
         {
             theNullabelDecimal = 123;
 
-            VerifyText("Scenario: Output nullable decimal",
-                       "Then the nullable decimal should be null");
+            ExecuteText("Scenario: Output nullable decimal",
+                        "Then the nullable decimal should be null");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }

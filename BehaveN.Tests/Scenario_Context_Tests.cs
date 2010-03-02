@@ -12,9 +12,9 @@ namespace BehaveN.Tests
             TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
             TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
 
-            VerifyText("Scenario: Context",
-                       "Given this foo",
-                       "Then the value should be foo");
+            ExecuteText("Scenario: Context",
+                        "Given this foo",
+                        "Then the value should be foo");
 
             TheScenario.Passed.Should().Be.True();
         }

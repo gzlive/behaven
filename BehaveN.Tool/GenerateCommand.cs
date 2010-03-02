@@ -12,7 +12,7 @@ namespace BehaveN.Tool
             Console.WriteLine("usage: BehaveN.Tool Generate <filepattern>...");
             Console.WriteLine();
             Console.WriteLine("<filepattern> can be the path to any file. Wildcards don't work yet.");
-            Console.WriteLine("All files are considered to be text files containing scenarios. A .cs");
+            Console.WriteLine("All files are considered to be text files containing scenarios. A .g.cs");
             Console.WriteLine("file will be generated next to each text file containing the test");
             Console.WriteLine("fixtures.");
             Console.WriteLine();
@@ -36,7 +36,8 @@ namespace BehaveN.Tool
                 var ff = new FeatureFile();
                 ff.LoadFile(file);
 
-                string csFile = Path.ChangeExtension(file, ".cs");
+                string className = Path.GetFileNameWithoutExtension(file);
+                string csFile = Path.ChangeExtension(file, ".g.cs");
 
                 Console.WriteLine("Writing to " + csFile);
 
@@ -52,7 +53,7 @@ namespace BehaveN.Tool
                 sw.WriteLine("{");
 
                 sw.WriteLine("    [TestFixture]");
-                sw.WriteLine("    public class {0}", Path.GetFileNameWithoutExtension(csFile));
+                sw.WriteLine("    public class {0}", className);
                 sw.WriteLine("    {");
 
                 sw.WriteLine(@"        private FeatureFile ff;
@@ -78,10 +79,7 @@ namespace BehaveN.Tool
                     sw.WriteLine("        [Test]");
                     sw.WriteLine("        public void {0}()", scenario.Name.Replace(" ", "_"));
                     sw.WriteLine("        {");
-                    sw.WriteLine("            Scenario s = ff.Scenarios[\"{0}\"];", scenario.Name);
-                    sw.WriteLine("            s.Verify();");
-                    sw.WriteLine("            s.Report();");
-                    sw.WriteLine("            if (!s.Passed) Assert.Fail();");
+                    sw.WriteLine("            ff.Scenarios[\"{0}\"].Verify();", scenario.Name);
                     sw.WriteLine("        }");
                 }
 
@@ -89,7 +87,19 @@ namespace BehaveN.Tool
 
                 sw.WriteLine("}");
 
-                File.WriteAllText(csFile, sw.GetStringBuilder().ToString());
+                string oldText = "";
+
+                if (File.Exists(csFile))
+                {
+                    oldText = File.ReadAllText(csFile);
+                }
+
+                string newText = sw.GetStringBuilder().ToString();
+
+                if (oldText != newText)
+                {
+                    File.WriteAllText(csFile, newText);
+                }
             }
 
             return 0;

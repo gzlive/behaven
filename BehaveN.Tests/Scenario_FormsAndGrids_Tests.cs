@@ -20,10 +20,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_converts_a_form_into_a_single_object()
         {
-            VerifyText("Scenario: Form",
-                       "Given an object",
-                       "  : String Property : foo",
-                       "  :    Int Property : 1");
+            ExecuteText("Scenario: Form",
+                        "Given an object",
+                        "  : String Property : foo",
+                        "  :    Int Property : 1");
 
             _object.Should().Not.Be.Null();
             _object.StringProperty.Should().Be("foo");
@@ -33,11 +33,11 @@ namespace BehaveN.Tests
         [Test]
         public void it_converts_a_grid_into_a_list_of_objects()
         {
-            VerifyText("Scenario: Grid",
-                       "Given a list of objects",
-                       "  | String Property | Int Property |",
-                       "  |             foo |            1 |",
-                       "  |             bar |            2 |");
+            ExecuteText("Scenario: Grid",
+                        "Given a list of objects",
+                        "  | String Property | Int Property |",
+                        "  |             foo |            1 |",
+                        "  |             bar |            2 |");
 
             _objects.Should().Not.Be.Null();
             _objects.Count.Should().Be(2);

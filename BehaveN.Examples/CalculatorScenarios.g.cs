@@ -27,28 +27,19 @@ namespace BehaveN.Examples
         [Test]
         public void Adding_two_numbers()
         {
-            Scenario s = ff.Scenarios["Adding two numbers"];
-            s.Verify();
-            s.Report();
-            if (!s.Passed) Assert.Fail();
+            ff.Scenarios["Adding two numbers"].Verify();
         }
 
         [Test]
         public void Subtracting_two_numbers()
         {
-            Scenario s = ff.Scenarios["Subtracting two numbers"];
-            s.Verify();
-            s.Report();
-            if (!s.Passed) Assert.Fail();
+            ff.Scenarios["Subtracting two numbers"].Verify();
         }
 
         [Test]
         public void Dividing_two_numbers()
         {
-            Scenario s = ff.Scenarios["Dividing two numbers"];
-            s.Verify();
-            s.Report();
-            if (!s.Passed) Assert.Fail();
+            ff.Scenarios["Dividing two numbers"].Verify();
         }
     }
 }

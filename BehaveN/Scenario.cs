@@ -11,7 +11,7 @@ namespace BehaveN
     {
         private string _name;
         private StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
-        private readonly List<Step> _steps = new List<Step>();
+        private readonly StepCollection _steps = new StepCollection();
         private bool _passed;
         private Exception _exception;
         private Reporter _reporter;
@@ -40,7 +40,7 @@ namespace BehaveN
         /// Gets the steps.
         /// </summary>
         /// <value>The steps.</value>
-        public IList<Step> Steps
+        public StepCollection Steps
         {
             get { return _steps; }
         }
@@ -73,19 +73,10 @@ namespace BehaveN
             set { _reporter = value; }
         }
 
-        internal void Add(string keyword, string step, IBlock block)
-        {
-            Step newStep = new Step();
-            newStep.Keyword = keyword;
-            newStep.Text = step;
-            newStep.Block = block;
-            _steps.Add(newStep);
-        }
-
         /// <summary>
-        /// Verifies the scenario.
+        /// Executes the scenario.
         /// </summary>
-        public void Verify()
+        public void Execute()
         {
             StepDefinitions.CreateContext();
 
@@ -147,6 +138,19 @@ namespace BehaveN
         public void Report()
         {
             Reporter.ReportScenario(this);
+        }
+
+        /// <summary>
+        /// Executes and reports this scenario. Throws an exception if
+        /// all of the steps don't pass.
+        /// </summary>
+        public void Verify()
+        {
+            Execute();
+            Report();
+
+            if (!Passed)
+                throw new VerificationException(_exception ?? new Exception("Scenario failed."));
         }
     }
 }

@@ -22,6 +22,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Tool", "BehaveN.Tool\BehaveN.Tool.csproj", "{A0217D6C-3817-4E59-8321-FFDE89BD8491}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Examples", "BehaveN.Examples\BehaveN.Examples.csproj", "{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0217D6C-3817-4E59-8321-FFDE89BD8491} = {A0217D6C-3817-4E59-8321-FFDE89BD8491}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,12 +9,12 @@ namespace BehaveN.Tests
         [Test]
         public void it_reads_unknown_languages_as_english()
         {
-            VerifyText("# language: xx",
-                       "Scenario: Unknown language",
-                       "Given foo",
-                       "When bar",
-                       "Then baz",
-                       "And quux");
+            ExecuteText("# language: xx",
+                        "Scenario: Unknown language",
+                        "Given foo",
+                        "When bar",
+                        "Then baz",
+                        "And quux");
 
             TheScenario.Steps.Count.Should().Be(4);
             TheScenario.Passed.Should().Be.True();

@@ -18,7 +18,7 @@ namespace BehaveN.Tests
                      "Scenario: Context should be reset",
                      "Then the value should be foo");
 
-            TheFeatureFile.Verify();
+            TheFeatureFile.Execute();
 
             TheFeatureFile.Passed.Should().Be.False();
         }

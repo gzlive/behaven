@@ -11,8 +11,8 @@ namespace BehaveN.Tests
         {
             theInt = 0;
 
-            VerifyText("Scenario: Int",
-                       "Given the int 123");
+            ExecuteText("Scenario: Int",
+                        "Given the int 123");
 
             theInt.Should().Be(123);
         }
@@ -22,8 +22,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = null;
 
-            VerifyText("Scenario: Nullable int with a value",
-                       "Given the nullable int 123");
+            ExecuteText("Scenario: Nullable int with a value",
+                        "Given the nullable int 123");
 
             theNullabelInt.Should().Be(123);
         }
@@ -33,8 +33,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = 123;
 
-            VerifyText("Scenario: Nullable int with a value",
-                       "Given the nullable int null");
+            ExecuteText("Scenario: Nullable int with a value",
+                        "Given the nullable int null");
 
             theNullabelInt.Should().Be(null);
         }
@@ -44,8 +44,8 @@ namespace BehaveN.Tests
         {
             theInt = 123;
 
-            VerifyText("Scenario: Output int",
-                       "Then the int should be 123");
+            ExecuteText("Scenario: Output int",
+                        "Then the int should be 123");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -55,8 +55,8 @@ namespace BehaveN.Tests
         {
             theInt = 456;
 
-            VerifyText("Scenario: Output int",
-                       "Then the int should be 123");
+            ExecuteText("Scenario: Output int",
+                        "Then the int should be 123");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }
@@ -66,8 +66,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = 123;
 
-            VerifyText("Scenario: Output nullable int",
-                       "Then the nullable int should be 123");
+            ExecuteText("Scenario: Output nullable int",
+                        "Then the nullable int should be 123");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -77,8 +77,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = 456;
 
-            VerifyText("Scenario: Output nullable int",
-                       "Then the nullable int should be 123");
+            ExecuteText("Scenario: Output nullable int",
+                        "Then the nullable int should be 123");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }
@@ -88,8 +88,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = null;
 
-            VerifyText("Scenario: Output nullable int",
-                       "Then the nullable int should be null");
+            ExecuteText("Scenario: Output nullable int",
+                        "Then the nullable int should be null");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
         }
@@ -99,8 +99,8 @@ namespace BehaveN.Tests
         {
             theNullabelInt = 123;
 
-            VerifyText("Scenario: Output nullable int",
-                       "Then the nullable int should be null");
+            ExecuteText("Scenario: Output nullable int",
+                        "Then the nullable int should be null");
 
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }

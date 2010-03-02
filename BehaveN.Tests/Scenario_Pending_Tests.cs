@@ -10,10 +10,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_skips_all_steps_after_the_first_pending_step()
         {
-            VerifyText("Scenario: Pending",
-                       "Given some context",
-                       "When a pending step is executed",
-                       "Then the remaining steps get skipped");
+            ExecuteText("Scenario: Pending",
+                        "Given some context",
+                        "When a pending step is executed",
+                        "Then the remaining steps get skipped");
 
             TheScenario.Passed.Should().Be.False();
             TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);

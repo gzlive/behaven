@@ -17,12 +17,12 @@ namespace BehaveN.Tests
         protected FeatureFile TheFeatureFile { get { return _ff; } }
         protected Scenario TheScenario { get { return _s; } }
 
-        protected void VerifyText(params string[] lines)
+        protected void ExecuteText(params string[] lines)
         {
             string text = string.Join("\r\n", lines);
             _ff.LoadText(text);
             _s = _ff.Scenarios[0];
-            _s.Verify();
+            _s.Execute();
         }
     }
 }

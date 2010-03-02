@@ -54,7 +54,7 @@ namespace BehaveN.Tool
                 }
 
                 featureFile.LoadFile(scenarioFile);
-                featureFile.Verify();
+                featureFile.Execute();
                 featureFile.Report();
 
                 if (featureFile.Passed)

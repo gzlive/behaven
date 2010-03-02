@@ -9,8 +9,8 @@ namespace BehaveN.Tests
         [Test]
         public void it_passes_when_all_of_the_outputs_are_correct()
         {
-            VerifyText("Scenario: Output passed",
-                       "Then the string should be foo");
+            ExecuteText("Scenario: Output passed",
+                        "Then the string should be foo");
 
             TheScenario.Passed.Should().Be.True();
         }
@@ -18,8 +18,8 @@ namespace BehaveN.Tests
         [Test]
         public void it_fails_when_an_output_is_wrong()
         {
-            VerifyText("Scenario: Output failed",
-                       "Then the string should be string");
+            ExecuteText("Scenario: Output failed",
+                        "Then the string should be string");
 
             TheScenario.Passed.Should().Be.False();
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);

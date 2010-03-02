@@ -57,7 +57,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Calculator.cs" />
-    <Compile Include="CalculatorScenarios.cs" />
+    <Compile Include="CalculatorScenarios.g.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,4 +78,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)CalculatorScenarios.txt</PreBuildEvent>
+  </PropertyGroup>
 </Project>

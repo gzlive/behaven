@@ -10,10 +10,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_passes_when_all_of_the_properties_are_correct()
         {
-            VerifyText("Scenario: Form passed",
-                       "Then the object should look like this",
-                       "  : String Property : foo",
-                       "  :    Int Property : 1");
+            ExecuteText("Scenario: Form passed",
+                        "Then the object should look like this",
+                        "  : String Property : foo",
+                        "  :    Int Property : 1");
 
             TheScenario.Passed.Should().Be.True();
         }
@@ -21,10 +21,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_shows_all_the_values_that_are_not_correct_on_the_form()
         {
-            VerifyText("Scenario: Form failed",
-                       "Then the object should look like this",
-                       "  : String Property : baz",
-                       "  :    Int Property : 3");
+            ExecuteText("Scenario: Form failed",
+                        "Then the object should look like this",
+                        "  : String Property : baz",
+                        "  :    Int Property : 3");
 
             TheScenario.Passed.Should().Be.False();
             ((Form)TheScenario.Steps[0].Block).GetValue(0).Should().Be("baz (was foo)");
@@ -34,11 +34,11 @@ namespace BehaveN.Tests
         [Test]
         public void it_shows_all_the_values_that_are_not_correct_on_the_grid()
         {
-            VerifyText("Scenario: Grid failed",
-                       "Then the objects should look like this",
-                       "  | String Property | Int Property |",
-                       "  |             baz |            3 |",
-                       "  |            quux |            4 |");
+            ExecuteText("Scenario: Grid failed",
+                        "Then the objects should look like this",
+                        "  | String Property | Int Property |",
+                        "  |             baz |            3 |",
+                        "  |            quux |            4 |");
 
             TheScenario.Passed.Should().Be.False();
             ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("baz (was foo)");
@@ -50,10 +50,10 @@ namespace BehaveN.Tests
         [Test]
         public void it_shows_unexpected_rows()
         {
-            VerifyText("Scenario: Grid unexpected",
-                       "Then the objects should look like this",
-                       "  | String Property | Int Property |",
-                       "  |             foo |            1 |");
+            ExecuteText("Scenario: Grid unexpected",
+                        "Then the objects should look like this",
+                        "  | String Property | Int Property |",
+                        "  |             foo |            1 |");
 
             TheScenario.Passed.Should().Be.False();
             ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("foo");
@@ -65,12 +65,12 @@ namespace BehaveN.Tests
         [Test]
         public void it_shows_missing_rows()
         {
-            VerifyText("Scenario: Grid missing",
-                       "Then the objects should look like this",
-                       "  | String Property | Int Property |",
-                       "  |             foo |            1 |",
-                       "  |             bar |            2 |",
-                       "  |             baz |            3 |");
+            ExecuteText("Scenario: Grid missing",
+                        "Then the objects should look like this",
+                        "  | String Property | Int Property |",
+                        "  |             foo |            1 |",
+                        "  |             bar |            2 |",
+                        "  |             baz |            3 |");
 
             TheScenario.Passed.Should().Be.False();
             ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("foo");
