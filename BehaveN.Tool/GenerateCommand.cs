@@ -9,7 +9,7 @@ namespace BehaveN.Tool
     {
         public static void WriteHelp()
         {
-            Console.WriteLine("usage: BehaveN.Tool Generate <filepattern>...");
+            Console.WriteLine("usage: BehaveN.Tool Generate [OPTION]... <filepattern>...");
             Console.WriteLine();
             Console.WriteLine("<filepattern> can be the path to any file. Wildcards don't work yet.");
             Console.WriteLine("All files are considered to be text files containing scenarios. A .g.cs");
@@ -17,20 +17,20 @@ namespace BehaveN.Tool
             Console.WriteLine("fixtures.");
             Console.WriteLine();
             Console.WriteLine("NOTE: You need to specify at least one text file!");
+            Console.WriteLine();
+            Console.WriteLine("options:");
+            Console.WriteLine();
+            GetOptions().WriteOptionDescriptions(Console.Out);
         }
+
+        static string ns = "MyNamespace";
+        static string baseClass = null;
+        static bool noSetUp = false;
+        static bool noTearDown = false;
 
         public int Run(string[] args)
         {
-            string ns = "MyNamespace";
-            string baseClass = null;
-            bool noSetUp = false;
-            bool noTearDown = false;
-
-            var options = new OptionSet();
-            options.Add("namespace=", s => ns = s);
-            options.Add("base-class=", s => baseClass = s);
-            options.Add("no-setup", s => noSetUp = true);
-            options.Add("no-teardown", s => noTearDown = true);
+            OptionSet options = GetOptions();
 
             var files = options.Parse(args);
 
@@ -116,6 +116,16 @@ namespace BehaveN.Tool
             }
 
             return 0;
+        }
+
+        private static OptionSet GetOptions()
+        {
+            var options = new OptionSet();
+            options.Add("namespace=", "the namespace for the generated classes", s => ns = s);
+            options.Add("base-class=", "the base class for the generated classes", s => baseClass = s);
+            options.Add("no-setup", "do not generate a test fixture set up method", s => noSetUp = true);
+            options.Add("no-teardown", "do not generate a test fixture tear down method", s => noTearDown = true);
+            return options;
         }
     }
 }
