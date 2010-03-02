@@ -6,14 +6,13 @@ using NUnit.Framework;
 namespace BehaveN.Examples
 {
     [TestFixture]
-    public class CalculatorScenarios
+    public partial class CalculatorScenarios
     {
-        private FeatureFile ff;
+        private FeatureFile ff = new FeatureFile();
 
         [TestFixtureSetUp]
         public void LoadScenarios()
         {
-            ff = new FeatureFile();
             ff.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
             ff.LoadEmbeddedResource(GetType().Assembly, "CalculatorScenarios.txt");
         }

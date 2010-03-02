@@ -22,9 +22,13 @@ namespace BehaveN.Tool
         public int Run(string[] args)
         {
             string ns = "MyNamespace";
+            bool noSetUp = false;
+            bool noTearDown = false;
 
             var options = new OptionSet();
             options.Add("namespace=", s => ns = s);
+            options.Add("no-setup", s => noSetUp = true);
+            options.Add("no-teardown", s => noTearDown = true);
 
             var files = options.Parse(args);
 
@@ -53,24 +57,31 @@ namespace BehaveN.Tool
                 sw.WriteLine("{");
 
                 sw.WriteLine("    [TestFixture]");
-                sw.WriteLine("    public class {0}", className);
+                sw.WriteLine("    public partial class {0}", className);
                 sw.WriteLine("    {");
 
-                sw.WriteLine(@"        private FeatureFile ff;
+                sw.WriteLine(@"        private FeatureFile ff = new FeatureFile();");
 
+                if (!noSetUp)
+                {
+                    sw.WriteLine(@"
         [TestFixtureSetUp]
         public void LoadScenarios()
         {{
-            ff = new FeatureFile();
             ff.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
             ff.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
-        }}
+        }}", Path.GetFileName(file));
+                }
 
+                if (!noTearDown)
+                {
+                    sw.WriteLine(@"
         [TestFixtureTearDown]
         public void ReportUndefinedSteps()
-        {{
+        {
             ff.ReportUndefinedSteps();
-        }}", Path.GetFileName(file));
+        }");
+                }
 
                 foreach (var scenario in ff.Scenarios)
                 {
