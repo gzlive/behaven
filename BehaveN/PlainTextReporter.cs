@@ -222,7 +222,7 @@ namespace BehaveN
                 else
                 {
                     if (i == 0)
-                        sb.Append(step.Keyword);
+                        sb.Append(step.Type.ToString());
                     else
                         sb.Append(part);
                 }

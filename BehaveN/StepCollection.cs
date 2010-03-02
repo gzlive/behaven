@@ -14,13 +14,13 @@ namespace BehaveN
         /// <summary>
         /// Adds a step with the specified information.
         /// </summary>
-        /// <param name="keyword">The keyword.</param>
+        /// <param name="type">The type.</param>
         /// <param name="step">The step.</param>
         /// <param name="block">The block.</param>
-        public void Add(string keyword, string step, IBlock block)
+        public void Add(StepType type, string step, IBlock block)
         {
             Step newStep = new Step();
-            newStep.Keyword = keyword;
+            newStep.Type = type;
             newStep.Text = step;
             newStep.Block = block;
             Add(newStep);

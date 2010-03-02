@@ -6,9 +6,9 @@ namespace BehaveN
     public class Step
     {
         /// <summary>
-        /// The keyword (given, when, or then) for the step.
+        /// The type of the step.
         /// </summary>
-        public string Keyword;
+        public StepType Type;
 
         /// <summary>
         /// The actual text for the step.

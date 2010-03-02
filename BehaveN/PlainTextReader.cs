@@ -33,7 +33,7 @@ namespace BehaveN
             List<string> lines = TextParser.GetLines(_text);
 
             Scenario scenario = null;
-            string keyword = null;
+            StepType stepType = StepType.Unknown;
 
             for (int i = 0; i < lines.Count; i++)
             {
@@ -46,32 +46,32 @@ namespace BehaveN
                     scenario = new Scenario();
                     scenario.Name = m.Groups[1].Value;
                     featureFile.Scenarios.Add(scenario);
-                    keyword = null;
+                    stepType = StepType.Unknown;
                 }
                 else
                 {
-                    ParseStep(lines, scenario, ref keyword, ref i, line);
+                    ParseStep(lines, scenario, ref stepType, ref i, line);
                 }
             }
         }
 
-        private void ParseStep(List<string> lines, Scenario scenario, ref string keyword, ref int i, string line)
+        private void ParseStep(List<string> lines, Scenario scenario, ref StepType stepType, ref int i, string line)
         {
             if (_givenRegex.Match(line).Success)
             {
-                keyword = "given";
+                stepType = StepType.Given;
             }
             else if (_whenRegex.Match(line).Success)
             {
-                keyword = "when";
+                stepType = StepType.When;
             }
             else if (_thenRegex.Match(line).Success)
             {
-                keyword = "then";
+                stepType = StepType.Then;
             }
             else if (_andRegex.Match(line).Success)
             {
-                if (keyword == null)
+                if (stepType == StepType.Unknown)
                     throw new Exception("\"And\" steps cannot appear before \"given\", \"when\", or \"then\" steps.");
             }
             else
@@ -84,7 +84,7 @@ namespace BehaveN
 
             IBlock block = ParseBlock(lines, ref i);
 
-            scenario.Steps.Add(keyword, line, block);
+            scenario.Steps.Add(stepType, line, block);
         }
 
         private IBlock ParseBlock(List<string> lines, ref int i)

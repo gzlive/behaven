@@ -89,7 +89,7 @@ namespace BehaveN.Tests
         {
             var undefinedSteps = new List<Step>
                                      {
-                                         new Step { Keyword = "given", Text = "Given undefined", Result = StepResult.Undefined }
+                                         new Step { Type = StepType.Given, Text = "Given undefined", Result = StepResult.Undefined }
                                      };
 
             ReportUndefinedStepsOutputShouldBe(undefinedSteps, "Your undefined steps can be defined with the following code:",
@@ -105,8 +105,8 @@ namespace BehaveN.Tests
         {
             var undefinedSteps = new List<Step>
                                      {
-                                         new Step { Keyword = "given", Text = "Given undefined", Result = StepResult.Undefined },
-                                         new Step { Keyword = "given", Text = "And another undefined", Result = StepResult.Undefined }
+                                         new Step { Type = StepType.Given, Text = "Given undefined", Result = StepResult.Undefined },
+                                         new Step { Type = StepType.Given, Text = "And another undefined", Result = StepResult.Undefined }
                                      };
 
             ReportUndefinedStepsOutputShouldBe(undefinedSteps, "Your undefined steps can be defined with the following code:",

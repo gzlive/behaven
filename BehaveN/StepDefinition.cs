@@ -50,7 +50,7 @@ namespace BehaveN
 
         private Match GetMatch(Step step)
         {
-            string text = firstWordReplacer.Replace(step.Text, step.Keyword);
+            string text = firstWordReplacer.Replace(step.Text, step.Type.ToString());
             return _regex.Match(text);
         }
 
