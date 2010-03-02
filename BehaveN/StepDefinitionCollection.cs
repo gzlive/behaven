@@ -62,7 +62,7 @@ namespace BehaveN
         /// <summary>
         /// Uses the step definitions from the specified object.
         /// </summary>
-        /// <param name="object">The @object.</param>
+        /// <param name="object">The object.</param>
         public void UseStepDefinitionsFromObject(object @object)
         {
             _stepDefinitionObjects.Add(@object);

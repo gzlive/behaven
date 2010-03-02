@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="BaseFeatureFileTests.cs" />
     <Compile Include="BaseScenarioTests.cs" />
+    <Compile Include="Latvian_Tests.cs" />
     <Compile Include="FeatureFile_Context_Tests.cs" />
     <Compile Include="Scenario_Decimal_Tests.cs" />
     <Compile Include="Scenario_Int32_Tests.cs" />

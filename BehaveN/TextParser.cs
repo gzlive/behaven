@@ -1,10 +1,22 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace BehaveN
 {
-    internal class TextParser
+    internal static class TextParser
     {
+        private static readonly Regex _languageRegex = new Regex(@"#\s*language\s*:\s*(\S+)", RegexOptions.IgnoreCase);
+
+        internal static string DiscoverLanguage(string text)
+        {
+            Match m = _languageRegex.Match(text);
+
+            if (m.Success) return m.Groups[1].Value;
+
+            return "en";
+        }
+
         internal static List<string> GetLines(string text)
         {
             List<string> lines = new List<string>();

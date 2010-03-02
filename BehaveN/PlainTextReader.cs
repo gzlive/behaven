@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 using System.Text.RegularExpressions;
 
 namespace BehaveN
@@ -26,6 +28,8 @@ namespace BehaveN
         /// <param name="featureFile">The feature file.</param>
         public void ReadTo(FeatureFile featureFile)
         {
+            CompileRegexes();
+
             List<string> lines = TextParser.GetLines(_text);
 
             Scenario scenario = null;
@@ -52,15 +56,23 @@ namespace BehaveN
 
         private void ParseStep(List<string> lines, Scenario scenario, ref string keyword, ref int i, string line)
         {
-            Match m = _gwtRegex.Match(line);
+            Match m;
 
-            if (m.Success)
+            if ((m = _givenRegex.Match(line)).Success)
             {
-                keyword = m.Groups[1].Value.ToLower();
+                keyword = "given";
             }
-            else
+            else if ((m = _whenRegex.Match(line)).Success)
             {
-                m = _andRegex.Match(line);
+                keyword = "when";
+            }
+            else if ((m = _thenRegex.Match(line)).Success)
+            {
+                keyword = "then";
+            }
+            else if ((m = _andRegex.Match(line)).Success)
+            {
+                // leave keyword the same as last time
             }
 
             if (scenario == null)
@@ -91,8 +103,30 @@ namespace BehaveN
             return block;
         }
 
-        private static readonly Regex _scenarioRegex = new Regex(@"^\s*Scenario\s*\d*\s*:\s*(.+)", RegexOptions.IgnoreCase);
-        private static readonly Regex _gwtRegex = new Regex(@"^\s*(Given|When|Then)\s+.+", RegexOptions.IgnoreCase);
-        private static readonly Regex _andRegex = new Regex(@"^\s*(And)\s+.+", RegexOptions.IgnoreCase);
+        private void CompileRegexes()
+        {
+            string language = TextParser.DiscoverLanguage(_text);
+            ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(new CultureInfo(language), true, true);
+            string scenario = strings.GetString("Scenario");
+            string given = strings.GetString("Given");
+            string when = strings.GetString("When");
+            string then = strings.GetString("Then");
+            string and = strings.GetString("And");
+
+            _scenarioRegex = new Regex(string.Format(_scenarioPattern, scenario), RegexOptions.IgnoreCase);
+            _givenRegex = new Regex(string.Format(_stepPattern, given), RegexOptions.IgnoreCase);
+            _whenRegex = new Regex(string.Format(_stepPattern, when), RegexOptions.IgnoreCase);
+            _thenRegex = new Regex(string.Format(_stepPattern, then), RegexOptions.IgnoreCase);
+            _andRegex = new Regex(string.Format(_stepPattern, and), RegexOptions.IgnoreCase);
+        }
+
+        private Regex _scenarioRegex;
+        private Regex _givenRegex;
+        private Regex _whenRegex;
+        private Regex _thenRegex;
+        private Regex _andRegex;
+
+        private static readonly string _scenarioPattern = @"^\s*{0}\s*\d*\s*:\s*(.+)";
+        private static readonly string _stepPattern = @"^\s*({0})\s+.+";
     }
 }
