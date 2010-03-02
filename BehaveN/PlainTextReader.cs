@@ -106,7 +106,8 @@ namespace BehaveN
         private void CompileRegexes()
         {
             string language = TextParser.DiscoverLanguage(_text);
-            ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(new CultureInfo(language), true, true);
+
+            ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(GetCultureInfo(language), true, true);
             string scenario = strings.GetString("Scenario");
             string given = strings.GetString("Given");
             string when = strings.GetString("When");
@@ -118,6 +119,18 @@ namespace BehaveN
             _whenRegex = new Regex(string.Format(_stepPattern, when), RegexOptions.IgnoreCase);
             _thenRegex = new Regex(string.Format(_stepPattern, then), RegexOptions.IgnoreCase);
             _andRegex = new Regex(string.Format(_stepPattern, and), RegexOptions.IgnoreCase);
+        }
+
+        private CultureInfo GetCultureInfo(string language)
+        {
+            try
+            {
+                return CultureInfo.GetCultureInfo(language);
+            }
+            catch (ArgumentException)
+            {
+                return CultureInfo.GetCultureInfo("en");
+            }
         }
 
         private Regex _scenarioRegex;
