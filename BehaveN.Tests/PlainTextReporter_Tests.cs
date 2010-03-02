@@ -89,12 +89,34 @@ namespace BehaveN.Tests
         {
             var undefinedSteps = new List<Step>
                                      {
-                                         new Step { Text = "Given undefined", Result = StepResult.Undefined }
+                                         new Step { Keyword = "given", Text = "Given undefined", Result = StepResult.Undefined }
                                      };
 
             ReportUndefinedStepsOutputShouldBe(undefinedSteps, "Your undefined steps can be defined with the following code:",
                                                                "",
                                                                "public void given_undefined()",
+                                                               "{",
+                                                               "    throw new NotImplementedException();",
+                                                               "}");
+        }
+
+        [Test]
+        public void it_does_not_suggest_methods_beginning_with_and_for_undefined_steps()
+        {
+            var undefinedSteps = new List<Step>
+                                     {
+                                         new Step { Keyword = "given", Text = "Given undefined", Result = StepResult.Undefined },
+                                         new Step { Keyword = "given", Text = "And another undefined", Result = StepResult.Undefined }
+                                     };
+
+            ReportUndefinedStepsOutputShouldBe(undefinedSteps, "Your undefined steps can be defined with the following code:",
+                                                               "",
+                                                               "public void given_undefined()",
+                                                               "{",
+                                                               "    throw new NotImplementedException();",
+                                                               "}",
+                                                               "",
+                                                               "public void given_another_undefined()",
                                                                "{",
                                                                "    throw new NotImplementedException();",
                                                                "}");

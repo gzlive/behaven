@@ -191,7 +191,7 @@ namespace BehaveN
 
         private void ReportUndefinedStep(Step undefinedStep)
         {
-            string methodName = GetMethodName(undefinedStep.Text);
+            string methodName = GetMethodName(undefinedStep);
             string parameters = GetParameters(undefinedStep.Text, undefinedStep.Block);
 
             _writer.WriteLine("public void {0}({1})", methodName, parameters);
@@ -201,13 +201,14 @@ namespace BehaveN
             _writer.WriteLine();
         }
 
-        private string GetMethodName(string description)
+        private string GetMethodName(Step step)
         {
             StringBuilder sb = new StringBuilder();
 
-            int i = 1;
+            int i = 0;
+            int arg = 1;
 
-            foreach (string part in Split(description))
+            foreach (string part in Split(step.Text))
             {
                 if (sb.Length > 0)
                 {
@@ -216,12 +217,17 @@ namespace BehaveN
 
                 if (IsInteger(part) || IsDecimal(part) || IsString(part))
                 {
-                    sb.AppendFormat("arg{0}", i++);
+                    sb.AppendFormat("arg{0}", arg++);
                 }
                 else
                 {
-                    sb.Append(part);
+                    if (i == 0)
+                        sb.Append(step.Keyword);
+                    else
+                        sb.Append(part);
                 }
+
+                i++;
             }
 
             return sb.ToString().ToLowerInvariant();
