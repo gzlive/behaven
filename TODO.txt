@@ -1,6 +1,7 @@
 Required for final 2.0 release:
 
 - Support steps in other languages.
+  - Try to merge satellite assemblies.
 - Create facade class so that running a scenario takes a single method call.
 - Add support for nullable parameters.
   - Int32 and Decimal are done.
@@ -21,6 +22,5 @@ Required for final 2.0 release:
     - .txt, .xml, or .html.
   - Always writes to console?
 - Parse feature information out of file, if available.
-- Do much stricter error checking when parsing files.
 - Create tool command to find unused steps.
 - Create tool command to find undefined steps (without running).

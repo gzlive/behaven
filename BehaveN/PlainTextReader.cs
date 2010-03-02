@@ -46,6 +46,7 @@ namespace BehaveN
                     scenario = new Scenario();
                     scenario.Name = m.Groups[1].Value;
                     featureFile.Scenarios.Add(scenario);
+                    keyword = null;
                 }
                 else
                 {
@@ -56,23 +57,26 @@ namespace BehaveN
 
         private void ParseStep(List<string> lines, Scenario scenario, ref string keyword, ref int i, string line)
         {
-            Match m;
-
-            if ((m = _givenRegex.Match(line)).Success)
+            if (_givenRegex.Match(line).Success)
             {
                 keyword = "given";
             }
-            else if ((m = _whenRegex.Match(line)).Success)
+            else if (_whenRegex.Match(line).Success)
             {
                 keyword = "when";
             }
-            else if ((m = _thenRegex.Match(line)).Success)
+            else if (_thenRegex.Match(line).Success)
             {
                 keyword = "then";
             }
-            else if ((m = _andRegex.Match(line)).Success)
+            else if (_andRegex.Match(line).Success)
             {
-                // leave keyword the same as last time
+                if (keyword == null)
+                    throw new Exception("\"And\" steps cannot appear before \"given\", \"when\", or \"then\" steps.");
+            }
+            else
+            {
+                throw new Exception(string.Format("Unrecognized step: \"{0}\".", line));
             }
 
             if (scenario == null)
