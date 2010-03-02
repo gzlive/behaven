@@ -22,11 +22,13 @@ namespace BehaveN.Tool
         public int Run(string[] args)
         {
             string ns = "MyNamespace";
+            string baseClass = null;
             bool noSetUp = false;
             bool noTearDown = false;
 
             var options = new OptionSet();
             options.Add("namespace=", s => ns = s);
+            options.Add("base-class=", s => baseClass = s);
             options.Add("no-setup", s => noSetUp = true);
             options.Add("no-teardown", s => noTearDown = true);
 
@@ -57,7 +59,7 @@ namespace BehaveN.Tool
                 sw.WriteLine("{");
 
                 sw.WriteLine("    [TestFixture]");
-                sw.WriteLine("    public partial class {0}", className);
+                sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
                 sw.WriteLine("    {");
 
                 sw.WriteLine(@"        private FeatureFile ff = new FeatureFile();");
