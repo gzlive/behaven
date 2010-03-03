@@ -7,7 +7,7 @@ namespace BehaveN.Tests
     public class Scenario_Decimal_Tests : BaseScenarioTests
     {
         [Test]
-        public void it_passes_in_ints_correctly()
+        public void it_passes_in_decimals_correctly()
         {
             theDecimal = 0;
 
