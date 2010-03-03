@@ -253,14 +253,19 @@ namespace BehaveN
                     for (int j = 0; j < ColumnCount; j++)
                     {
                         string header = GetHeader(j);
-                        string expectedValue = GetValue(i, j);
 
-                        object actualValue = GetPropertyValue(header, current);
+                        PropertyInfo pi = GetPropertyInfo(current.GetType(), header);
 
-                        if (expectedValue != string.Format("{0}", actualValue))
+                        if (pi != null)
                         {
-                            _rows[i][j] = string.Format("{0} (was {1})", expectedValue, actualValue);
-                            passed = false;
+                            object actualValue = pi.GetValue(current, null);
+                            object expectedValue = ValueParser.ParseValue(GetValue(i, j), pi.PropertyType);
+
+                            if (!object.Equals(actualValue, expectedValue))
+                            {
+                                _rows[i][j] = string.Format("{0} (was {1})", expectedValue, actualValue);
+                                passed = false;
+                            }
                         }
                     }
                 }
@@ -284,12 +289,18 @@ namespace BehaveN
                 for (int j = 0; j < ColumnCount; j++)
                 {
                     string header = GetHeader(j);
-                    object actualValue = GetPropertyValue(header, current);
 
-                    if (j == 0)
-                        _rows[i][j] = string.Format("(unexpected) {0}", actualValue);
-                    else
-                        _rows[i][j] = string.Format("{0}", actualValue);
+                    PropertyInfo pi = GetPropertyInfo(current.GetType(), header);
+
+                    if (pi != null)
+                    {
+                        object actualValue = pi.GetValue(current, null);
+
+                        if (j == 0)
+                            _rows[i][j] = string.Format("(unexpected) {0}", actualValue);
+                        else
+                            _rows[i][j] = string.Format("{0}", actualValue);
+                    }
                 }
 
                 i++;
@@ -316,19 +327,10 @@ namespace BehaveN
             return "foos";
         }
 
-        private object GetPropertyValue(string header, object current)
+        private PropertyInfo GetPropertyInfo(Type type, string header)
         {
-            Type type = current.GetType();
             string propertyName = NameComparer.NormalizeName(header);
-
-            PropertyInfo pi = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-
-            if (pi != null)
-            {
-                return pi.GetValue(current, null);
-            }
-
-            return null;
+            return type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
         }
 
         internal static Grid FromList(IEnumerable list, Type itemType)

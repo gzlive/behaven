@@ -111,10 +111,10 @@ namespace BehaveN
 
                         if (InlineTypes.InlineTypeExistsFor(type))
                         {
-                            string expectedValue = match.Groups[pi.Name].Value;
-                            string actualValue = parameters[i] != null ? parameters[i].ToString() : "null";
+                            object expectedValue = ValueParser.ParseValue(match.Groups[pi.Name].Value, type);
+                            object actualValue = parameters[i];
 
-                            if (expectedValue != string.Format("{0}", actualValue))
+                            if (!object.Equals(actualValue, expectedValue))
                             {
                                 Match m = _regex.Match(description);
                                 Group group = m.Groups[pi.Name];

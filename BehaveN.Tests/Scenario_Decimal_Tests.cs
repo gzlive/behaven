@@ -105,6 +105,17 @@ namespace BehaveN.Tests
             TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
         }
 
+        [Test]
+        public void it_passes_even_when_the_expected_value_has_zeroes_after_the_decimal_place_and_the_value_does_not()
+        {
+            theDecimal = 1m;
+
+            ExecuteText("Scenario: Zeroes are OK",
+                        "Then the decimal should be 1.00");
+
+            TheScenario.Steps[0].Result.Should().Be(StepResult.Passed);
+        }
+
         private decimal theDecimal;
         private decimal? theNullabelDecimal;
 

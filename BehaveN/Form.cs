@@ -75,7 +75,6 @@ namespace BehaveN
             for (int i = 0; i < Size; i++)
             {
                 string label = GetLabel(i);
-                string expectedValue = GetValue(i);
 
                 string propertyName = NameComparer.NormalizeName(label);
 
@@ -84,8 +83,9 @@ namespace BehaveN
                 if (pi != null)
                 {
                     object actualValue = pi.GetValue(actual, null);
+                    object expectedValue = ValueParser.ParseValue(GetValue(i), pi.PropertyType);
 
-                    if (expectedValue != string.Format("{0}", actualValue))
+                    if (!object.Equals(actualValue, expectedValue))
                     {
                         _values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
                         passed = false;
