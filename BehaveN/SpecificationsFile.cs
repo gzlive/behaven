@@ -10,21 +10,16 @@ namespace BehaveN
     /// </summary>
     public class SpecificationsFile
     {
-        private string _name;
         private readonly StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
         private ScenarioCollection _scenarios = new ScenarioCollection();
         private bool _passed;
         private Reporter _reporter;
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets or sets the feature.
         /// </summary>
-        /// <value>The name.</value>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        /// <value>The feature.</value>
+        public Feature Feature { get; set; }
 
         /// <summary>
         /// Gets the step definitions.

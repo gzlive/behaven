@@ -37,6 +37,35 @@ namespace BehaveN.Tests
             _exception.Should().Be.InstanceOf<Exception>();
         }
 
+        [Test]
+        public void it_parses_feature_information_from_the_beginning_of_the_file()
+        {
+            ReadText("Feature: My feature",
+                     "",
+                     "This is a description of my feature.",
+                     "This is the second line.",
+                     "This next line starts with Given:",
+                     "Given nothing because this is in a feature.",
+                     "This is the end of my feature.",
+                     "",
+                     "Scenario: My scenario",
+                     "Given foo");
+
+            _specs.Feature.Name.Should().Be("My feature");
+            _specs.Feature.Description.Should().Be(string.Join("\r\n", new[]
+                                                                           {
+                                                                               "This is a description of my feature.",
+                                                                               "This is the second line.",
+                                                                               "This next line starts with Given:",
+                                                                               "Given nothing because this is in a feature.",
+                                                                               "This is the end of my feature.",
+                                                                           }));
+            _specs.Scenarios.Count.Should().Be(1);
+            _specs.Scenarios[0].Name.Should().Be("My scenario");
+            _specs.Scenarios[0].Steps.Count.Should().Be(1);
+            _specs.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
+        }
+
         private void ReadText(params string[] lines)
         {
             _reader = new PlainTextReader(string.Join("\r\n", lines));

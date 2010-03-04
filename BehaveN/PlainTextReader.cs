@@ -39,7 +39,16 @@ namespace BehaveN
             {
                 string line = lines[i];
 
-                Match m = _scenarioRegex.Match(line);
+                Match m = _featureRegex.Match(line);
+
+                if (m.Success)
+                {
+                    i = ParseFeature(i, lines, ref line, ref m, specificationsFile);
+                }
+                else
+                {
+                    m = _scenarioRegex.Match(line);
+                }
 
                 if (m.Success)
                 {
@@ -53,6 +62,31 @@ namespace BehaveN
                     ParseStep(lines, scenario, ref stepType, ref i, line);
                 }
             }
+        }
+
+        private int ParseFeature(int i, List<string> lines, ref string line, ref Match m, SpecificationsFile specificationsFile)
+        {
+            specificationsFile.Feature = new Feature();
+            specificationsFile.Feature.Name = m.Groups[1].Value;
+
+            List<string> featureLines = new List<string>();
+
+            for (i += 1; i < lines.Count; i++)
+            {
+                line = lines[i];
+
+                m = _scenarioRegex.Match(line);
+
+                if (m.Success)
+                {
+                    break;
+                }
+
+                featureLines.Add(line);
+            }
+
+            specificationsFile.Feature.Description = string.Join("\r\n", featureLines.ToArray()).Trim('\r', '\n');
+            return i;
         }
 
         private void ParseStep(List<string> lines, Scenario scenario, ref StepType stepType, ref int i, string line)
@@ -112,12 +146,15 @@ namespace BehaveN
             string language = TextParser.DiscoverLanguage(_text);
 
             ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(GetCultureInfo(language), true, true);
+
+            string feature = strings.GetString("Feature");
             string scenario = strings.GetString("Scenario");
             string given = strings.GetString("Given");
             string when = strings.GetString("When");
             string then = strings.GetString("Then");
             string and = strings.GetString("And");
 
+            _featureRegex = new Regex(string.Format(_featurePattern, feature), RegexOptions.IgnoreCase);
             _scenarioRegex = new Regex(string.Format(_scenarioPattern, scenario), RegexOptions.IgnoreCase);
             _givenRegex = new Regex(string.Format(_stepPattern, given), RegexOptions.IgnoreCase);
             _whenRegex = new Regex(string.Format(_stepPattern, when), RegexOptions.IgnoreCase);
@@ -137,12 +174,14 @@ namespace BehaveN
             }
         }
 
+        private Regex _featureRegex;
         private Regex _scenarioRegex;
         private Regex _givenRegex;
         private Regex _whenRegex;
         private Regex _thenRegex;
         private Regex _andRegex;
 
+        private static readonly string _featurePattern = @"^\s*{0}\s*:\s*(.+)";
         private static readonly string _scenarioPattern = @"^\s*{0}\s*\d*\s*:\s*(.+)";
         private static readonly string _stepPattern = @"^\s*({0})\s+.+";
     }
