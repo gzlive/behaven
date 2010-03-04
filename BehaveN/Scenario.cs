@@ -69,7 +69,7 @@ namespace BehaveN
         /// <value>The reporter.</value>
         public Reporter Reporter
         {
-            get { return _reporter ?? (_reporter = new PlainTextReporter()); }
+            get { return _reporter ?? (_reporter = new DefaultReporter()); }
             set { _reporter = value; }
         }
 

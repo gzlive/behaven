@@ -49,6 +49,8 @@
     </Compile>
     <Compile Include="BlockType.cs" />
     <Compile Include="BlockTypes.cs" />
+    <Compile Include="CompositeReporter.cs" />
+    <Compile Include="DefaultReporter.cs" />
     <Compile Include="HtmlReporter.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="StepType.cs" />

@@ -12,11 +12,8 @@ Required for final 2.0 release:
   - Leading ">" could be indicator.
   - Or quote character.
     - No need to end quote on each line.
-- Create composite reporter.
-- Create reporters for XML and HTML.
-- Create default reporter that can be given output file.
-  - Creates another reporter based on file extension.
-    - .txt, .xml, or .html.
-  - Always writes to console?
+- Create reporters for XML.
+- Finish HTML reporter.
+- Finish DefaultReporter so that it creates correct child reporter based on extension.
 - Create tool command to find unused steps.
 - Create tool command to find undefined steps (without running).

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Mono.Options;
 
 namespace BehaveN.Tool
 {
@@ -17,19 +18,34 @@ namespace BehaveN.Tool
             Console.WriteLine("one or more scenarios.");
             Console.WriteLine();
             Console.WriteLine("NOTE: You need to specify at least one assembly and one text file!");
+            Console.WriteLine();
+            Console.WriteLine("options:");
+            Console.WriteLine();
+            GetOptions().WriteOptionDescriptions(Console.Out);
         }
 
         public int Run(string[] args)
         {
-            List<string> argsList = new List<string>(args);
+            OptionSet options = GetOptions();
 
-            List<string> assemblyFiles = argsList.FindAll(arg => arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
-            List<string> scenarioFiles = argsList.FindAll(arg => !arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
+            List<string> files = new List<string>(options.Parse(args));
+
+            List<string> assemblyFiles = files.FindAll(arg => arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
+            List<string> scenarioFiles = files.FindAll(arg => !arg.EndsWith(".dll", StringComparison.OrdinalIgnoreCase));
 
             LoadAssemblies(assemblyFiles);
             VerifyScenarios(scenarioFiles);
 
             return 0;
+        }
+
+        private static string outputFile;
+
+        private static OptionSet GetOptions()
+        {
+            var options = new OptionSet();
+            options.Add("output=", "the path to the file to report to", s => outputFile = s);
+            return options;
         }
 
         private readonly List<Assembly> _assemblies = new List<Assembly>();
@@ -47,6 +63,11 @@ namespace BehaveN.Tool
             foreach (var scenarioFile in scenarioFiles)
             {
                 var specificationsFile = new SpecificationsFile();
+
+                if (!string.IsNullOrEmpty(outputFile))
+                {
+                    specificationsFile.Reporter.Destination = outputFile;
+                }
 
                 foreach (var assembly in _assemblies)
                 {

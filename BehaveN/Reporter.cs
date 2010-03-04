@@ -8,6 +8,13 @@ namespace BehaveN
     public abstract class Reporter
     {
         /// <summary>
+        /// Gets or sets the destination.
+        /// </summary>
+        /// <value>The destination.</value>
+        /// <remarks>This is used by reporters that report to files.</remarks>
+        public virtual string Destination { get; set; }
+
+        /// <summary>
         /// Reports the specifications file.
         /// </summary>
         /// <param name="specificationsFile">The specifications file.</param>

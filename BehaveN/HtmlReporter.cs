@@ -33,6 +33,8 @@ namespace BehaveN
             }
 
             ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
+
+            _writer.Flush();
         }
 
         /// <summary>
@@ -69,6 +71,8 @@ namespace BehaveN
             }
 
             ReportException(scenario);
+
+            _writer.Flush();
         }
 
         private void WriteDivider()
@@ -103,6 +107,8 @@ namespace BehaveN
                 {
                     ReportUndefinedStep(undefinedStep);
                 }
+
+                _writer.Flush();
             }
         }
 
@@ -128,7 +134,7 @@ namespace BehaveN
 
         private void ReportSkipped(Step step)
         {
-            ReportStatus(step, "yellow");
+            ReportStatus(step, "grey");
         }
 
         private void ReportStatus(Step step, string color)
