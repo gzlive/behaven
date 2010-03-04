@@ -53,19 +53,19 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="BaseFeatureFileTests.cs" />
+    <Compile Include="BaseSpecificationsFileTests.cs" />
     <Compile Include="BaseScenarioTests.cs" />
     <Compile Include="Scenario_Enum_Tests.cs" />
     <Compile Include="Scenario_DateTime_Tests.cs" />
     <Compile Include="PlainTextReader_Tests.cs" />
     <Compile Include="UnknownLanguage_Tests.cs" />
     <Compile Include="Latvian_Tests.cs" />
-    <Compile Include="FeatureFile_Context_Tests.cs" />
+    <Compile Include="SpecificationsFile_Context_Tests.cs" />
     <Compile Include="Scenario_Decimal_Tests.cs" />
     <Compile Include="Scenario_Int32_Tests.cs" />
     <Compile Include="PlainTextReporter_Tests.cs" />
     <Compile Include="Scenario_Failed_Tests.cs" />
-    <Compile Include="FeatureFile_Load_Tests.cs" />
+    <Compile Include="SpecificationsFile_Load_Tests.cs" />
     <Compile Include="Scenario_Undefined_Tests.cs" />
     <Compile Include="Scenario_Pending_Tests.cs" />
     <Compile Include="Scenario_Context_Tests.cs" />

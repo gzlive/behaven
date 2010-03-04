@@ -23,10 +23,10 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Reads the contents of the file to the feature file.
+        /// Reads the contents of the file to the specifications file.
         /// </summary>
-        /// <param name="featureFile">The feature file.</param>
-        public void ReadTo(FeatureFile featureFile)
+        /// <param name="specificationsFile">The specifications file.</param>
+        public void ReadTo(SpecificationsFile specificationsFile)
         {
             CompileRegexes();
 
@@ -45,7 +45,7 @@ namespace BehaveN
                 {
                     scenario = new Scenario();
                     scenario.Name = m.Groups[1].Value;
-                    featureFile.Scenarios.Add(scenario);
+                    specificationsFile.Scenarios.Add(scenario);
                     stepType = StepType.Unknown;
                 }
                 else

@@ -9,8 +9,8 @@ namespace BehaveN.Tests
         [Test]
         public void it_passes_when_all_of_the_outputs_are_correct()
         {
-            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
-            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
+            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
+            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
 
             ExecuteText("Scenario: Context",
                         "Given this foo",

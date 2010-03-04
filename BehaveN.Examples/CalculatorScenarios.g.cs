@@ -9,37 +9,37 @@ namespace BehaveN.Examples
     [TestFixture]
     public partial class CalculatorScenarios
     {
-        private FeatureFile ff = new FeatureFile();
+        private SpecificationsFile _specs = new SpecificationsFile();
 
         [TestFixtureSetUp]
         public void LoadScenarios()
         {
-            ff.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
-            ff.LoadEmbeddedResource(GetType().Assembly, "CalculatorScenarios.txt");
+            _specs.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
+            _specs.LoadEmbeddedResource(GetType().Assembly, "CalculatorScenarios.txt");
         }
 
         [TestFixtureTearDown]
         public void ReportUndefinedSteps()
         {
-            ff.ReportUndefinedSteps();
+            _specs.ReportUndefinedSteps();
         }
 
         [Test]
         public void Adding_two_numbers()
         {
-            ff.Scenarios["Adding two numbers"].Verify();
+            _specs.Scenarios["Adding two numbers"].Verify();
         }
 
         [Test]
         public void Subtracting_two_numbers()
         {
-            ff.Scenarios["Subtracting two numbers"].Verify();
+            _specs.Scenarios["Subtracting two numbers"].Verify();
         }
 
         [Test]
         public void Dividing_two_numbers()
         {
-            ff.Scenarios["Dividing two numbers"].Verify();
+            _specs.Scenarios["Dividing two numbers"].Verify();
         }
     }
 }

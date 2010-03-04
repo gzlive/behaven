@@ -57,7 +57,7 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="ScenarioCollection.cs" />
-    <Compile Include="FeatureFile.cs" />
+    <Compile Include="SpecificationsFile.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="StepDefinition.cs" />
     <Compile Include="StepDefinitionCollection.cs" />

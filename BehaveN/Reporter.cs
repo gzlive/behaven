@@ -8,10 +8,10 @@ namespace BehaveN
     public abstract class Reporter
     {
         /// <summary>
-        /// Reports the feature file.
+        /// Reports the specifications file.
         /// </summary>
-        /// <param name="featureFile">The feature file.</param>
-        public abstract void ReportFeatureFile(FeatureFile featureFile);
+        /// <param name="specificationsFile">The specifications file.</param>
+        public abstract void ReportSpecificationsFile(SpecificationsFile specificationsFile);
 
         /// <summary>
         /// Reports the scenario.

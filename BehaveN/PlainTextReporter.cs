@@ -55,19 +55,19 @@ namespace BehaveN
         private TextWriter _writer;
 
         /// <summary>
-        /// Reports the feature file.
+        /// Reports the specifications file.
         /// </summary>
-        /// <param name="featureFile">The feature file.</param>
-        public override void ReportFeatureFile(FeatureFile featureFile)
+        /// <param name="specificationsFile">The specifications file.</param>
+        public override void ReportSpecificationsFile(SpecificationsFile specificationsFile)
         {
-            foreach (Scenario scenario in featureFile.Scenarios)
+            foreach (Scenario scenario in specificationsFile.Scenarios)
             {
                 ReportScenario(scenario);
 
                 WriteDivider();
             }
 
-            ReportUndefinedSteps(featureFile.GetUndefinedSteps());
+            ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
         }
 
         /// <summary>

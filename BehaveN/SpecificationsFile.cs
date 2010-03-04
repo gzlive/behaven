@@ -6,9 +6,9 @@ using System.Reflection;
 namespace BehaveN
 {
     /// <summary>
-    /// Represents a feature file.
+    /// Represents a specifications file.
     /// </summary>
-    public class FeatureFile
+    public class SpecificationsFile
     {
         private string _name;
         private readonly StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
@@ -45,7 +45,7 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FeatureFile"/> is passed.
+        /// Gets a value indicating whether this <see cref="SpecificationsFile"/> is passed.
         /// </summary>
         /// <value><c>true</c> if passed; otherwise, <c>false</c>.</value>
         public bool Passed
@@ -138,7 +138,7 @@ namespace BehaveN
         /// </summary>
         public void Report()
         {
-            Reporter.ReportFeatureFile(this);
+            Reporter.ReportSpecificationsFile(this);
         }
 
         /// <summary>

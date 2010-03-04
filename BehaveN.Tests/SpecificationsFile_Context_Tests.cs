@@ -4,13 +4,13 @@ using SharpTestsEx;
 namespace BehaveN.Tests
 {
     [TestFixture]
-    public class FeatureFile_Context_Tests : BaseFeatureFileTests
+    public class SpecificationsFile_Context_Tests : BaseSpecificationsFileTests
     {
         [Test]
         public void it_resets_the_context_between_each_scenario()
         {
-            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
-            TheFeatureFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
+            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyGivenStepDefinitonsThatRequireMyContext>();
+            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyThenStepDefinitonsThatRequireMyContext>();
 
             LoadText("Scenario: Context",
                      "Given this foo",
@@ -18,9 +18,9 @@ namespace BehaveN.Tests
                      "Scenario: Context should be reset",
                      "Then the value should be foo");
 
-            TheFeatureFile.Execute();
+            TheSpecificationsFile.Execute();
 
-            TheFeatureFile.Passed.Should().Be.False();
+            TheSpecificationsFile.Passed.Should().Be.False();
         }
     }
 }

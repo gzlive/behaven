@@ -40,8 +40,8 @@ namespace BehaveN.Tool
 
             foreach (var file in files)
             {
-                var ff = new FeatureFile();
-                ff.LoadFile(file);
+                var specs = new SpecificationsFile();
+                specs.LoadFile(file);
 
                 string className = Path.GetFileNameWithoutExtension(file);
                 string csFile = Path.ChangeExtension(file, ".g.cs");
@@ -64,7 +64,7 @@ namespace BehaveN.Tool
                 sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
                 sw.WriteLine("    {");
 
-                sw.WriteLine(@"        private FeatureFile ff = new FeatureFile();");
+                sw.WriteLine(@"        private SpecificationsFile _specs = new SpecificationsFile();");
 
                 if (!noSetUp)
                 {
@@ -72,8 +72,8 @@ namespace BehaveN.Tool
         [TestFixtureSetUp]
         public void LoadScenarios()
         {{
-            ff.StepDefinitions.UseStepDefinitionsFromAssembly({1});
-            ff.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
+            _specs.StepDefinitions.UseStepDefinitionsFromAssembly({1});
+            _specs.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
         }}", Path.GetFileName(file), (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")");
                 }
 
@@ -83,18 +83,18 @@ namespace BehaveN.Tool
         [TestFixtureTearDown]
         public void ReportUndefinedSteps()
         {
-            ff.ReportUndefinedSteps();
+            _specs.ReportUndefinedSteps();
         }");
                 }
 
-                foreach (var scenario in ff.Scenarios)
+                foreach (var scenario in specs.Scenarios)
                 {
                     sw.WriteLine();
 
                     sw.WriteLine("        [Test]");
                     sw.WriteLine("        public void {0}()", scenario.Name.Replace(" ", "_"));
                     sw.WriteLine("        {");
-                    sw.WriteLine("            ff.Scenarios[\"{0}\"].Verify();", scenario.Name);
+                    sw.WriteLine("            _specs.Scenarios[\"{0}\"].Verify();", scenario.Name);
                     sw.WriteLine("        }");
                 }
 

@@ -8,3 +8,4 @@ glob:*.cache
 glob:Help
 glob:Release
 glob:NDependOut
+glob:StyleCop.Cache

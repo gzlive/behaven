@@ -7,16 +7,16 @@ namespace BehaveN.Tests
     [TestFixture]
     public class PlainTextReader_Tests
     {
-        private PlainTextReader reader;
-        private FeatureFile ff;
-        private Exception exception;
+        private PlainTextReader _reader;
+        private SpecificationsFile _specs;
+        private Exception _exception;
 
         [Test]
         public void it_throws_an_exception_when_a_step_appears_before_a_scenario()
         {
             ReadText("Given foo");
 
-            exception.Should().Be.InstanceOf<Exception>();
+            _exception.Should().Be.InstanceOf<Exception>();
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace BehaveN.Tests
             ReadText("Scenario: No ands first",
                      "And foo");
 
-            exception.Should().Be.InstanceOf<Exception>();
+            _exception.Should().Be.InstanceOf<Exception>();
         }
 
         [Test]
@@ -34,22 +34,22 @@ namespace BehaveN.Tests
             ReadText("Scenario: Unrecognized step",
                      "Foo bar");
 
-            exception.Should().Be.InstanceOf<Exception>();
+            _exception.Should().Be.InstanceOf<Exception>();
         }
 
         private void ReadText(params string[] lines)
         {
-            reader = new PlainTextReader(string.Join("\r\n", lines));
-            ff = new FeatureFile();
-            exception = null;
+            _reader = new PlainTextReader(string.Join("\r\n", lines));
+            _specs = new SpecificationsFile();
+            _exception = null;
 
             try
             {
-                reader.ReadTo(ff);
+                _reader.ReadTo(_specs);
             }
             catch (Exception e)
             {
-                exception = e;
+                _exception = e;
             }
         }
     }
