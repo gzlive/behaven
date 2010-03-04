@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="BaseFeatureFileTests.cs" />
     <Compile Include="BaseScenarioTests.cs" />
+    <Compile Include="Scenario_Enum_Tests.cs" />
     <Compile Include="Scenario_DateTime_Tests.cs" />
     <Compile Include="PlainTextReader_Tests.cs" />
     <Compile Include="UnknownLanguage_Tests.cs" />

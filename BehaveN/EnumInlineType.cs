@@ -15,6 +15,12 @@ namespace BehaveN
         {
             List<string> subPatterns = new List<string>();
 
+            if (TypeExtensions.IsNullable(type))
+            {
+                type = Nullable.GetUnderlyingType(type);
+                subPatterns.Add("(?:null)");
+            }
+
             foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Public | BindingFlags.Static))
             {
                 string parsed = NameParser.Parse(fieldInfo.Name);

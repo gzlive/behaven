@@ -4,9 +4,6 @@ Required for final 2.0 release:
   - Try to merge satellite assemblies.
   - Or stop using them.
 - Create facade class so that running a scenario takes a single method call.
-- Add support for nullable parameters.
-  - Int32 and Decimal are done.
-  - Still need to do DateTime and enums.
 - Add a Boolean inline type?
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.
