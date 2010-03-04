@@ -1,53 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace BehaveN
 {
     /// <summary>
-    /// Represents a plain text reporter.
+    /// Represents a reporter that outputs HTML.
     /// </summary>
-    public class PlainTextReporter : Reporter
+    public class HtmlReporter : Reporter
     {
         /// <summary>
-        /// The symbol for an undefined step.
-        /// </summary>
-        public const string Undefined = "?";
-
-        /// <summary>
-        /// The symbol for a pending step.
-        /// </summary>
-        public const string Pending = "*";
-
-        /// <summary>
-        /// The symbol for a passed step.
-        /// </summary>
-        public const string Passed = " ";
-
-        /// <summary>
-        /// The symbol for a failed step.
-        /// </summary>
-        public const string Failed = "!";
-
-        /// <summary>
-        /// The symbol for a skipped step.
-        /// </summary>
-        public const string Skipped = "-";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlainTextReporter"/> class.
-        /// </summary>
-        public PlainTextReporter() : this(Console.Out)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlainTextReporter"/> class.
+        /// Initializes a new instance of the <see cref="HtmlReporter"/> class.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public PlainTextReporter(TextWriter writer)
+        public HtmlReporter(TextWriter writer)
         {
             _writer = writer;
         }
@@ -76,8 +41,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            _writer.WriteLine("Scenario: {0}", scenario.Name);
-            _writer.WriteLine();
+            _writer.WriteLine("<h2>Scenario: {0}</h2>", scenario.Name);
 
             foreach (Step step in scenario.Steps)
             {
@@ -104,36 +68,25 @@ namespace BehaveN
                     ReportBlock(step.Block);
             }
 
-            _writer.WriteLine();
-
             ReportException(scenario);
         }
 
         private void WriteDivider()
         {
-            _writer.WriteLine("---");
-            _writer.WriteLine();
+            _writer.WriteLine("<hr />");
         }
 
         private void ReportException(Scenario scenario)
         {
             if (scenario.Exception != null)
             {
-                _writer.WriteLine(scenario.Exception.Message);
+                _writer.WriteLine("<p style='color: red'>{0}</p>", scenario.Exception.Message);
 
                 if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
                 {
-                    _writer.WriteLine();
-                    _writer.WriteLine(GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
+                    _writer.WriteLine("<pre>{0}</pre>", scenario.Exception.StackTrace);
                 }
-
-                _writer.WriteLine();
             }
-        }
-
-        private string GetStackTraceThatIsClickableInOutputWindow(Exception e)
-        {
-            return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
         }
 
         /// <summary>
@@ -144,8 +97,7 @@ namespace BehaveN
         {
             if (undefinedSteps.Count > 0)
             {
-                _writer.WriteLine("Your undefined steps can be defined with the following code:");
-                _writer.WriteLine();
+                _writer.WriteLine("<p>Your undefined steps can be defined with the following code:</p>");
 
                 foreach (Step undefinedStep in undefinedSteps)
                 {
@@ -156,44 +108,45 @@ namespace BehaveN
 
         private void ReportUndefined(Step step)
         {
-            ReportStatus(step, Undefined);
+            ReportStatus(step, "red");
         }
 
         private void ReportPending(Step step)
         {
-            ReportStatus(step, Pending);
+            ReportStatus(step, "red");
         }
 
         private void ReportPassed(Step step)
         {
-            ReportStatus(step, Passed);
+            ReportStatus(step, "green");
         }
 
         private void ReportFailed(Step step)
         {
-            ReportStatus(step, Failed);
+            ReportStatus(step, "red");
         }
 
         private void ReportSkipped(Step step)
         {
-            ReportStatus(step, Skipped);
+            ReportStatus(step, "yellow");
         }
 
-        private void ReportStatus(Step step, string status)
+        private void ReportStatus(Step step, string color)
         {
-            _writer.WriteLine(status + " " + step.Text);
+            _writer.WriteLine("<div style='color: {1}'>{0}</div>", step.Text, color);
         }
 
         private void ReportBlock(IBlock block)
         {
-            _writer.Write(block.Format());
+            // TODO: Figure out if formatting should be done here or in the block object.
+            //_writer.Write(block.Format());
         }
 
         private void ReportUndefinedStep(Step undefinedStep)
         {
             string code = UndefinedStepDefinitionHelper.GetUndefinedStepCode(undefinedStep);
-            _writer.WriteLine(code);
-            _writer.WriteLine();
+
+            _writer.WriteLine("<pre>{0}</pre>", code);
         }
     }
 }
