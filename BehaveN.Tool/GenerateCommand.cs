@@ -27,6 +27,7 @@ namespace BehaveN.Tool
         static string baseClass = null;
         static bool noSetUp = false;
         static bool noTearDown = false;
+        static string assemblyName = null;
 
         public int Run(string[] args)
         {
@@ -54,6 +55,7 @@ namespace BehaveN.Tool
 
                 sw.WriteLine("using BehaveN;");
                 sw.WriteLine("using NUnit.Framework;");
+                sw.WriteLine("using System.Reflection;");
                 sw.WriteLine();
                 sw.WriteLine("namespace {0}", ns);
                 sw.WriteLine("{");
@@ -70,9 +72,9 @@ namespace BehaveN.Tool
         [TestFixtureSetUp]
         public void LoadScenarios()
         {{
-            ff.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
+            ff.StepDefinitions.UseStepDefinitionsFromAssembly({1});
             ff.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
-        }}", Path.GetFileName(file));
+        }}", Path.GetFileName(file), (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")");
                 }
 
                 if (!noTearDown)
@@ -125,6 +127,7 @@ namespace BehaveN.Tool
             options.Add("base-class=", "the base class for the generated classes", s => baseClass = s);
             options.Add("no-setup", "do not generate a test fixture set up method", s => noSetUp = true);
             options.Add("no-teardown", "do not generate a test fixture tear down method", s => noTearDown = true);
+            options.Add("assembly=", "the assembly that contains the step definitions", s => assemblyName = s);
             return options;
         }
     }

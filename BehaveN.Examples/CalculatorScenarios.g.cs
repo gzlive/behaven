@@ -2,6 +2,7 @@
 
 using BehaveN;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace BehaveN.Examples
 {
