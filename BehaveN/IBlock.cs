@@ -37,5 +37,11 @@ namespace BehaveN
         /// </summary>
         /// <returns>The name.</returns>
         string GetSuggestedParameterName();
+
+        /// <summary>
+        /// Reports to the reporter.
+        /// </summary>
+        /// <param name="reporter">The reporter.</param>
+        void ReportTo(Reporter reporter);
     }
 }

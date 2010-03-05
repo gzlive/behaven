@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace BehaveN
     /// <summary>
     /// Represents a reporter that outputs HTML.
     /// </summary>
-    public class HtmlReporter : Reporter
+    public class HtmlReporter : Reporter, IBlockReporter<Form>, IBlockReporter<Grid>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReporter"/> class.
@@ -144,15 +145,63 @@ namespace BehaveN
 
         private void ReportBlock(IBlock block)
         {
-            // TODO: Figure out if formatting should be done here or in the block object.
-            //_writer.Write(block.Format());
+            block.ReportTo(this);
         }
 
         private void ReportUndefinedStep(Step undefinedStep)
         {
             string code = UndefinedStepDefinitionHelper.GetUndefinedStepCode(undefinedStep);
 
-            _writer.WriteLine("<pre>{0}</pre>", code);
+            _writer.WriteLine("<pre>{0}</pre>", Escape(code));
+        }
+
+        private static string Escape(string text)
+        {
+            return text.Replace("&", "&amp;").Replace("<", "&lt;");
+        }
+
+        void IBlockReporter<Form>.ReportBlock(Form block)
+        {
+            _writer.WriteLine("<table border='1'>");
+
+            for (int i = 0; i < block.Size; i++)
+            {
+                string label = block.GetLabel(i);
+                string value = block.GetValue(i);
+                _writer.WriteLine("<tr><th>{0}</th><td>{1}</td></tr>", label, value);
+            }
+
+            _writer.WriteLine("</table>");
+        }
+
+        void IBlockReporter<Grid>.ReportBlock(Grid block)
+        {
+            _writer.WriteLine("<table border='1'>");
+
+            _writer.WriteLine("<tr>");
+
+            for (int i = 0; i < block.ColumnCount; i++)
+            {
+                string header = block.GetHeader(i);
+                _writer.WriteLine("<th>{0}</th>", header);
+            }
+
+            _writer.WriteLine("</tr>");
+
+            for (int i = 0; i < block.RowCount; i++)
+            {
+                _writer.WriteLine("<tr>");
+
+                for (int j = 0; j < block.ColumnCount; j++)
+                {
+                    string value = block.GetValue(i, j);
+                    _writer.WriteLine("<td>{0}</td>", value);
+                }
+
+                _writer.WriteLine("</tr>");
+            }
+
+            _writer.WriteLine("</table>");
         }
     }
 }

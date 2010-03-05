@@ -327,6 +327,22 @@ namespace BehaveN
             return "foos";
         }
 
+        /// <summary>
+        /// Reports to the reporter.
+        /// </summary>
+        /// <param name="reporter">The reporter.</param>
+        public void ReportTo(Reporter reporter)
+        {
+            if (reporter is IBlockReporter<Grid>)
+            {
+                ((IBlockReporter<Grid>)reporter).ReportBlock(this);
+            }
+            else
+            {
+                throw new Exception(string.Format("{0} doesn't support reporting grids.", reporter.GetType().FullName));
+            }
+        }
+
         private PropertyInfo GetPropertyInfo(Type type, string header)
         {
             string propertyName = NameComparer.NormalizeName(header);

@@ -114,6 +114,22 @@ namespace BehaveN
             return "foo";
         }
 
+        /// <summary>
+        /// Reports to the reporter.
+        /// </summary>
+        /// <param name="reporter">The reporter.</param>
+        public void ReportTo(Reporter reporter)
+        {
+            if (reporter is IBlockReporter<Form>)
+            {
+                ((IBlockReporter<Form>)reporter).ReportBlock(this);
+            }
+            else
+            {
+                throw new Exception(string.Format("{0} doesn't support reporting forms.", reporter.GetType().FullName));
+            }
+        }
+
         private static readonly Regex _formRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
 
         /// <summary>
