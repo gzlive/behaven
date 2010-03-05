@@ -18,6 +18,8 @@ namespace BehaveN
         /// Reports the specifications file.
         /// </summary>
         /// <param name="specificationsFile">The specifications file.</param>
+        /// <remarks>This reports all scenarios in the file and their
+        /// undefined steps.</remarks>
         public abstract void ReportSpecificationsFile(SpecificationsFile specificationsFile);
 
         /// <summary>
