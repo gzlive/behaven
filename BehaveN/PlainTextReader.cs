@@ -22,6 +22,8 @@ namespace BehaveN
             _text = text;
         }
 
+        private Match m;
+
         /// <summary>
         /// Reads the contents of the file to the specifications file.
         /// </summary>
@@ -39,11 +41,9 @@ namespace BehaveN
             {
                 string line = lines[i];
 
-                Match m = _featureRegex.Match(line);
-
-                if (m.Success)
+                if (scenario == null)
                 {
-                    i = ParseFeature(i, lines, ref line, ref m, specificationsFile);
+                    i = ParseTitleAndDescription(lines, i, specificationsFile);
                 }
                 else
                 {
@@ -59,19 +59,24 @@ namespace BehaveN
                 }
                 else
                 {
-                    ParseStep(lines, scenario, ref stepType, ref i, line);
+                    ParseStep(lines, ref i, scenario, ref stepType, line);
                 }
             }
         }
 
-        private int ParseFeature(int i, List<string> lines, ref string line, ref Match m, SpecificationsFile specificationsFile)
+        private int ParseTitleAndDescription(List<string> lines, int i, SpecificationsFile specificationsFile)
         {
-            specificationsFile.Feature = new Feature();
-            specificationsFile.Feature.Name = m.Groups[1].Value;
+            string line = lines[i];
+
+            if ((m = _featureRegex.Match(line)).Success) 
+            {
+                specificationsFile.Title = m.Groups[1].Value;
+                i++;
+            }
 
             List<string> featureLines = new List<string>();
 
-            for (i += 1; i < lines.Count; i++)
+            for (; i < lines.Count; i++)
             {
                 line = lines[i];
 
@@ -85,11 +90,12 @@ namespace BehaveN
                 featureLines.Add(line);
             }
 
-            specificationsFile.Feature.Description = string.Join("\r\n", featureLines.ToArray()).Trim('\r', '\n');
+            specificationsFile.Description = string.Join("\r\n", featureLines.ToArray()).Trim('\r', '\n');
+
             return i;
         }
 
-        private void ParseStep(List<string> lines, Scenario scenario, ref StepType stepType, ref int i, string line)
+        private void ParseStep(List<string> lines, ref int i, Scenario scenario, ref StepType stepType, string line)
         {
             if (_givenRegex.Match(line).Success)
             {
@@ -112,9 +118,6 @@ namespace BehaveN
             {
                 throw new Exception(string.Format("Unrecognized step: \"{0}\".", line));
             }
-
-            if (scenario == null)
-                throw new Exception("Steps cannot appear before a scenario is started.");
 
             IBlock block = ParseBlock(lines, ref i);
 

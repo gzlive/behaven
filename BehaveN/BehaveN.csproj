@@ -53,7 +53,6 @@
     <Compile Include="CompositeReporter.cs" />
     <Compile Include="DefaultReporter.cs" />
     <Compile Include="HtmlReporter.cs" />
-    <Compile Include="Feature.cs" />
     <Compile Include="StepType.cs" />
     <Compile Include="StepCollection.cs" />
     <Compile Include="Languages\Strings.Designer.cs">

@@ -64,15 +64,6 @@ namespace BehaveN.Tests
         }
 
         [Test]
-        public void it_throws_when_a_step_appears_before_a_scenario()
-        {
-            ActionAssert.Throws<Exception>(() =>
-                LoadText("Given B",
-                         "Scenario: A")
-            );
-        }
-
-        [Test]
         public void it_loads_steps_with_forms()
         {
             LoadText("Scenario: A",

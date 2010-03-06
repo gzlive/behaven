@@ -16,10 +16,16 @@ namespace BehaveN
         private Reporter _reporter;
 
         /// <summary>
-        /// Gets or sets the feature.
+        /// Gets or sets the title for these specifications.
         /// </summary>
-        /// <value>The feature.</value>
-        public Feature Feature { get; set; }
+        /// <value>The title.</value>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description for these specifications.
+        /// </summary>
+        /// <value>The description.</value>
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets the step definitions.

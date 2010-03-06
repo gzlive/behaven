@@ -30,14 +30,19 @@ namespace BehaveN
             _writer.WriteLine(@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.01//EN"" ""http://www.w3.org/TR/html4/strict.dtd"">");
             _writer.WriteLine("<html>");
             _writer.WriteLine("<head>");
-            _writer.WriteLine(css);
+            _writer.WriteLine(CSS);
             _writer.WriteLine("<head>");
             _writer.WriteLine("<body>");
             _writer.WriteLine(@"<div id=""wrap"">");
 
-            if (specificationsFile.Feature != null && !string.IsNullOrEmpty(specificationsFile.Feature.Name))
+            if (!string.IsNullOrEmpty(specificationsFile.Title))
             {
-                _writer.WriteLine("<h1>{0}</h1>", specificationsFile.Feature.Name);
+                _writer.WriteLine("<h1>{0}</h1>", Escape(specificationsFile.Title));
+            }
+
+            if (!string.IsNullOrEmpty(specificationsFile.Description))
+            {
+                _writer.WriteLine("<p>{0}</p>", Escape(specificationsFile.Description));
             }
 
             foreach (Scenario scenario in specificationsFile.Scenarios)
@@ -60,7 +65,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            _writer.WriteLine("<h2>{0}</h2>", scenario.Name);
+            _writer.WriteLine("<h2>{0}</h2>", Escape(scenario.Name));
 
             foreach (Step step in scenario.Steps)
             {
@@ -96,7 +101,7 @@ namespace BehaveN
         {
             if (scenario.Exception != null)
             {
-                _writer.WriteLine("<p class='error'>{0}</p>", scenario.Exception.Message);
+                _writer.WriteLine("<p class='error'>{0}</p>", Escape(scenario.Exception.Message));
             }
         }
 
@@ -135,7 +140,7 @@ namespace BehaveN
 
         private void ReportStatus(Step step, string color, string symbol)
         {
-            _writer.WriteLine(@"<p><span style=""color:{1};"">{2}</span> {0}</p>", step.Text, color, symbol);
+            _writer.WriteLine(@"<p><span style=""color:{1};"">{2}</span> {0}</p>", Escape(step.Text), color, symbol);
         }
 
         private const string QuestionMark = "&#65311;";
@@ -161,10 +166,10 @@ namespace BehaveN
                 _writer.WriteLine("<tr>");
 
                 string label = block.GetLabel(i);
-                _writer.WriteLine("<th>{0}</th>", label);
+                _writer.WriteLine("<th>{0}</th>", Escape(label));
 
                 string value = block.GetValue(i);
-                _writer.WriteLine(@"<td>{0}</td>", value);
+                _writer.WriteLine(@"<td>{0}</td>", Escape(value));
 
                 _writer.WriteLine("</tr>");
             }
@@ -181,7 +186,7 @@ namespace BehaveN
             for (int i = 0; i < block.ColumnCount; i++)
             {
                 string header = block.GetHeader(i);
-                _writer.WriteLine("<th>{0}</th>", header);
+                _writer.WriteLine("<th>{0}</th>", Escape(header));
             }
 
             _writer.WriteLine("</tr>");
@@ -193,7 +198,7 @@ namespace BehaveN
                 for (int j = 0; j < block.ColumnCount; j++)
                 {
                     string value = block.GetValue(i, j);
-                    _writer.WriteLine("<td>{0}</td>", value);
+                    _writer.WriteLine("<td>{0}</td>", Escape(value));
                 }
 
                 _writer.WriteLine("</tr>");
@@ -202,7 +207,7 @@ namespace BehaveN
             _writer.WriteLine("</table>");
         }
 
-        private static string css = @"<style type=""text/css"">
+        private static string CSS = @"<style type=""text/css"">
 html,body,div,span,object,iframe,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,var,fieldset,form,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,hgroup,menu,nav,section,time,mark,audio,video{vertical-align:baseline;margin:0;padding:0}
 body{background:#fff;color:#000;font:75%/1.5em Arial, Helvetica, ""Liberation sans"", ""Bitstream Vera Sans"", sans-serif;position:relative}
 textarea{font:100%/1.5em Arial, Helvetica, ""Liberation sans"", ""Bitstream Vera Sans"", sans-serif;border:1px solid #ccc;border-bottom-color:#eee;border-right-color:#eee;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-ms-box-sizing:border-box;width:100%;margin:0;padding:.29em 0}
