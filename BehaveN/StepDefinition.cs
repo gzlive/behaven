@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -7,6 +8,7 @@ namespace BehaveN
     /// <summary>
     /// Represents a step definition.
     /// </summary>
+    [DebuggerDisplay("{_methodInfo}")]
     public class StepDefinition
     {
         /// <summary>
@@ -36,7 +38,7 @@ namespace BehaveN
 
             Invoke(parameters);
 
-            AssertOnOutputParameters(m, step.Block, parameters, ref step.Text);
+            CheckOutputParameters(m, step, parameters);
 
             return true;
         }
@@ -95,7 +97,7 @@ namespace BehaveN
             _methodInfo.Invoke(_target, parameters);
         }
 
-        private void AssertOnOutputParameters(Match match, IBlock block, object[] parameters, ref string description)
+        private void CheckOutputParameters(Match match, Step step, object[] parameters)
         {
             bool passed = true;
 
@@ -116,17 +118,17 @@ namespace BehaveN
 
                             if (!object.Equals(actualValue, expectedValue))
                             {
-                                Match m = _regex.Match(description);
+                                Match m = _regex.Match(step.Text);
                                 Group group = m.Groups[pi.Name];
-                                description = description.Substring(0, group.Index)
+                                step.Text = step.Text.Substring(0, group.Index)
                                               + string.Format("{0} (was {1})", expectedValue, actualValue)
-                                              + description.Substring(group.Index + group.Length);
+                                              + step.Text.Substring(group.Index + group.Length);
                                 passed = false;
                             }
                         }
-                        else if (block != null && BlockTypes.BlockTypeExistsFor(type))
+                        else if (step.Block != null && BlockTypes.BlockTypeExistsFor(type))
                         {
-                            passed &= block.Check(parameters[i]);
+                            passed &= step.Block.Check(parameters[i]);
                         }
                     }
 
@@ -138,17 +140,6 @@ namespace BehaveN
             {
                 throw new VerificationException(new Exception("One or more output parameters did not pass."));
             }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return _methodInfo.ToString();
         }
     }
 }

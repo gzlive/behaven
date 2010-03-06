@@ -1,39 +1,31 @@
+using System.Diagnostics;
+
 namespace BehaveN
 {
     /// <summary>
     /// Represents an executable step in a scenario.
     /// </summary>
+    [DebuggerDisplay("{Text}")]
     public class Step
     {
         /// <summary>
         /// The type of the step.
         /// </summary>
-        public StepType Type;
+        public StepType Type { get; set; }
 
         /// <summary>
         /// The actual text for the step.
         /// </summary>
-        public string Text;
+        public string Text { get; set; }
 
         /// <summary>
         /// The block value or null for the step.
         /// </summary>
-        public IBlock Block;
+        public IBlock Block { get; set; }
 
         /// <summary>
         /// The result of executing the step.
         /// </summary>
-        public StepResult Result;
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return Text;
-        }
-    }
+        public StepResult Result { get; set; }
+   }
 }
