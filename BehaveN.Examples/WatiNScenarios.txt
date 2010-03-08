@@ -1,0 +1,7 @@
+﻿Scenario: The BehaveN project is on Google's first results page for "behaven"
+
+Given a new browser
+When navigating to "http://google.com/"
+and typing "behaven" into the text box named "q"
+and clicking the button named "btnG"
+Then a link to "http://code.google.com/p/behaven/" should appear on the page

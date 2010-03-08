@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using Mono.Options;
 
 namespace BehaveN.Tool
@@ -40,11 +41,13 @@ namespace BehaveN.Tool
         }
 
         private static string outputFile;
+        private static bool sta;
 
         private static OptionSet GetOptions()
         {
             var options = new OptionSet();
             options.Add("output=", "the path to the file to report to", s => outputFile = s);
+            options.Add("sta", "use a STA thread to execute the scenarios", s => sta = true);
             return options;
         }
 
@@ -60,29 +63,40 @@ namespace BehaveN.Tool
 
         private void VerifyScenarios(IEnumerable<string> scenarioFiles)
         {
-            foreach (var scenarioFile in scenarioFiles)
-            {
-                var specificationsFile = new SpecificationsFile();
+            ThreadStart ts = () =>
+                                 {
+                                     foreach (var scenarioFile in scenarioFiles)
+                                     {
+                                         var specificationsFile = new SpecificationsFile();
 
-                if (!string.IsNullOrEmpty(outputFile))
-                {
-                    specificationsFile.Reporter.Destination = outputFile;
-                }
+                                         if (!string.IsNullOrEmpty(outputFile))
+                                         {
+                                             specificationsFile.Reporter.Destination = outputFile;
+                                         }
 
-                foreach (var assembly in _assemblies)
-                {
-                    specificationsFile.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
-                }
+                                         foreach (var assembly in _assemblies)
+                                         {
+                                             specificationsFile.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
+                                         }
 
-                specificationsFile.LoadFile(scenarioFile);
-                specificationsFile.Execute();
-                specificationsFile.Report();
+                                         specificationsFile.LoadFile(scenarioFile);
+                                         specificationsFile.Execute();
+                                         specificationsFile.Report();
 
-                if (specificationsFile.Passed)
-                    WriteLineWithColor(ConsoleColor.Green, Passed);
-                else
-                    WriteLineWithColor(ConsoleColor.Red, Failed);
-            }
+                                         if (specificationsFile.Passed)
+                                             WriteLineWithColor(ConsoleColor.Green, Passed);
+                                         else
+                                             WriteLineWithColor(ConsoleColor.Red, Failed);
+                                     }
+                                 };
+
+            Thread t = new Thread(ts);
+
+            if (sta)
+                t.SetApartmentState(ApartmentState.STA);
+
+            t.Start();
+            t.Join();
         }
 
         private void WriteLineWithColor(ConsoleColor color, string format, params object[] args)

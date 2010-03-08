@@ -51,6 +51,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WatiN.Core, Version=2.0.20.0, Culture=neutral, PublicKeyToken=db7cfd3acb5ad44e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdPartyBinaries\WatiN\WatiN.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\VersionInfo.cs">
@@ -59,6 +63,7 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorScenarios.g.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />
+    <Compile Include="WatiNStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BlockExamples.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="WatiNScenarios.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -13,6 +13,7 @@ namespace BehaveN
         private readonly List<object> _stepDefinitionObjects = new List<object>();
         private readonly List<StepDefinition> _stepDefinitions = new List<StepDefinition>();
         private readonly Dictionary<Type, object> _context = new Dictionary<Type, object>();
+        private readonly List<IDisposable> _disposables = new List<IDisposable>();
 
         /// <summary>
         /// Uses the step definitions from the specified assembly.
@@ -76,6 +77,7 @@ namespace BehaveN
         {
             _context.Clear();
             _stepDefinitions.Clear();
+            _disposables.Clear();
 
             foreach (object @object in _stepDefinitionObjects)
             {
@@ -102,19 +104,28 @@ namespace BehaveN
 
             ConstructorInfo constructor = constructors[0];
 
+            object result;
+
             if (constructor.GetParameters().Length == 0)
-                return Activator.CreateInstance(type);
-
-            object[] parameters = new object[constructor.GetParameters().Length];
-
-            int i = 0;
-
-            foreach (ParameterInfo pi in constructor.GetParameters())
+                result = Activator.CreateInstance(type);
+            else
             {
-                parameters[i++] = CreateOrGetContextObject(pi.ParameterType);
+                object[] parameters = new object[constructor.GetParameters().Length];
+
+                int i = 0;
+
+                foreach (ParameterInfo pi in constructor.GetParameters())
+                {
+                    parameters[i++] = CreateOrGetContextObject(pi.ParameterType);
+                }
+
+                result = Activator.CreateInstance(type, parameters);
             }
 
-            return Activator.CreateInstance(type, parameters);
+            if (result is IDisposable)
+                _disposables.Add((IDisposable)result);
+
+            return result;
         }
 
         private IEnumerable<StepDefinition> GetStepDefinitionsFrom(object target)
@@ -222,6 +233,15 @@ namespace BehaveN
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Releases all of the disposable step definition objects.
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (var disposable in _disposables)
+                try { disposable.Dispose(); } catch { }
         }
     }
 }
