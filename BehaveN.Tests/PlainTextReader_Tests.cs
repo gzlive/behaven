@@ -95,13 +95,13 @@ namespace BehaveN.Tests
 
         private void ReadText(params string[] lines)
         {
-            _reader = new PlainTextReader(string.Join("\r\n", lines));
+            _reader = new PlainTextReader();
             _specs = new SpecificationsFile();
             _exception = null;
 
             try
             {
-                _reader.ReadTo(_specs);
+                _reader.ReadTo(string.Join("\r\n", lines), _specs);
             }
             catch (Exception e)
             {

@@ -11,28 +11,18 @@ namespace BehaveN
     /// </summary>
     public class PlainTextReader
     {
-        private readonly string _text;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlainTextReader"/> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        public PlainTextReader(string text)
-        {
-            _text = text;
-        }
-
         private Match m;
 
         /// <summary>
         /// Reads the contents of the file to the specifications file.
         /// </summary>
+        /// <param name="text">The text to read.</param>
         /// <param name="specificationsFile">The specifications file.</param>
-        public void ReadTo(SpecificationsFile specificationsFile)
+        public void ReadTo(string text, SpecificationsFile specificationsFile)
         {
-            CompileRegexes();
+            CompileRegexes(text);
 
-            List<string> lines = TextParser.GetLines(_text);
+            List<string> lines = TextParser.GetLines(text);
 
             Scenario scenario = null;
             StepType stepType = StepType.Unknown;
@@ -144,9 +134,9 @@ namespace BehaveN
             return block;
         }
 
-        private void CompileRegexes()
+        private void CompileRegexes(string text)
         {
-            string language = TextParser.DiscoverLanguage(_text);
+            string language = TextParser.DiscoverLanguage(text);
 
             ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(GetCultureInfo(language), true, true);
 

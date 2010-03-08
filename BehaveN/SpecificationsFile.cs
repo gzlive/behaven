@@ -111,8 +111,8 @@ namespace BehaveN
         /// <param name="text">The text.</param>
         public void LoadText(string text)
         {
-            PlainTextReader reader = new PlainTextReader(text);
-            reader.ReadTo(this);
+            PlainTextReader reader = new PlainTextReader();
+            reader.ReadTo(text, this);
 
             foreach (Scenario scenario in _scenarios)
             {
