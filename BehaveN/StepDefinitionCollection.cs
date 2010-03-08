@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace BehaveN
     /// <summary>
     /// Represents a collection of StepDefinition objects.
     /// </summary>
-    public class StepDefinitionCollection
+    public class StepDefinitionCollection : IEnumerable<StepDefinition>
     {
         private readonly List<object> _stepDefinitionObjects = new List<object>();
         private readonly List<StepDefinition> _stepDefinitions = new List<StepDefinition>();
@@ -199,6 +200,28 @@ namespace BehaveN
         public object GetContextObject(Type type)
         {
             return _context[type];
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<StepDefinition> GetEnumerator()
+        {
+            return _stepDefinitions.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

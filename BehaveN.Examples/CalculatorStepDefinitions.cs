@@ -26,5 +26,9 @@ namespace BehaveN.Examples
         {
             _result.Should().Be(n);
         }
+
+        public void Given_an_unused_step_definition()
+        {
+        }
     }
 }

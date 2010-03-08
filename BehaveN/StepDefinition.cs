@@ -43,7 +43,21 @@ namespace BehaveN
             return true;
         }
 
-        internal bool Matches(Step step)
+        /// <summary>
+        /// Gets the name of the method.
+        /// </summary>
+        /// <value>The name of the method.</value>
+        public string MethodName
+        {
+            get { return _methodInfo.Name; }
+        }
+
+        /// <summary>
+        /// Determines if the step definition matches the specified step.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns>True or false.</returns>
+        public bool Matches(Step step)
         {
             return GetMatch(step).Success;
         }

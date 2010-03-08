@@ -4,6 +4,12 @@ Required for final 2.0 release:
   - Try to merge satellite assemblies.
   - Or stop using them.
 - Create facade class so that running a scenario takes a single method call.
+- Create reporters for XML.
+- Finish HTML reporter.
+- Finish DefaultReporter so that it creates correct child reporter based on extension.
+
+Later:
+
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.
   - Used for lists of primitive types.
@@ -12,8 +18,3 @@ Required for final 2.0 release:
   - Leading ">" could be indicator.
   - Or quote character.
     - No need to end quote on each line.
-- Create reporters for XML.
-- Finish HTML reporter.
-- Finish DefaultReporter so that it creates correct child reporter based on extension.
-- Create tool command to find unused steps.
-- Create tool command to find undefined steps (without running).
