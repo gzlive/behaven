@@ -1,5 +1,8 @@
 ﻿Feature: Calculator
 
+These scenarios exercise the different features of the
+Calculator class.
+
 Scenario: Adding two numbers
 
 Given a new calculator

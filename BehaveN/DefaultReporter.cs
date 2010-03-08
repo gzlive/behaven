@@ -38,7 +38,7 @@ namespace BehaveN
                     _compositeReporter.RemoveAt(1);
                 }
 
-                _compositeReporter.Add(new HtmlReporter(new StreamWriter(value)));
+                _compositeReporter.Add(GetReporterBasedOnExtension(value, new StreamWriter(value)));
             }
         }
 

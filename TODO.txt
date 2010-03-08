@@ -3,10 +3,7 @@ Required for final 2.0 release:
 - Support steps in other languages.
   - Try to merge satellite assemblies.
   - Or stop using them.
-- Create facade class so that running a scenario takes a single method call.
-- Create reporters for XML.
-- Finish HTML reporter.
-- Finish DefaultReporter so that it creates correct child reporter based on extension.
+- Add an optional attribute to allow specifying custom patterns.
 
 Later:
 

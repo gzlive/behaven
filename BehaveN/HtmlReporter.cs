@@ -208,6 +208,14 @@ namespace BehaveN
         }
 
         private static string CSS = @"<style type=""text/css"">
+/**
+ * SenCSS - Sensible Standards CSS framework
+ *
+ * Copyright (c) 2008-2010 Kilian Valkhof (kilianvalkhof.com)
+ * Visit sencss.kilianvalkhof.com for more information and changelogs.
+ * Licensed under the MIT license. http://www.opensource.org/licenses/mit-license.php
+ *
+ */
 html,body,div,span,object,iframe,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,var,fieldset,form,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,hgroup,menu,nav,section,time,mark,audio,video{vertical-align:baseline;margin:0;padding:0}
 body{background:#fff;color:#000;font:75%/1.5em Arial, Helvetica, ""Liberation sans"", ""Bitstream Vera Sans"", sans-serif;position:relative}
 textarea{font:100%/1.5em Arial, Helvetica, ""Liberation sans"", ""Bitstream Vera Sans"", sans-serif;border:1px solid #ccc;border-bottom-color:#eee;border-right-color:#eee;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-ms-box-sizing:border-box;width:100%;margin:0;padding:.29em 0}
@@ -261,7 +269,7 @@ label{cursor:pointer;display:block;height:auto;line-height:1.4em;width:100%;marg
 label input{background:0;border:0;height:1.5em;line-height:1.5em;width:auto;margin:0 .5em 0 0;padding:0}
 legend{font-size:1.1666em;font-weight:700;left:0;margin:0;padding:0}
 dt,strong,b{font-weight:700}
- .amp{font-family:Baskerville, ""Goudy Old Style"", Palatino, ""Book Antiqua"", ""URW Chancery L"", Gentium, serif;font-style:italic}
+.amp{font-family:Baskerville, ""Goudy Old Style"", Palatino, ""Book Antiqua"", ""URW Chancery L"", Gentium, serif;font-style:italic}
 .quo{font-family:Georgia, Gentium, ""Times New Roman"", Times, serif}
 .lquo{font-family:Georgia, Gentium, ""Times New Roman"", Times, serif;margin:0 0 0 -.55em}
 .introParagraphArticle:first-letter{float:left;font-size:3.2em;font-weight:700;line-height:1em;margin:0 0 -.2em;padding:.125em .1em 0 0}
@@ -279,7 +287,7 @@ dt,strong,b{font-weight:700}
 .horizontalForm label input{height:1em;line-height:1.5em;width:auto;margin:.25em .5em 0 0}
 .horizontalForm label.singleLine{clear:both;float:none;height:1.5em;width:100%;padding:0}
 #wrap {
-	width:960px;
+	width:760px;
 	margin:auto;
 	padding:1.5em 10px;
 }
