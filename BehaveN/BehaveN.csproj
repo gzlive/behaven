@@ -92,6 +92,7 @@
     <Compile Include="ValueParser.cs" />
     <Compile Include="ValueSetter.cs" />
     <Compile Include="VerificationException.cs" />
+    <Compile Include="Verify.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BehaveN.snk" />

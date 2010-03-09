@@ -174,5 +174,17 @@ namespace BehaveN
 
             return undefinedSteps;
         }
+
+        /// <summary>
+        /// Verifies this instance.
+        /// </summary>
+        public void Verify()
+        {
+            Execute();
+            Report();
+
+            if (!Passed)
+                throw new VerificationException(new Exception("Failed."));
+        }
     }
 }
