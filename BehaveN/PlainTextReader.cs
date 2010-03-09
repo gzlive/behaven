@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Resources;
 using System.Text.RegularExpressions;
 
 namespace BehaveN
@@ -11,7 +10,7 @@ namespace BehaveN
     /// </summary>
     public class PlainTextReader
     {
-        private Match m;
+        private Match _match;
 
         /// <summary>
         /// Reads the contents of the file to the specifications file.
@@ -37,13 +36,13 @@ namespace BehaveN
                 }
                 else
                 {
-                    m = _scenarioRegex.Match(line);
+                    _match = _scenarioRegex.Match(line);
                 }
 
-                if (m.Success)
+                if (_match.Success)
                 {
                     scenario = new Scenario();
-                    scenario.Name = m.Groups[1].Value;
+                    scenario.Name = _match.Groups[1].Value;
                     specificationsFile.Scenarios.Add(scenario);
                     stepType = StepType.Unknown;
                 }
@@ -58,9 +57,9 @@ namespace BehaveN
         {
             string line = lines[i];
 
-            if ((m = _featureRegex.Match(line)).Success) 
+            if ((_match = _featureRegex.Match(line)).Success) 
             {
-                specificationsFile.Title = m.Groups[1].Value;
+                specificationsFile.Title = _match.Groups[1].Value;
                 i++;
             }
 
@@ -70,9 +69,9 @@ namespace BehaveN
             {
                 line = lines[i];
 
-                m = _scenarioRegex.Match(line);
+                _match = _scenarioRegex.Match(line);
 
-                if (m.Success)
+                if (_match.Success)
                 {
                     break;
                 }
@@ -136,16 +135,16 @@ namespace BehaveN
 
         private void CompileRegexes(string text)
         {
+            var lm = new LanguageManager();
+
             string language = TextParser.DiscoverLanguage(text);
 
-            ResourceSet strings = Languages.Strings.ResourceManager.GetResourceSet(GetCultureInfo(language), true, true);
-
-            string feature = strings.GetString("Feature");
-            string scenario = strings.GetString("Scenario");
-            string given = strings.GetString("Given");
-            string when = strings.GetString("When");
-            string then = strings.GetString("Then");
-            string and = strings.GetString("And");
+            string feature = lm.GetString(language, "Feature");
+            string scenario = lm.GetString(language, "Scenario");
+            string given = lm.GetString(language, "Given");
+            string when = lm.GetString(language, "When");
+            string then = lm.GetString(language, "Then");
+            string and = lm.GetString(language, "And");
 
             _featureRegex = new Regex(string.Format(_featurePattern, feature), RegexOptions.IgnoreCase);
             _scenarioRegex = new Regex(string.Format(_scenarioPattern, scenario), RegexOptions.IgnoreCase);
@@ -174,8 +173,8 @@ namespace BehaveN
         private Regex _thenRegex;
         private Regex _andRegex;
 
-        private static readonly string _featurePattern = @"^\s*{0}\s*:\s*(.+)";
-        private static readonly string _scenarioPattern = @"^\s*{0}\s*\d*\s*:\s*(.+)";
+        private static readonly string _featurePattern = @"^\s*(?:{0})\s*:\s*(.+)";
+        private static readonly string _scenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.+)";
         private static readonly string _stepPattern = @"^\s*({0})\s+.+";
     }
 }

@@ -53,13 +53,9 @@
     <Compile Include="CompositeReporter.cs" />
     <Compile Include="DefaultReporter.cs" />
     <Compile Include="HtmlReporter.cs" />
+    <Compile Include="LanguageManager.cs" />
     <Compile Include="StepType.cs" />
     <Compile Include="StepCollection.cs" />
-    <Compile Include="Languages\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="ScenarioCollection.cs" />
     <Compile Include="SpecificationsFile.cs" />
     <Compile Include="Step.cs" />
@@ -101,11 +97,9 @@
     <None Include="BehaveN.snk" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Languages\Strings.lv.resx">
+    <EmbeddedResource Include="Languages\lv.resx">
     </EmbeddedResource>
-    <EmbeddedResource Include="Languages\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Languages\en.resx">
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

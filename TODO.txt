@@ -1,8 +1,5 @@
 Required for final 2.0 release:
 
-- Support steps in other languages.
-  - Try to merge satellite assemblies.
-  - Or stop using them.
 - Add an optional attribute to allow specifying custom patterns.
 
 Later:
