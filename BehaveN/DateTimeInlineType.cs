@@ -24,17 +24,32 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+
+    /// <summary>
+    /// Inline type for DateTime values.
+    /// </summary>
     internal class DateTimeInlineType : InlineType
     {
+        /// <summary>
+        /// Determines if this type handles the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>
+        /// true if this type handles the specified type
+        /// </returns>
         public override bool HandlesType(Type type)
         {
             return type == typeof(DateTime);
         }
 
+        /// <summary>
+        /// Gets the pattern for the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>The pattern.</returns>
         public override string GetPattern(Type type)
         {
             return @"\""?(?<{0}>.+?)\""?";

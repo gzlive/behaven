@@ -24,19 +24,34 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    /// <summary>
+    /// Inline type for enum values.
+    /// </summary>
     internal class EnumInlineType : InlineType
     {
+        /// <summary>
+        /// Determines if this type handles the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>
+        /// true if this type handles the specified type
+        /// </returns>
         public override bool HandlesType(Type type)
         {
             return type.IsEnum;
         }
 
+        /// <summary>
+        /// Gets the pattern for the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>The pattern.</returns>
         public override string GetPattern(Type type)
         {
             List<string> subPatterns = new List<string>();

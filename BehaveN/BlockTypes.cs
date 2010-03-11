@@ -24,24 +24,30 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Helper methods for working with BlockType objects.
     /// </summary>
     public static class BlockTypes
     {
+        /// <summary>
+        /// The cached list of discovered block types.
+        /// </summary>
+        private static readonly List<BlockType> blockTypes;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="BlockTypes"/> class.
+        /// </summary>
         static BlockTypes()
         {
             List<Type> types = new List<Type>(typeof(BlockTypes).Assembly.GetTypes());
             types = types.FindAll(delegate(Type t) { return typeof(BlockType).IsAssignableFrom(t) && !t.IsAbstract; });
             blockTypes = types.ConvertAll(delegate(Type t) { return (BlockType)Activator.CreateInstance(t); });
         }
-
-        private static List<BlockType> blockTypes;
 
         /// <summary>
         /// Gets the block types.
@@ -55,20 +61,22 @@ namespace BehaveN
         /// <summary>
         /// Gets the block type that handles the specified type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The value type.</param>
         /// <returns>The block type.</returns>
         public static BlockType GetBlockTypeFor(Type type)
         {
             if (type.IsByRef)
+            {
                 type = type.GetElementType();
+            }
 
             return blockTypes.Find(delegate(BlockType it) { return it.HandlesType(type); });
         }
 
         /// <summary>
-        /// Determines if a block type existis for the specific type.
+        /// Determines if a block type existis for the specified value type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The value type.</param>
         /// <returns>True if a block type exists.</returns>
         public static bool BlockTypeExistsFor(Type type)
         {

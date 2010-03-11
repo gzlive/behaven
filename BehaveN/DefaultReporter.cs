@@ -24,12 +24,12 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
     /// <summary>
     /// Represents the default reporter.
     /// </summary>
@@ -39,14 +39,18 @@ namespace BehaveN
     public class DefaultReporter : Reporter
     {
         /// <summary>
+        /// The composite reporter that holds the reporter that writes
+        /// to the console and the other reporter that writes to a file.
+        /// </summary>
+        private readonly CompositeReporter compositeReporter = new CompositeReporter();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultReporter"/> class.
         /// </summary>
         public DefaultReporter()
         {
-            _compositeReporter.Add(new PlainTextReporter(Console.Out));
+            this.compositeReporter.Add(new PlainTextReporter(Console.Out));
         }
-
-        private readonly CompositeReporter _compositeReporter = new CompositeReporter();
 
         /// <summary>
         /// Gets or sets the destination.
@@ -59,12 +63,12 @@ namespace BehaveN
             {
                 base.Destination = value;
 
-                if (_compositeReporter.Count > 1)
+                if (this.compositeReporter.Count > 1)
                 {
-                    _compositeReporter.RemoveAt(1);
+                    this.compositeReporter.RemoveAt(1);
                 }
 
-                _compositeReporter.Add(GetReporterBasedOnExtension(value, new StreamWriter(value)));
+                this.compositeReporter.Add(GetReporterBasedOnExtension(value, new StreamWriter(value)));
             }
         }
 
@@ -76,7 +80,7 @@ namespace BehaveN
         /// undefined steps.</remarks>
         public override void ReportSpecificationsFile(SpecificationsFile specificationsFile)
         {
-            _compositeReporter.ReportSpecificationsFile(specificationsFile);
+            this.compositeReporter.ReportSpecificationsFile(specificationsFile);
         }
 
         /// <summary>
@@ -85,7 +89,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            _compositeReporter.ReportScenario(scenario);
+            this.compositeReporter.ReportScenario(scenario);
         }
 
         /// <summary>
@@ -94,7 +98,7 @@ namespace BehaveN
         /// <param name="undefinedSteps">The undefined steps.</param>
         public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
-            _compositeReporter.ReportUndefinedSteps(undefinedSteps);
+            this.compositeReporter.ReportUndefinedSteps(undefinedSteps);
         }
     }
 }

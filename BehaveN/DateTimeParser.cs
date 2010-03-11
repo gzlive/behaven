@@ -24,20 +24,35 @@
 //
 // </copyright>
 
-using System;
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Utility class that parses DateTime strings.
     /// </summary>
     public static class DateTimeParser
     {
-        private static readonly Regex _inXUnits = new Regex(@"in\s+(\d+)\s+(.+?)s?\b", RegexOptions.IgnoreCase);
-        private static readonly Regex _XUnitsAgo = new Regex(@"(\d+)\s+(.+?)s?\s+ago", RegexOptions.IgnoreCase);
-        private static readonly Regex _XUnitsFromNow = new Regex(@"(\d+)\s+(.+?)s?\s+from\s+now", RegexOptions.IgnoreCase);
-        private static readonly Regex _XDaysFromToday = new Regex(@"(\d+)\s+days?\s+from\s+today", RegexOptions.IgnoreCase);
+        /// <summary>
+        /// Regex that matches "in 3 days".
+        /// </summary>
+        private static readonly Regex InXUnits = new Regex(@"in\s+(\d+)\s+(.+?)s?\b", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Regex that matches "3 days ago".
+        /// </summary>
+        private static readonly Regex XUnitsAgo = new Regex(@"(\d+)\s+(.+?)s?\s+ago", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Regex that matches "3 days from now".
+        /// </summary>
+        private static readonly Regex XUnitsFromNow = new Regex(@"(\d+)\s+(.+?)s?\s+from\s+now", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Regex that matches "3 days from today".
+        /// </summary>
+        private static readonly Regex XDaysFromToday = new Regex(@"(\d+)\s+days?\s+from\s+today", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Parses the date time.
@@ -88,36 +103,40 @@ namespace BehaveN
 
             Match m;
 
-            if ((m = _inXUnits.Match(value)).Success)
+            if ((m = InXUnits.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
+                
                 if (string.Equals(unit, "day", StringComparison.OrdinalIgnoreCase))
                 {
-                    return AddUnits(unit, DateTime.Today, x, defaultValue);
+                    return AddUnits(DateTime.Today, unit, x, defaultValue);
                 }
-                return AddUnits(unit, DateTime.Now, x, defaultValue);
+
+                return AddUnits(DateTime.Now, unit, x, defaultValue);
             }
 
-            if ((m = _XUnitsAgo.Match(value)).Success)
+            if ((m = XUnitsAgo.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
+                
                 if (string.Equals(unit, "day", StringComparison.OrdinalIgnoreCase))
                 {
-                    return AddUnits(unit, DateTime.Today, -x, defaultValue);
+                    return AddUnits(DateTime.Today, unit, -x, defaultValue);
                 }
-                return AddUnits(unit, DateTime.Now, -x, defaultValue);
+                
+                return AddUnits(DateTime.Now, unit, -x, defaultValue);
             }
 
-            if ((m = _XUnitsFromNow.Match(value)).Success)
+            if ((m = XUnitsFromNow.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
-                return AddUnits(unit, DateTime.Now, x, defaultValue);
+                return AddUnits(DateTime.Now, unit, x, defaultValue);
             }
 
-            if ((m = _XDaysFromToday.Match(value)).Success)
+            if ((m = XDaysFromToday.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
                 return DateTime.Today.AddDays(x);
@@ -126,7 +145,15 @@ namespace BehaveN
             return defaultValue;
         }
 
-        private static DateTime AddUnits(string unit, DateTime dt, int x, DateTime defaultValue)
+        /// <summary>
+        /// Adds the specified units to the a DateTime.
+        /// </summary>
+        /// <param name="dt">The DateTime to add to.</param>
+        /// <param name="unit">The unit type.</param>
+        /// <param name="x">The number of units to add.</param>
+        /// <param name="defaultValue">The default value in case the units is invalid.</param>
+        /// <returns>The new DateTime.</returns>
+        private static DateTime AddUnits(DateTime dt, string unit, int x, DateTime defaultValue)
         {
             if (string.Equals(unit, "second", StringComparison.OrdinalIgnoreCase))
             {

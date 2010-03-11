@@ -24,11 +24,11 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a block parameter type.
     /// </summary>
@@ -37,7 +37,7 @@ namespace BehaveN
         /// <summary>
         /// Determines if this type handles the specified type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The type that can potentially be handled by this block type.</param>
         /// <returns>true if this type handles the specified type</returns>
         public abstract bool HandlesType(Type type);
 
@@ -49,9 +49,17 @@ namespace BehaveN
         /// <returns>The real object.</returns>
         public abstract object GetObject(Type type, IBlock block);
 
+        /// <summary>
+        /// Gets the type of the collection item.
+        /// </summary>
+        /// <param name="type">The type of items contained by the collection.</param>
+        /// <returns>The collection item type.</returns>
         internal static Type GetCollectionItemType(Type type)
         {
-            if (!type.IsGenericType) return null;
+            if (!type.IsGenericType)
+            {
+                return null;
+            }
 
             Type genericType = type.GetGenericTypeDefinition();
 

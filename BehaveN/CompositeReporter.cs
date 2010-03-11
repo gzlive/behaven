@@ -24,16 +24,28 @@
 //
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a reporter that can report to one or more child reporters.
     /// </summary>
     public class CompositeReporter : Reporter
     {
-        List<Reporter> _children = new List<Reporter>();
+        /// <summary>
+        /// The list of child reporters.
+        /// </summary>
+        private readonly List<Reporter> children = new List<Reporter>();
+
+        /// <summary>
+        /// Gets the count of reporters.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count
+        {
+            get { return this.children.Count; }
+        }
 
         /// <summary>
         /// Reports the specifications file.
@@ -43,7 +55,7 @@ namespace BehaveN
         /// undefined steps.</remarks>
         public override void ReportSpecificationsFile(SpecificationsFile specificationsFile)
         {
-            foreach (var reporter in _children)
+            foreach (var reporter in this.children)
             {
                 reporter.ReportSpecificationsFile(specificationsFile);
             }
@@ -55,7 +67,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            foreach (var reporter in _children)
+            foreach (var reporter in this.children)
             {
                 reporter.ReportScenario(scenario);
             }
@@ -67,7 +79,7 @@ namespace BehaveN
         /// <param name="undefinedSteps">The undefined steps.</param>
         public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
-            foreach (var reporter in _children)
+            foreach (var reporter in this.children)
             {
                 reporter.ReportUndefinedSteps(undefinedSteps);
             }
@@ -79,7 +91,7 @@ namespace BehaveN
         /// <param name="reporter">The reporter.</param>
         public void Add(Reporter reporter)
         {
-            _children.Add(reporter);
+            this.children.Add(reporter);
         }
 
         /// <summary>
@@ -88,13 +100,7 @@ namespace BehaveN
         /// <param name="index">The index.</param>
         public void RemoveAt(int index)
         {
-            _children.RemoveAt(index);
+            this.children.RemoveAt(index);
         }
-
-        /// <summary>
-        /// Gets the count of reporters.
-        /// </summary>
-        /// <value>The count.</value>
-        public int Count { get { return _children.Count; } }
     }
 }

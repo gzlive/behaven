@@ -24,17 +24,33 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+
+    /// <summary>
+    /// Block type for form values.
+    /// </summary>
     internal class FormBlockType : BlockType
     {
+        /// <summary>
+        /// Determines if this type handles the specified type.
+        /// </summary>
+        /// <param name="type">The type that can potentially be handled by this block type.</param>
+        /// <returns>
+        /// true if this type handles the specified type
+        /// </returns>
         public override bool HandlesType(Type type)
         {
             return GetCollectionItemType(type) == null;
         }
 
+        /// <summary>
+        /// Converts a block into a real object.
+        /// </summary>
+        /// <param name="type">The type of object to convert to.</param>
+        /// <param name="block">The block to convert.</param>
+        /// <returns>The real object.</returns>
         public override object GetObject(Type type, IBlock block)
         {
             return block.ConvertTo(type);

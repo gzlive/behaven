@@ -24,20 +24,89 @@
 //
 // </copyright>
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Represents a form.
     /// </summary>
     public class Form : IBlock
     {
+        /// <summary>
+        /// Regex that matches lines in a form.
+        /// </summary>
+        private static readonly Regex FormRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// The list of labels in this form.
+        /// </summary>
+        private readonly List<string> labels = new List<string>();
+
+        /// <summary>
+        /// The list of values in this form.
+        /// </summary>
+        private readonly List<string> values = new List<string>();
+
+        /// <summary>
+        /// Gets the size of the form.
+        /// </summary>
+        /// <value>The size of the form.</value>
+        public int Size
+        {
+            get { return this.labels.Count; }
+        }
+
+        /// <summary>
+        /// Determines if the next line is the beginning of a form.
+        /// </summary>
+        /// <param name="lines">The lines.</param>
+        /// <param name="currentIndex">Index of the current line.</param>
+        /// <returns><c>true</c> if the next line is the beginning of a form; otherwise <c>false</c></returns>
+        public static bool NextLineIsForm(List<string> lines, int currentIndex)
+        {
+            return (currentIndex + 1) < lines.Count && FormRegex.IsMatch(lines[currentIndex + 1]);
+        }
+
+        /// <summary>
+        /// Parses the form.
+        /// </summary>
+        /// <param name="text">The text containing the form.</param>
+        /// <returns>A new <see cref="Form">Form</see> object.</returns>
+        public static Form Parse(string text)
+        {
+            return ParseForm(TextParser.GetLines(text), 0);
+        }
+
+        /// <summary>
+        /// Parses the form.
+        /// </summary>
+        /// <param name="lines">The lines.</param>
+        /// <param name="i">The current line index.</param>
+        /// <returns>A new <see cref="Form">Form</see> object.</returns>
+        public static Form ParseForm(List<string> lines, int i)
+        {
+            Form form = new Form();
+
+            Match m;
+
+            while (i < lines.Count && (m = FormRegex.Match(lines[i])).Success)
+            {
+                string label = m.Groups[1].Value;
+                string value = m.Groups[2].Value;
+
+                form.Add(label, value);
+
+                i++;
+            }
+
+            return form;
+        }
+
         /// <summary>
         /// Converts the block into an object.
         /// </summary>
@@ -45,7 +114,10 @@ namespace BehaveN
         /// <returns>The new object.</returns>
         public object ConvertTo(Type type)
         {
-            if (type == null) return null;
+            if (type == null)
+            {
+                return null;
+            }
 
             object theObject = Activator.CreateInstance(type);
 
@@ -77,16 +149,16 @@ namespace BehaveN
         {
             int width = 0;
 
-            foreach (string label in _labels)
+            foreach (string label in this.labels)
             {
                 width = Math.Max(width, label.Length);
             }
 
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < _labels.Count; i++)
+            for (int i = 0; i < this.labels.Count; i++)
             {
-                sb.AppendFormat("    : {0} : {1}", _labels[i].PadLeft(width), _values[i]);
+                sb.AppendFormat("    : {0} : {1}", this.labels[i].PadLeft(width), this.values[i]);
                 sb.AppendLine();
             }
 
@@ -97,15 +169,16 @@ namespace BehaveN
         /// Checks that all of the values are on the specified object.
         /// </summary>
         /// <param name="actual">The object to check against.</param>
+        /// <returns>True if all checks pass.</returns>
         public bool Check(object actual)
         {
             bool passed = true;
 
             Type type = actual.GetType();
 
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < this.Size; i++)
             {
-                string label = GetLabel(i);
+                string label = this.GetLabel(i);
 
                 string propertyName = NameComparer.NormalizeName(label);
 
@@ -114,17 +187,17 @@ namespace BehaveN
                 if (pi != null)
                 {
                     object actualValue = pi.GetValue(actual, null);
-                    object expectedValue = ValueParser.ParseValue(GetValue(i), pi.PropertyType);
+                    object expectedValue = ValueParser.ParseValue(this.GetValue(i), pi.PropertyType);
 
                     if (!object.Equals(actualValue, expectedValue))
                     {
-                        _values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
+                        this.values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
                         passed = false;
                     }
                 }
                 else
                 {
-                    _values[i] = string.Format("{0} (unknown)", GetValue(i));
+                    this.values[i] = string.Format("{0} (unknown)", this.GetValue(i));
                     passed = false;
                 }
             }
@@ -135,7 +208,7 @@ namespace BehaveN
         /// <summary>
         /// Gets the suggested type for the parameter.
         /// </summary>
-        /// <returns>The type.</returns>
+        /// <returns>The suggested type.</returns>
         public string GetSuggestedParameterType()
         {
             return "Foo";
@@ -144,7 +217,7 @@ namespace BehaveN
         /// <summary>
         /// Gets the suggested name for the parameter.
         /// </summary>
-        /// <returns>The name.</returns>
+        /// <returns>The suggested name.</returns>
         public string GetSuggestedParameterName()
         {
             return "foo";
@@ -166,43 +239,6 @@ namespace BehaveN
             }
         }
 
-        private static readonly Regex _formRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
-
-        /// <summary>
-        /// Parses the form.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <returns>A new <see cref="Form">Form</see> object.</returns>
-        public static Form Parse(string text)
-        {
-            return ParseForm(TextParser.GetLines(text), 0);
-        }
-
-        /// <summary>
-        /// Parses the form.
-        /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="i">The current line index.</param>
-        /// <returns>A new <see cref="Form">Form</see> object.</returns>
-        public static Form ParseForm(List<string> lines, int i)
-        {
-            Form form = new Form();
-
-            Match m;
-
-            while (i < lines.Count && (m = _formRegex.Match(lines[i])).Success)
-            {
-                string label = m.Groups[1].Value;
-                string value = m.Groups[2].Value;
-
-                form.Add(label, value);
-
-                i++;
-            }
-
-            return form;
-        }
-
         /// <summary>
         /// Adds the specified label and value to the form.
         /// </summary>
@@ -210,20 +246,8 @@ namespace BehaveN
         /// <param name="value">The value.</param>
         public void Add(string label, string value)
         {
-            _labels.Add(label.Trim());
-            _values.Add(value.Trim());
-        }
-
-        private List<string> _labels = new List<string>();
-        private List<string> _values = new List<string>();
-
-        /// <summary>
-        /// Gets the size.
-        /// </summary>
-        /// <value>The size.</value>
-        public int Size
-        {
-            get { return _labels.Count; }
+            this.labels.Add(label.Trim());
+            this.values.Add(value.Trim());
         }
 
         /// <summary>
@@ -233,7 +257,7 @@ namespace BehaveN
         /// <returns>The label.</returns>
         public string GetLabel(int index)
         {
-            return _labels[index];
+            return this.labels[index];
         }
 
         /// <summary>
@@ -243,7 +267,7 @@ namespace BehaveN
         /// <returns>The value.</returns>
         public string GetValue(int index)
         {
-            return _values[index];
+            return this.values[index];
         }
 
         /// <summary>
@@ -253,23 +277,18 @@ namespace BehaveN
         /// <returns>The value.</returns>
         public string GetValue(string label)
         {
-            return GetValue(_labels.FindIndex(delegate(string s)
+            return this.GetValue(this.labels.FindIndex(delegate(string s)
             {
                 return string.Equals(s, label, StringComparison.OrdinalIgnoreCase);
             }));
         }
 
         /// <summary>
-        /// Determines if the next line is the beginning of a form.
+        /// Converts an object into a form.
         /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="currentIndex">Index of the current line.</param>
-        /// <returns><c>true</c> if the next line is the beginning of a form; otherwise <c>false</c></returns>
-        public static bool NextLineIsForm(List<string> lines, int currentIndex)
-        {
-            return (currentIndex + 1) < lines.Count && _formRegex.IsMatch(lines[currentIndex + 1]);
-        }
-
+        /// <param name="item">The object to convert.</param>
+        /// <param name="itemType">Type of the object to convert.</param>
+        /// <returns>A new Form object.</returns>
         internal static IBlock FromObject(object item, Type itemType)
         {
             Form form = new Form();
