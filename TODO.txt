@@ -1,9 +1,3 @@
-Required for final 2.0 release:
-
-- Add an optional attribute to allow specifying custom patterns.
-
-Later:
-
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.
   - Used for lists of primitive types.

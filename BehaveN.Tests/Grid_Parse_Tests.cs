@@ -7,6 +7,7 @@ namespace BehaveN.Tests
     public class Grid_Parse_Tests
     {
         [Test]
+        [Description("foo")]
         public void it_is_able_to_parse_a_grid_with_only_headers()
         {
             var grid = Grid.Parse("| foo | bar | baz |");

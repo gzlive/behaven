@@ -16,7 +16,12 @@ namespace BehaveN
         /// <returns>A regular expression pattern.</returns>
         public static string GetPattern(MethodInfo methodInfo)
         {
-            List<string> splits = new List<string>(NameParser.Parse(methodInfo).Split());
+            return GetPattern(methodInfo.Name, methodInfo);
+        }
+
+        internal static string GetPattern(string text, MethodInfo methodInfo)
+        {
+            List<string> splits = new List<string>(NameParser.Parse(text).Split());
 
             int i = 1;
 
@@ -39,6 +44,7 @@ namespace BehaveN
 
             return string.Format(@"\s*{0}\s*", string.Join(@"\s+", splits.ToArray()));
         }
+
 
         private static string GetPatternForParameter(ParameterInfo parameterInfo)
         {

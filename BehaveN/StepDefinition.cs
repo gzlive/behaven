@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -20,12 +21,18 @@ namespace BehaveN
         {
             _target = target;
             _methodInfo = methodInfo;
-            _regex = new Regex("^" + PatternMaker.GetPattern(_methodInfo) + "$", RegexOptions.IgnoreCase);
+            _regexes = new List<Regex>();
+            _regexes.Add(new Regex("^" + PatternMaker.GetPattern(_methodInfo) + "$", RegexOptions.IgnoreCase));
+
+            foreach (StepAttribute stepAttribute in Attribute.GetCustomAttributes(_methodInfo, typeof(StepAttribute)))
+            {
+                _regexes.Add(new Regex("^" + PatternMaker.GetPattern(stepAttribute.Text, _methodInfo) + "$", RegexOptions.IgnoreCase));
+            }
         }
 
         private object _target;
         private MethodInfo _methodInfo;
-        private Regex _regex;
+        private List<Regex> _regexes;
 
         internal bool TryExecute(Step step)
         {
@@ -67,7 +74,16 @@ namespace BehaveN
         private Match GetMatch(Step step)
         {
             string text = firstWordReplacer.Replace(step.Text, step.Type.ToString());
-            return _regex.Match(text);
+
+            foreach (var regex in _regexes)
+            {
+                Match m = regex.Match(text);
+
+                if (m.Success)
+                    return m;
+            }
+
+            return Match.Empty;
         }
 
         private object[] GetParametersForMethodFromMatch(Match match, IBlock block)
@@ -132,7 +148,7 @@ namespace BehaveN
 
                             if (!object.Equals(actualValue, expectedValue))
                             {
-                                Match m = _regex.Match(step.Text);
+                                Match m = GetMatch(step);
                                 Group group = m.Groups[pi.Name];
                                 step.Text = step.Text.Substring(0, group.Index)
                                               + string.Format("{0} (was {1})", expectedValue, actualValue)

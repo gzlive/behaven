@@ -20,7 +20,8 @@ namespace BehaveN
         /// <returns><c>true</c> if the method name starts with given, when, or then; otherwise <c>false</c></returns>
         public static bool IsStepDefinition(MethodInfo methodInfo)
         {
-            return _stepDefinitionTester.IsMatch(methodInfo.Name);
+            return _stepDefinitionTester.IsMatch(methodInfo.Name)
+                || Attribute.IsDefined(methodInfo, typeof(StepAttribute));
         }
 
         /// <summary>
