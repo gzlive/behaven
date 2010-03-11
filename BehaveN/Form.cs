@@ -25,11 +25,16 @@ namespace BehaveN
 
             for (int i = 0; i < this.Size; i++)
             {
-                ValueSetter setter = ValueSetter.GetValueSetter(theObject, this.GetLabel(i));
+                string label = this.GetLabel(i);
+                ValueSetter setter = ValueSetter.GetValueSetter(theObject, label);
 
                 if (setter.CanSetValue())
                 {
                     setter.SetFormattedValue(this.GetValue(i));
+                }
+                else
+                {
+                    throw new Exception(string.Format("Could not set {0} on type {1}.", label, type.FullName));
                 }
             }
 
@@ -90,6 +95,11 @@ namespace BehaveN
                         _values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
                         passed = false;
                     }
+                }
+                else
+                {
+                    _values[i] = string.Format("{0} (unknown)", GetValue(i));
+                    passed = false;
                 }
             }
 

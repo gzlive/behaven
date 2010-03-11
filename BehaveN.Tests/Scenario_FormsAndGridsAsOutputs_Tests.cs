@@ -32,6 +32,33 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_fails_when_the_form_has_an_unknown_property()
+        {
+            ExecuteText("Scenario: Form passed",
+                        "Then the object should look like this",
+                        "  :  String Property : foo",
+                        "  :     Int Property : 1",
+                        "  : Unknown Property : xxx");
+
+            TheScenario.Passed.Should().Be.False();
+            ((Form)TheScenario.Steps[0].Block).GetValue(2).Should().Be("xxx (unknown)");
+        }
+
+        [Test]
+        public void it_fails_when_the_grid_has_an_unknown_property()
+        {
+            ExecuteText("Scenario: Grid failed",
+                        "Then the objects should look like this",
+                        "  | String Property | Int Property | Unknown Property |",
+                        "  |             foo |            1 |              xxx |",
+                        "  |             bar |            2 |              xxx |");
+
+            TheScenario.Passed.Should().Be.False();
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 2).Should().Be("xxx (unknown)");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 2).Should().Be("xxx (unknown)");
+        }
+
+        [Test]
         public void it_shows_all_the_values_that_are_not_correct_on_the_grid()
         {
             ExecuteText("Scenario: Grid failed",

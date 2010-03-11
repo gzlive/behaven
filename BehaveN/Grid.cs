@@ -106,11 +106,16 @@ namespace BehaveN
 
                 for (int j = 0; j < this.ColumnCount; j++)
                 {
-                    ValueSetter setter = ValueSetter.GetValueSetter(item, this.GetHeader(j));
+                    string header = this.GetHeader(j);
+                    ValueSetter setter = ValueSetter.GetValueSetter(item, header);
 
                     if (setter.CanSetValue())
                     {
                         setter.SetFormattedValue(this.GetValue(i, j));
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("Could not set {0} on type {1}.", header, type.FullName));
                     }
                 }
 
@@ -266,6 +271,11 @@ namespace BehaveN
                                 _rows[i][j] = string.Format("{0} (was {1})", expectedValue, actualValue);
                                 passed = false;
                             }
+                        }
+                        else
+                        {
+                            _rows[i][j] = string.Format("{0} (unknown)", GetValue(i, j));
+                            passed = false;
                         }
                     }
                 }

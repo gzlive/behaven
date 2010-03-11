@@ -47,6 +47,32 @@ namespace BehaveN.Tests
             _objects[1].IntProperty.Should().Be(2);
         }
 
+        [Test]
+        public void it_fails_when_a_form_property_cannot_be_set()
+        {
+            ExecuteText("Scenario: Form",
+                        "Given an object",
+                        "  :  String Property : foo",
+                        "  :     Int Property : 1",
+                        "  : Missing Property : xxx");
+
+            TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
+            _object.Should().Be.Null();
+        }
+
+        [Test]
+        public void it_fails_when_a_grid_property_cannot_be_set()
+        {
+            ExecuteText("Scenario: Grid",
+                        "Given a list of objects",
+                        "  | String Property | Int Property | Unknown Property |",
+                        "  |             foo |            1 |              xxx |",
+                        "  |             bar |            2 |              xxx |");
+
+            TheScenario.Steps[0].Result.Should().Be(StepResult.Failed);
+            _objects.Should().Be.Null();
+        }
+
         public void given_an_object(MyObject theObject)
         {
             _object = theObject;
