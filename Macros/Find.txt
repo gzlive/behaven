@@ -1,0 +1,73 @@
+Imports System
+Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
+Imports EnvDTE
+Imports EnvDTE80
+Imports EnvDTE90
+Imports System.Diagnostics
+
+Public Module Find
+
+    Public Sub FindSteps()
+        Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
+        Dim text As String = GetCurrentLine(sel)
+        If Not String.IsNullOrEmpty(text) Then
+            text = Regex.Replace(text, "\(.+$", "")
+            text = Regex.Replace(text, "arg\d+", "*")
+            Dim words As New List(Of String)(text.Split("_"c))
+            Dim searchText As String = String.Join(" ", words.GetRange(1, words.Count - 1).ToArray())
+            FindInFiles(searchText, "*.txt;*.cs")
+        End If
+    End Sub
+
+    Public Sub FindStepDefinition()
+        Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
+        Dim text As String = GetCurrentLine(sel)
+        If Not String.IsNullOrEmpty(text) Then
+            text = Regex.Replace(text, "\d+", "*")
+            Dim words As New List(Of String)(text.Split())
+            Dim searchText As String = String.Join("_", words.GetRange(1, words.Count - 1).ToArray())
+            FindInFiles(searchText, "*.cs")
+        End If
+    End Sub
+
+    Private Function GetCurrentLine(ByVal sel As EnvDTE.TextSelection) As String
+        If sel Is Nothing Then
+            Return ""
+        End If
+        sel.SelectLine()
+        Return sel.Text.Trim()
+    End Function
+
+    Private Function GetSelectionText(ByVal sel As EnvDTE.TextSelection) As String
+        If sel Is Nothing Then
+            Return ""
+        End If
+        If sel.Text.Length = 0 Then
+            DTE.ExecuteCommand("Edit.SelectCurrentWord")
+        End If
+        If sel.Text.Length <= 2 Then
+            Return ""
+        End If
+        Return sel.Text
+    End Function
+
+    Private Sub FindInFiles(ByVal searchText As String, ByVal fileType As String)
+        DTE.ExecuteCommand("Edit.FindinFiles")
+        DTE.Find.FindWhat = searchText
+        DTE.Find.Target = vsFindTarget.vsFindTargetFiles
+        DTE.Find.MatchCase = False
+        DTE.Find.MatchWholeWord = False
+        DTE.Find.MatchInHiddenText = True
+        DTE.Find.PatternSyntax = vsFindPatternSyntax.vsFindPatternSyntaxWildcards
+        DTE.Find.SearchPath = "Entire Solution"
+        DTE.Find.SearchSubfolders = True
+        DTE.Find.FilesOfType = fileType
+        DTE.Find.ResultsLocation = vsFindResultsLocation.vsFindResults1
+        DTE.Find.Action = vsFindAction.vsFindActionFindAll
+        DTE.Find.Execute()
+        DTE.Windows.Item("{CF2DDC32-8CAD-11D2-9302-005345000000}").Close() 'Find and Replace
+    End Sub
+
+End Module
+
