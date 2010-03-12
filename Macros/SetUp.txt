@@ -1,0 +1,38 @@
+Imports System
+Imports EnvDTE
+Imports EnvDTE80
+Imports EnvDTE90
+Imports System.Diagnostics
+Imports Microsoft.VisualStudio.CommandBars
+
+Public Module SetUp
+
+    Public Sub CreateMenu()
+        Dim cmdBars As CommandBars = DTE.CommandBars
+        Dim menuBar As CommandBar = cmdBars.Item("MenuBar")
+        Dim toolsBar As CommandBar = cmdBars.Item("Tools")
+
+        Dim position As Integer = DirectCast(toolsBar.Parent, CommandBarControl).Index + 1
+
+        Dim findStepDefinitionCmd As Command = DTE.Commands.Item("Macros.BehaveN.Find.FindStepDefinition")
+        Dim findStepsCmd As Command = DTE.Commands.Item("Macros.BehaveN.Find.FindSteps")
+
+        Try
+            DTE.Commands.RemoveCommandBar(DTE.CommandBars.Item("BehaveN"))
+            menuBar.Controls.Item("BehaveN").Delete(False)
+        Catch ex As Exception
+        End Try
+
+        Dim behavenBar As CommandBar = DTE.Commands.AddCommandBar("BehaveN", vsCommandBarType.vsCommandBarTypeMenu, menuBar, position)
+
+        Dim behavenBarPopup As CommandBarPopup = behavenBar.Parent
+        behavenBarPopup.Caption = "BehaveN"
+
+        Dim findStepDefinitionButton As CommandBarButton = findStepDefinitionCmd.AddControl(behavenBar, behavenBar.Controls.Count + 1)
+        findStepDefinitionButton.Caption = "Find Step Definition"
+
+        Dim findStepsButton As CommandBarButton = findStepsCmd.AddControl(behavenBar, behavenBar.Controls.Count + 1)
+        findStepsButton.Caption = "Find Steps"
+
+    End Sub
+End Module

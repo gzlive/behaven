@@ -12,7 +12,7 @@ Public Module Find
         Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
         Dim text As String = GetCurrentLine(sel)
         If Not String.IsNullOrEmpty(text) Then
-            text = Regex.Replace(text, "\d+", "*")
+            text = Regex.Replace(text, "(-?\d+)|("".*"")", "*")
             Dim words As New List(Of String)(text.Split())
             Dim searchText As String = String.Join("_", words.GetRange(1, words.Count - 1).ToArray())
             FindInFiles(searchText, "*.cs")
@@ -76,4 +76,3 @@ Public Module Find
     End Sub
 
 End Module
-
