@@ -8,18 +8,6 @@ Imports System.Diagnostics
 
 Public Module Find
 
-    Public Sub FindSteps()
-        Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
-        Dim text As String = GetCurrentLine(sel)
-        If Not String.IsNullOrEmpty(text) Then
-            text = Regex.Replace(text, "\(.+$", "")
-            text = Regex.Replace(text, "arg\d+", "*")
-            Dim words As New List(Of String)(text.Split("_"c))
-            Dim searchText As String = String.Join(" ", words.GetRange(1, words.Count - 1).ToArray())
-            FindInFiles(searchText, "*.txt;*.cs")
-        End If
-    End Sub
-
     Public Sub FindStepDefinition()
         Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
         Dim text As String = GetCurrentLine(sel)
@@ -31,15 +19,33 @@ Public Module Find
         End If
     End Sub
 
+    Public Sub FindSteps()
+        Dim sel As EnvDTE.TextSelection = DirectCast(DTE.ActiveDocument.Selection, EnvDTE.TextSelection)
+        Dim text As String = GetCurrentLine(sel)
+        If Not String.IsNullOrEmpty(text) Then
+            text = Regex.Replace(text, "\(.+$", "")
+            text = Regex.Replace(text, "arg\d+", "*")
+            Dim words As New List(Of String)(SplitMethodName(text))
+            Dim searchText As String = String.Join(" ", words.GetRange(1, words.Count - 1).ToArray())
+            FindInFiles(searchText, "*.txt;*.cs")
+        End If
+    End Sub
+
+    Private Function SplitMethodName(ByVal text As String) As String()
+        Return Regex.Split(text, "_+")
+    End Function
+
     Private Function GetCurrentLine(ByVal sel As EnvDTE.TextSelection) As String
         If sel Is Nothing Then
             Return ""
         End If
-        sel.SelectLine()
+        If sel.Text.Length = 0 Then
+            sel.SelectLine()
+        End If
         Return sel.Text.Trim()
     End Function
 
-    Private Function GetSelectionText(ByVal sel As EnvDTE.TextSelection) As String
+    Private Function GetCurrentWord(ByVal sel As EnvDTE.TextSelection) As String
         If sel Is Nothing Then
             Return ""
         End If
@@ -52,9 +58,9 @@ Public Module Find
         Return sel.Text
     End Function
 
-    Private Sub FindInFiles(ByVal searchText As String, ByVal fileType As String)
+    Private Sub FindInFiles(ByVal findWhat As String, ByVal filesOfType As String)
         DTE.ExecuteCommand("Edit.FindinFiles")
-        DTE.Find.FindWhat = searchText
+        DTE.Find.FindWhat = findWhat
         DTE.Find.Target = vsFindTarget.vsFindTargetFiles
         DTE.Find.MatchCase = False
         DTE.Find.MatchWholeWord = False
@@ -62,7 +68,7 @@ Public Module Find
         DTE.Find.PatternSyntax = vsFindPatternSyntax.vsFindPatternSyntaxWildcards
         DTE.Find.SearchPath = "Entire Solution"
         DTE.Find.SearchSubfolders = True
-        DTE.Find.FilesOfType = fileType
+        DTE.Find.FilesOfType = filesOfType
         DTE.Find.ResultsLocation = vsFindResultsLocation.vsFindResults1
         DTE.Find.Action = vsFindAction.vsFindActionFindAll
         DTE.Find.Execute()
