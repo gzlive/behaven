@@ -95,11 +95,14 @@ namespace BehaveN
             return GetMatch(step).Success;
         }
 
-        private Regex firstWordReplacer = new Regex(@"^\S+");
+        private static readonly Regex firstWordReplacer = new Regex(@"^\S+");
+        private static readonly Regex punctuationRemover = new Regex(@"(?<=\p{L})\p{P}");
 
         private Match GetMatch(Step step)
         {
             string text = firstWordReplacer.Replace(step.Text, step.Type.ToString());
+
+            text = punctuationRemover.Replace(text, "");
 
             foreach (var regex in _regexes)
             {
