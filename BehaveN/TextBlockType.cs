@@ -1,4 +1,4 @@
-// <copyright file="FormBlockType.cs" company="Jason Diamond">
+// <copyright file="TextBlockType.cs" company="Jason Diamond">
 //
 // Copyright (c) 2009-2010 Jason Diamond
 //
@@ -36,9 +36,9 @@ namespace BehaveN
     /// <summary>
     /// Block type for form values.
     /// </summary>
-    internal class FormBlockType : BlockType
+    internal class TextBlockType : BlockType
     {
-        private static readonly Regex FormRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
+        private static readonly Regex TextRegex = new Regex(@"^\s*> (.+)\s*");
 
         /// <summary>
         /// Determines if this type handles the specified type.
@@ -49,7 +49,7 @@ namespace BehaveN
         /// </returns>
         public override bool HandlesType(Type type)
         {
-            return GetCollectionItemType(type) == null && type != typeof(StringBuilder);
+            return type == typeof(StringBuilder);
         }
 
         /// <summary>
@@ -70,29 +70,31 @@ namespace BehaveN
         /// <returns>True or false.</returns>
         public override bool LineIsPartOfBlock(string line)
         {
-            return FormRegex.IsMatch(line);
+            return TextRegex.IsMatch(line);
         }
 
         public override IBlock Parse(string text)
         {
-            var form = new Form();
+            var sb = new StringBuilder();
 
             Match m;
 
             List<string> lines = TextParser.GetLines(text);
             int i = 0;
 
-            while (i < lines.Count && (m = FormRegex.Match(lines[i])).Success)
+            while (i < lines.Count && (m = TextRegex.Match(lines[i])).Success)
             {
-                string label = m.Groups[1].Value;
-                string value = m.Groups[2].Value;
+                if (i > 0)
+                {
+                    sb.AppendLine();
+                }
 
-                form.Add(label, value);
+                sb.Append(m.Groups[1].Value);
 
                 i++;
             }
 
-            return form;
+            return new Text(sb);
         }
     }
 }

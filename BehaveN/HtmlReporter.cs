@@ -26,15 +26,19 @@
 //
 // </copyright>
 
-using System.Collections.Generic;
-using System.IO;
-
 namespace BehaveN
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     /// <summary>
     /// Represents a reporter that outputs HTML.
     /// </summary>
-    public class HtmlReporter : Reporter, IBlockReporter<Form>, IBlockReporter<Grid>
+    public class HtmlReporter
+        : Reporter,
+          IBlockReporter<Form>,
+          IBlockReporter<Grid>,
+          IBlockReporter<Text>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReporter"/> class.
@@ -233,6 +237,18 @@ namespace BehaveN
             }
 
             _writer.WriteLine("</table>");
+        }
+
+        void IBlockReporter<Text>.ReportBlock(Text block)
+        {
+            _writer.WriteLine("<blockquote>");
+
+            foreach (var line in TextParser.GetLines(block.StringBuilder.ToString()))
+            {
+                _writer.WriteLine(line);
+            }
+
+            _writer.WriteLine("</blockquote>");
         }
 
         private static string CSS = @"<style type=""text/css"">

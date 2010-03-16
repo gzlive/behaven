@@ -1,8 +1,5 @@
+- Add wildcard support to tool commands.
+- Add support for generating fixtures for other frameworks.
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.
   - Used for lists of primitive types.
-- Add new "text" block type.
-  - Parameter type should be StringBuilder.
-  - Leading ">" could be indicator.
-  - Or quote character.
-    - No need to end quote on each line.

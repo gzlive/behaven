@@ -47,6 +47,8 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Text.cs" />
+    <Compile Include="TextBlockType.cs" />
     <Compile Include="StepAttribute.cs" />
     <Compile Include="IBlockReporter.cs" />
     <Compile Include="BlockType.cs" />
