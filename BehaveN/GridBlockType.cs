@@ -26,12 +26,17 @@
 //
 // </copyright>
 
-using System;
+using System.Collections.Generic;
 
 namespace BehaveN
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     internal class GridBlockType : BlockType
     {
+        private static readonly Regex GridRegex = new Regex(@"^\s*\|", RegexOptions.IgnoreCase);
+
         public override bool HandlesType(Type type)
         {
             return type != typeof(string) && GetCollectionItemType(type) != null;
@@ -40,6 +45,52 @@ namespace BehaveN
         public override object GetObject(Type type, IBlock block)
         {
             return block.ConvertTo(type);
+        }
+
+        public override bool LineIsPartOfBlock(string line)
+        {
+            return GridRegex.IsMatch(line);
+        }
+
+        public override IBlock Parse(string text)
+        {
+            var grid = new Grid();
+
+            List<string> lines = TextParser.GetLines(text);
+            int i = 0;
+
+            List<string> headers = SplitCells(lines[i]);
+            grid.SetHeaders(headers);
+
+            i++;
+
+            while (i < lines.Count && GridRegex.IsMatch(lines[i]))
+            {
+                grid.AddValues(SplitCells(lines[i]));
+                i++;
+            }
+
+            return grid;
+        }
+
+        /// <summary>
+        /// Splits the cells in a line.
+        /// </summary>
+        /// <param name="line">The line of text to split.</param>
+        /// <returns>A list of values in the cells.</returns>
+        private static List<string> SplitCells(string line)
+        {
+            line = line.Trim();
+            line = line.Trim('|');
+
+            List<string> cells = new List<string>();
+
+            foreach (string cell in line.Split('|'))
+            {
+                cells.Add(cell.Trim());
+            }
+
+            return cells;
         }
     }
 }

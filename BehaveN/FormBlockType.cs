@@ -26,15 +26,20 @@
 //
 // </copyright>
 
+using System.Collections.Generic;
+
 namespace BehaveN
 {
     using System;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Block type for form values.
     /// </summary>
     internal class FormBlockType : BlockType
     {
+        private static readonly Regex FormRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
+
         /// <summary>
         /// Determines if this type handles the specified type.
         /// </summary>
@@ -56,6 +61,38 @@ namespace BehaveN
         public override object GetObject(Type type, IBlock block)
         {
             return block.ConvertTo(type);
+        }
+
+        /// <summary>
+        /// Determines if the lines the part of a block it handles.
+        /// </summary>
+        /// <param name="line">The line.</param>
+        /// <returns>True or false.</returns>
+        public override bool LineIsPartOfBlock(string line)
+        {
+            return FormRegex.IsMatch(line);
+        }
+
+        public override IBlock Parse(string text)
+        {
+            var form = new Form();
+
+            Match m;
+
+            List<string> lines = TextParser.GetLines(text);
+            int i = 0;
+
+            while (i < lines.Count && (m = FormRegex.Match(lines[i])).Success)
+            {
+                string label = m.Groups[1].Value;
+                string value = m.Groups[2].Value;
+
+                form.Add(label, value);
+
+                i++;
+            }
+
+            return form;
         }
     }
 }

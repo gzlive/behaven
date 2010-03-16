@@ -84,5 +84,23 @@ namespace BehaveN
         {
             return GetBlockTypeFor(type) != null;
         }
+
+        /// <summary>
+        /// Gets the block type for that handle the specified line.
+        /// </summary>
+        /// <param name="line">The line.</param>
+        /// <returns>The block type.</returns>
+        public static BlockType GetBlockTypeForLine(string line)
+        {
+            foreach (var blockType in blockTypes)
+            {
+                if (blockType.LineIsPartOfBlock(line))
+                {
+                    return blockType;
+                }
+            }
+
+            return null;
+        }
     }
 }

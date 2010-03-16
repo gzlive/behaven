@@ -41,11 +41,6 @@ namespace BehaveN
     public class Grid : IBlock
     {
         /// <summary>
-        /// Regex that matches lines in a grid.
-        /// </summary>
-        private static readonly Regex GridRegex = new Regex(@"^\s*\|", RegexOptions.IgnoreCase);
-
-        /// <summary>
         /// The list of header names.
         /// </summary>
         private readonly List<string> headers = new List<string>();
@@ -71,51 +66,6 @@ namespace BehaveN
         public int RowCount
         {
             get { return this.rows.Count; }
-        }
-
-        /// <summary>
-        /// Determines if the nexts the line is the beginning of a grid.
-        /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="currentIndex">Index of the current line.</param>
-        /// <returns><c>true</c> if the next line is the beginning of a grid; otherwise <c>false</c></returns>
-        public static bool NextLineIsGrid(IList<string> lines, int currentIndex)
-        {
-            return (currentIndex + 1) < lines.Count && GridRegex.IsMatch(lines[currentIndex + 1]);
-        }
-
-        /// <summary>
-        /// Parses the text into a <see cref="Grid">Grid</see> object.
-        /// </summary>
-        /// <param name="text">The text containing the grid.</param>
-        /// <returns>A new <see cref="Grid">Grid</see> object.</returns>
-        public static Grid Parse(string text)
-        {
-            return ParseGrid(TextParser.GetLines(text), 0);
-        }
-
-        /// <summary>
-        /// Parses a sequence of lines into a <see cref="Grid">Grid</see> object.
-        /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="i">The current line index.</param>
-        /// <returns>A new <see cref="Grid">Grid</see> object.</returns>
-        public static Grid ParseGrid(IList<string> lines, int i)
-        {
-            Grid grid = new Grid();
-
-            List<string> headers = SplitCells(lines[i]);
-            grid.SetHeaders(headers);
-
-            i++;
-
-            while (i < lines.Count && GridRegex.IsMatch(lines[i]))
-            {
-                grid.AddValues(SplitCells(lines[i]));
-                i++;
-            }
-
-            return grid;
         }
 
         /// <summary>
@@ -420,26 +370,6 @@ namespace BehaveN
             }
 
             return grid;
-        }
-
-        /// <summary>
-        /// Splits the cells in a line.
-        /// </summary>
-        /// <param name="line">The line of text to split.</param>
-        /// <returns>A list of values in the cells.</returns>
-        private static List<string> SplitCells(string line)
-        {
-            line = line.Trim();
-            line = line.Trim('|');
-
-            List<string> cells = new List<string>();
-
-            foreach (string cell in line.Split('|'))
-            {
-                cells.Add(cell.Trim());
-            }
-
-            return cells;
         }
 
         /// <summary>

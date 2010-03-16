@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BehaveN
@@ -143,20 +144,34 @@ namespace BehaveN
 
         private IBlock ParseBlock(List<string> lines, ref int i)
         {
-            IBlock block = null;
+            if (i + 1 >= lines.Count)
+            {
+                return null;
+            }
 
-            if (Form.NextLineIsForm(lines, i))
+            string line = lines[i + 1];
+
+            var blockType = BlockTypes.GetBlockTypeForLine(line);
+
+            if (blockType == null)
             {
-                Form form = Form.ParseForm(lines, ++i);
-                i += form.Size - 1;
-                block = form;
+                return null;
             }
-            else if (Grid.NextLineIsGrid(lines, i))
+
+            var sb = new StringBuilder();
+            sb.AppendLine(line);
+
+            i += 2;
+
+            while (i < lines.Count && blockType.LineIsPartOfBlock(lines[i]))
             {
-                Grid grid = Grid.ParseGrid(lines, ++i);
-                i += grid.RowCount;
-                block = grid;
+                sb.AppendLine(lines[i]);
+                i++;
             }
+
+            i--;
+
+            IBlock block = blockType.Parse(sb.ToString());
 
             return block;
         }

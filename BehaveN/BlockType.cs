@@ -75,5 +75,19 @@ namespace BehaveN
 
             return null;
         }
+
+        /// <summary>
+        /// Determines if the lines the part of a block it handles.
+        /// </summary>
+        /// <param name="line">The line.</param>
+        /// <returns>True or false.</returns>
+        public abstract bool LineIsPartOfBlock(string line);
+
+        /// <summary>
+        /// Parses the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>The block.</returns>
+        public abstract IBlock Parse(string text);
     }
 }

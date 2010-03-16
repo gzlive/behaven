@@ -40,11 +40,6 @@ namespace BehaveN
     public class Form : IBlock
     {
         /// <summary>
-        /// Regex that matches lines in a form.
-        /// </summary>
-        private static readonly Regex FormRegex = new Regex(@"^\s*:\s*([^:]+?)\s*:\s*(.+)\s*", RegexOptions.IgnoreCase);
-
-        /// <summary>
         /// The list of labels in this form.
         /// </summary>
         private readonly List<string> labels = new List<string>();
@@ -61,52 +56,6 @@ namespace BehaveN
         public int Size
         {
             get { return this.labels.Count; }
-        }
-
-        /// <summary>
-        /// Determines if the next line is the beginning of a form.
-        /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="currentIndex">Index of the current line.</param>
-        /// <returns><c>true</c> if the next line is the beginning of a form; otherwise <c>false</c></returns>
-        public static bool NextLineIsForm(List<string> lines, int currentIndex)
-        {
-            return (currentIndex + 1) < lines.Count && FormRegex.IsMatch(lines[currentIndex + 1]);
-        }
-
-        /// <summary>
-        /// Parses the form.
-        /// </summary>
-        /// <param name="text">The text containing the form.</param>
-        /// <returns>A new <see cref="Form">Form</see> object.</returns>
-        public static Form Parse(string text)
-        {
-            return ParseForm(TextParser.GetLines(text), 0);
-        }
-
-        /// <summary>
-        /// Parses the form.
-        /// </summary>
-        /// <param name="lines">The lines.</param>
-        /// <param name="i">The current line index.</param>
-        /// <returns>A new <see cref="Form">Form</see> object.</returns>
-        public static Form ParseForm(List<string> lines, int i)
-        {
-            Form form = new Form();
-
-            Match m;
-
-            while (i < lines.Count && (m = FormRegex.Match(lines[i])).Success)
-            {
-                string label = m.Groups[1].Value;
-                string value = m.Groups[2].Value;
-
-                form.Add(label, value);
-
-                i++;
-            }
-
-            return form;
         }
 
         /// <summary>
