@@ -129,28 +129,36 @@ namespace BehaveN
 
             for (int i = 0; i < this.Size; i++)
             {
-                string label = this.GetLabel(i);
+                passed &= CheckProperty(actual, i, type);
+            }
 
-                string propertyName = NameComparer.NormalizeName(label);
+            return passed;
+        }
 
-                PropertyInfo pi = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+        private bool CheckProperty(object actual, int i, Type type)
+        {
+            bool passed = true;
 
-                if (pi != null)
+            string label = this.GetLabel(i);
+            string propertyName = NameComparer.NormalizeName(label);
+
+            PropertyInfo pi = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+            if (pi != null)
+            {
+                object actualValue = pi.GetValue(actual, null);
+                object expectedValue = ValueParser.ParseValue(this.GetValue(i), pi.PropertyType);
+
+                if (!object.Equals(actualValue, expectedValue))
                 {
-                    object actualValue = pi.GetValue(actual, null);
-                    object expectedValue = ValueParser.ParseValue(this.GetValue(i), pi.PropertyType);
-
-                    if (!object.Equals(actualValue, expectedValue))
-                    {
-                        this.values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
-                        passed = false;
-                    }
-                }
-                else
-                {
-                    this.values[i] = string.Format("{0} (unknown)", this.GetValue(i));
+                    this.values[i] = string.Format("{0} (was {1})", expectedValue, actualValue);
                     passed = false;
                 }
+            }
+            else
+            {
+                this.values[i] = string.Format("{0} (unknown)", this.GetValue(i));
+                passed = false;
             }
 
             return passed;

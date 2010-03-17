@@ -131,18 +131,11 @@ namespace BehaveN
                 {
                     if (!pi.IsOut)
                     {
-                        if (InlineTypes.InlineTypeExistsFor(pi.ParameterType))
+                        object parameter = GetParameterFromMatch(pi, match, block);
+
+                        if (parameter != null)
                         {
-                            if (match.Groups[pi.Name].Success)
-                            {
-                                string value = match.Groups[pi.Name].Value;
-                                parameters[i] = ValueParser.ParseValue(value, pi.ParameterType);
-                            }
-                        }
-                        else if (block != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
-                        {
-                            BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
-                            parameters[i] = blockType.GetObject(pi.ParameterType, block);
+                            parameters[i] = parameter;
                         }
                     }
 
@@ -151,6 +144,25 @@ namespace BehaveN
             }
 
             return parameters;
+        }
+
+        private object GetParameterFromMatch(ParameterInfo pi, Match match, IBlock block)
+        {
+            if (InlineTypes.InlineTypeExistsFor(pi.ParameterType))
+            {
+                if (match.Groups[pi.Name].Success)
+                {
+                    string value = match.Groups[pi.Name].Value;
+                    return ValueParser.ParseValue(value, pi.ParameterType);
+                }
+            }
+            else if (block != null && BlockTypes.BlockTypeExistsFor(pi.ParameterType))
+            {
+                BlockType blockType = BlockTypes.GetBlockTypeFor(pi.ParameterType);
+                return blockType.GetObject(pi.ParameterType, block);
+            }
+
+            return null;
         }
 
         private void Invoke(object[] parameters)
@@ -170,27 +182,7 @@ namespace BehaveN
                 {
                     if (pi.IsOut)
                     {
-                        Type type = pi.ParameterType.GetElementType();
-
-                        if (InlineTypes.InlineTypeExistsFor(type))
-                        {
-                            object expectedValue = ValueParser.ParseValue(match.Groups[pi.Name].Value, type);
-                            object actualValue = parameters[i];
-
-                            if (!object.Equals(actualValue, expectedValue))
-                            {
-                                Match m = GetMatch(step);
-                                Group group = m.Groups[pi.Name];
-                                step.Text = step.Text.Substring(0, group.Index)
-                                              + string.Format("{0} (was {1})", expectedValue, actualValue)
-                                              + step.Text.Substring(group.Index + group.Length);
-                                passed = false;
-                            }
-                        }
-                        else if (step.Block != null && BlockTypes.BlockTypeExistsFor(type))
-                        {
-                            passed &= step.Block.Check(parameters[i]);
-                        }
+                        passed = CheckOutputParameter(match, step, pi, parameters[i]);
                     }
 
                     i++;
@@ -201,6 +193,33 @@ namespace BehaveN
             {
                 throw new VerificationException(new Exception("One or more output parameters did not pass."));
             }
+        }
+
+        private bool CheckOutputParameter(Match match, Step step, ParameterInfo pi, object parameter)
+        {
+            Type type = pi.ParameterType.GetElementType();
+
+            if (InlineTypes.InlineTypeExistsFor(type))
+            {
+                object expectedValue = ValueParser.ParseValue(match.Groups[pi.Name].Value, type);
+                object actualValue = parameter;
+
+                if (!object.Equals(actualValue, expectedValue))
+                {
+                    Match m = GetMatch(step);
+                    Group group = m.Groups[pi.Name];
+                    step.Text = step.Text.Substring(0, group.Index)
+                                + string.Format("{0} (was {1})", expectedValue, actualValue)
+                                + step.Text.Substring(group.Index + group.Length);
+                    return false;
+                }
+            }
+            else if (step.Block != null && BlockTypes.BlockTypeExistsFor(type))
+            {
+                return step.Block.Check(parameter);
+            }
+
+            return true;
         }
     }
 }

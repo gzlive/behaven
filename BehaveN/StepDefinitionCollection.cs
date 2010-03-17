@@ -125,35 +125,41 @@ namespace BehaveN
             ConstructorInfo[] constructors = type.GetConstructors();
 
             if (constructors.Length < 1)
+            {
                 throw new ArgumentException(string.Format("{0} has no constructors.", type.FullName));
+            }
 
             if (constructors.Length > 1)
+            {
                 throw new ArgumentException(string.Format("{0} has more than one constructor.", type.FullName));
+            }
 
             ConstructorInfo constructor = constructors[0];
 
-            object result;
+            object[] parameters = GetConstructorParameters(constructor);
 
-            if (constructor.GetParameters().Length == 0)
-                result = Activator.CreateInstance(type);
-            else
-            {
-                object[] parameters = new object[constructor.GetParameters().Length];
-
-                int i = 0;
-
-                foreach (ParameterInfo pi in constructor.GetParameters())
-                {
-                    parameters[i++] = CreateOrGetContextObject(pi.ParameterType);
-                }
-
-                result = Activator.CreateInstance(type, parameters);
-            }
+            object result = Activator.CreateInstance(type, parameters);
 
             if (result is IDisposable)
+            {
                 _disposables.Add((IDisposable)result);
+            }
 
             return result;
+        }
+
+        private object[] GetConstructorParameters(ConstructorInfo constructor)
+        {
+            object[] parameters = new object[constructor.GetParameters().Length];
+
+            int i = 0;
+
+            foreach (ParameterInfo pi in constructor.GetParameters())
+            {
+                parameters[i++] = CreateOrGetContextObject(pi.ParameterType);
+            }
+
+            return parameters;
         }
 
         private IEnumerable<StepDefinition> GetStepDefinitionsFrom(object target)

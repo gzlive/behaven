@@ -49,8 +49,15 @@ namespace BehaveN
 
         internal static string GetPattern(string text, MethodInfo methodInfo)
         {
-            List<string> splits = new List<string>(NameParser.Parse(text).Split());
+            var splits = new List<string>(NameParser.Parse(text).Split());
 
+            ReplaceArgPlaceholdersWithPatterns(methodInfo, splits);
+
+            return string.Format(@"\s*{0}\s*", string.Join(@"\s+", splits.ToArray()));
+        }
+
+        private static void ReplaceArgPlaceholdersWithPatterns(MethodInfo methodInfo, List<string> splits)
+        {
             int i = 1;
 
             foreach (var pi in methodInfo.GetParameters())
@@ -69,10 +76,7 @@ namespace BehaveN
 
                 i++;
             }
-
-            return string.Format(@"\s*{0}\s*", string.Join(@"\s+", splits.ToArray()));
         }
-
 
         private static string GetPatternForParameter(ParameterInfo parameterInfo)
         {

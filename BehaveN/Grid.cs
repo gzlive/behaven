@@ -172,9 +172,19 @@ namespace BehaveN
         /// </returns>
         public string Format()
         {
-            StringBuilder sb = new StringBuilder();
+            List<int> columnWidths = GetColumnWidths();
 
-            List<int> columnWidths = new List<int>();
+            var sb = new StringBuilder();
+
+            FormatHeader(sb, columnWidths);
+            FormatRows(sb, columnWidths);
+
+            return sb.ToString();
+        }
+
+        private List<int> GetColumnWidths()
+        {
+            var columnWidths = new List<int>();
 
             for (int i = 0; i < this.ColumnCount; i++)
             {
@@ -188,6 +198,11 @@ namespace BehaveN
                 columnWidths.Add(width);
             }
 
+            return columnWidths;
+        }
+
+        private void FormatHeader(StringBuilder sb, List<int> columnWidths)
+        {
             sb.Append("    |");
 
             for (int i = 0; i < this.ColumnCount; i++)
@@ -197,7 +212,10 @@ namespace BehaveN
             }
 
             sb.AppendLine();
+        }
 
+        private void FormatRows(StringBuilder sb, List<int> columnWidths)
+        {
             for (int i = 0; i < this.RowCount; i++)
             {
                 sb.Append("    |");
@@ -210,8 +228,6 @@ namespace BehaveN
 
                 sb.AppendLine();
             }
-
-            return sb.ToString();
         }
 
         /// <summary>

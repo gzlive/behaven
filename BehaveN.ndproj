@@ -3,7 +3,6 @@
   <OutputDir KeepHistoric="True" KeepXmlFiles="True">.\NDependOut</OutputDir>
   <Assemblies>
     <Name>BehaveN</Name>
-    <Name>BehaveN.Tool</Name>
   </Assemblies>
   <FrameworkAssemblies>
     <Name>mscorlib</Name>
@@ -11,9 +10,6 @@
   </FrameworkAssemblies>
   <Dirs>
     <Dir>.\BehaveN\bin\Debug</Dir>
-    <Dir>.\BehaveN.Tests\bin\Debug</Dir>
-    <Dir>.\BehaveN.Tool\bin\Debug</Dir>
-    <Dir>.\BehaveN.Examples\bin\Debug</Dir>
     <Dir>C:\Windows\Microsoft.NET\Framework\v2.0.50727</Dir>
   </Dirs>
   <Report XslPath="">

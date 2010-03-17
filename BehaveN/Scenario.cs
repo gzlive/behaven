@@ -105,59 +105,87 @@ namespace BehaveN
         /// </summary>
         public void Execute()
         {
+            PrepareToExecute();
+
+            int lastStepIndex = 0;
+
+            try
+            {
+                ExecuteSteps(out lastStepIndex);
+            }
+            catch (Exception e)
+            {
+                SaveException(e);
+                SetStepResult(lastStepIndex, e);
+            }
+            finally
+            {
+                CheckForMoreUndefinedSteps(lastStepIndex + 1);
+                CleanUpAfterExecuting();
+            }
+        }
+
+        private void PrepareToExecute()
+        {
             StepDefinitions.CreateContext();
 
             _passed = true;
             _exception = null;
+        }
 
-            int i = 0;
+        private void CleanUpAfterExecuting()
+        {
+            StepDefinitions.Dispose();
+        }
 
-            try
+        private void ExecuteSteps(out int lastStepIndex)
+        {
+            for (lastStepIndex = 0; lastStepIndex < _steps.Count; lastStepIndex++)
             {
-                for (i = 0; i < _steps.Count; i++)
+                Step step = _steps[lastStepIndex];
+
+                if (!_stepDefinitions.TryExecute(step))
                 {
-                    Step step = _steps[i];
-
-                    if (!_stepDefinitions.TryExecute(step))
-                    {
-                        _passed = false;
-                        step.Result = StepResult.Undefined;
-                        break;
-                    }
-
-                    step.Result = StepResult.Passed;
+                    _passed = false;
+                    step.Result = StepResult.Undefined;
+                    break;
                 }
+
+                step.Result = StepResult.Passed;
             }
-            catch (Exception e)
+        }
+
+        private void SaveException(Exception e)
+        {
+            _passed = false;
+            _exception = e;
+
+            if (e is TargetInvocationException)
+                _exception = e.InnerException;
+        }
+
+        private void SetStepResult(int stepIndex, Exception e)
+        {
+            if (_exception is NotImplementedException)
+                _steps[stepIndex].Result = StepResult.Pending;
+            else
+                _steps[stepIndex].Result = StepResult.Failed;
+        }
+
+        private void CheckForMoreUndefinedSteps(int stepIndex)
+        {
+            for (; stepIndex < _steps.Count; stepIndex++)
             {
-                _passed = false;
-                _exception = e;
+                Step step = _steps[stepIndex];
 
-                if (e is TargetInvocationException)
-                    _exception = e.InnerException;
-
-                if (_exception is NotImplementedException)
-                    _steps[i].Result = StepResult.Pending;
+                if (_stepDefinitions.HasMatchFor(step))
+                {
+                    step.Result = StepResult.Skipped;
+                }
                 else
-                    _steps[i].Result = StepResult.Failed;
-            }
-            finally
-            {
-                for (i += 1; i < _steps.Count; i++)
                 {
-                    Step step = _steps[i];
-
-                    if (_stepDefinitions.HasMatchFor(step))
-                    {
-                        step.Result = StepResult.Skipped;
-                    }
-                    else
-                    {
-                        step.Result = StepResult.Undefined;
-                    }
+                    step.Result = StepResult.Undefined;
                 }
-
-                StepDefinitions.Dispose();
             }
         }
 
