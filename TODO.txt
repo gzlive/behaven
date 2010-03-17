@@ -3,3 +3,8 @@
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.
   - Used for lists of primitive types.
+- Add command for re-writing/pretty-printing feature files.
+  - Will this use the Reporter class or a new Writer class?
+- Forms and Grids are inconsistent.
+  - Trying to set a property throws an exception.
+  - Trying to get a property reports "(unknown)".

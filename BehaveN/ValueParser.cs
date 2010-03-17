@@ -80,7 +80,7 @@ namespace BehaveN
                 return DateTimeParser.ParseDateTime(value);
             }
 
-            Type itemType = BlockType.GetCollectionItemType(type);
+            Type itemType = TypeExtensions.GetCollectionItemType(type);
 
             if (itemType != null)
             {

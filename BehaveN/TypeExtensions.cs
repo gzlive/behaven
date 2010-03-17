@@ -26,15 +26,41 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+
     internal static class TypeExtensions
     {
         public static bool IsNullable(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
+        /// Gets the type of the collection item.
+        /// </summary>
+        /// <param name="type">The type of items contained by the collection.</param>
+        /// <returns>The collection item type.</returns>
+        public static Type GetCollectionItemType(Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return null;
+            }
+
+            Type genericType = type.GetGenericTypeDefinition();
+
+            if (genericType == typeof(IEnumerable<>) ||
+                genericType == typeof(IList<>) ||
+                genericType == typeof(ICollection<>) ||
+                genericType == typeof(List<>))
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            return null;
         }
     }
 }

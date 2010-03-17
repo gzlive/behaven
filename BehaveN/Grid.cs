@@ -128,38 +128,40 @@ namespace BehaveN
         /// <returns>The new object.</returns>
         public object ConvertTo(Type type)
         {
-            Type itemType = BlockType.GetCollectionItemType(type);
+            Type itemType = TypeExtensions.GetCollectionItemType(type);
 
-            if (itemType == null)
+            var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
+
+            for (int rowIndex = 0; rowIndex < this.RowCount; rowIndex++)
             {
-                return null;
-            }
-
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
-
-            for (int i = 0; i < this.RowCount; i++)
-            {
-                object item = Activator.CreateInstance(itemType);
-
-                for (int j = 0; j < this.ColumnCount; j++)
-                {
-                    string header = this.GetHeader(j);
-                    ValueSetter setter = ValueSetter.GetValueSetter(item, header);
-
-                    if (setter.CanSetValue())
-                    {
-                        setter.SetFormattedValue(this.GetValue(i, j));
-                    }
-                    else
-                    {
-                        throw new Exception(string.Format("Could not set {0} on type {1}.", header, type.FullName));
-                    }
-                }
+                object item = CreateItem(itemType, rowIndex);
 
                 list.Add(item);
             }
 
             return list;
+        }
+
+        private object CreateItem(Type itemType, int rowIndex)
+        {
+            object item = Activator.CreateInstance(itemType);
+
+            for (int columnIndex = 0; columnIndex < this.ColumnCount; columnIndex++)
+            {
+                string header = this.GetHeader(columnIndex);
+                ValueSetter setter = ValueSetter.GetValueSetter(item, header);
+
+                if (setter.CanSetValue())
+                {
+                    setter.SetFormattedValue(this.GetValue(rowIndex, columnIndex));
+                }
+                else
+                {
+                    throw new Exception(string.Format("Could not set {0} on type {1}.", header, itemType.FullName));
+                }
+            }
+
+            return item;
         }
 
         /// <summary>
@@ -219,84 +221,112 @@ namespace BehaveN
         /// <returns>True if all checks pass.</returns>
         public bool Check(object actual)
         {
-            bool passed = true;
-
             IEnumerator enumerator = ((IEnumerable)actual).GetEnumerator();
 
-            int i;
+            bool passed = CheckExpectedRows(enumerator);
 
-            for (i = 0; i < this.RowCount; i++)
+            passed &= AddUnexpectedRows(enumerator);
+
+            return passed;
+        }
+
+        private bool CheckExpectedRows(IEnumerator enumerator)
+        {
+            bool passed = true;
+
+            for (int rowIndex = 0; rowIndex < this.RowCount; rowIndex++)
             {
                 if (enumerator.MoveNext())
                 {
-                    object current = enumerator.Current;
-
-                    for (int j = 0; j < this.ColumnCount; j++)
-                    {
-                        string header = this.GetHeader(j);
-
-                        PropertyInfo pi = this.GetPropertyInfo(current.GetType(), header);
-
-                        if (pi != null)
-                        {
-                            object actualValue = pi.GetValue(current, null);
-                            object expectedValue = ValueParser.ParseValue(this.GetValue(i, j), pi.PropertyType);
-
-                            if (!object.Equals(actualValue, expectedValue))
-                            {
-                                this.rows[i][j] = string.Format("{0} (was {1})", expectedValue, actualValue);
-                                passed = false;
-                            }
-                        }
-                        else
-                        {
-                            this.rows[i][j] = string.Format("{0} (unknown)", this.GetValue(i, j));
-                            passed = false;
-                        }
-                    }
+                    passed &= CheckExpectedRow(enumerator, rowIndex);
                 }
                 else
                 {
+                    string expectedValue = this.GetValue(rowIndex, 0);
+                    this.rows[rowIndex][0] = string.Format("(missing) {0}", expectedValue);
                     passed = false;
-
-                    string expectedValue = this.GetValue(i, 0);
-                    this.rows[i][0] = string.Format("(missing) {0}", expectedValue);
                 }
-            }
-
-            while (enumerator.MoveNext())
-            {
-                passed = false;
-
-                this.AddValues(new List<string>(new string[this.ColumnCount]));
-
-                object current = enumerator.Current;
-
-                for (int j = 0; j < this.ColumnCount; j++)
-                {
-                    string header = this.GetHeader(j);
-
-                    PropertyInfo pi = this.GetPropertyInfo(current.GetType(), header);
-
-                    if (pi != null)
-                    {
-                        object actualValue = pi.GetValue(current, null);
-
-                        if (j == 0)
-                        {
-                            this.rows[i][j] = string.Format("(unexpected) {0}", actualValue);
-                        }
-                        else
-                        {
-                            this.rows[i][j] = string.Format("{0}", actualValue);
-                        }
-                    }
-                }
-
-                i++;
             }
 
             return passed;
+        }
+
+        private bool CheckExpectedRow(IEnumerator enumerator, int rowIndex)
+        {
+            bool passed = true;
+
+            object current = enumerator.Current;
+
+            for (int columnIndex = 0; columnIndex < this.ColumnCount; columnIndex++)
+            {
+                passed &= CheckExpectedCell(columnIndex, current, rowIndex);
+            }
+
+            return passed;
+        }
+
+        private bool CheckExpectedCell(int columnIndex, object current, int rowIndex)
+        {
+            bool passed = true;
+
+            string header = this.GetHeader(columnIndex);
+            PropertyInfo pi = this.GetPropertyInfo(current.GetType(), header);
+
+            if (pi != null)
+            {
+                object actualValue = pi.GetValue(current, null);
+                object expectedValue = ValueParser.ParseValue(this.GetValue(rowIndex, columnIndex), pi.PropertyType);
+
+                if (!object.Equals(actualValue, expectedValue))
+                {
+                    this.rows[rowIndex][columnIndex] = string.Format("{0} (was {1})", expectedValue, actualValue);
+                    passed = false;
+                }
+            }
+            else
+            {
+                this.rows[rowIndex][columnIndex] = string.Format("{0} (unknown)", this.GetValue(rowIndex, columnIndex));
+                passed = false;
+            }
+
+            return passed;
+        }
+
+        private bool AddUnexpectedRows(IEnumerator enumerator)
+        {
+            bool passed = true;
+
+            while (enumerator.MoveNext())
+            {
+                List<string> values = GetUnexpectdValues(enumerator);
+
+                this.AddValues(values);
+
+                passed = false;
+            }
+
+            return passed;
+        }
+
+        private List<string> GetUnexpectdValues(IEnumerator enumerator)
+        {
+            var values = new List<string>();
+
+            object current = enumerator.Current;
+
+            for (int columnIndex = 0; columnIndex < this.ColumnCount; columnIndex++)
+            {
+                string header = this.GetHeader(columnIndex);
+                PropertyInfo pi = this.GetPropertyInfo(current.GetType(), header);
+
+                object actualValue = pi != null ? pi.GetValue(current, null) : "(unknown)";
+
+                values.Add(string.Format("{0}", actualValue));
+            }
+
+            values[0] = string.Format("(unexpected) {0}", values[0]);
+
+            return values;
         }
 
         /// <summary>
@@ -331,45 +361,6 @@ namespace BehaveN
             {
                 throw new Exception(string.Format("{0} doesn't support reporting grids.", reporter.GetType().FullName));
             }
-        }
-
-        /// <summary>
-        /// Converts a list of objects into a grid.
-        /// </summary>
-        /// <param name="list">The list of objects to convert.</param>
-        /// <param name="itemType">Type of the objects in the list.</param>
-        /// <returns>A new Grid object.</returns>
-        internal static Grid FromList(IEnumerable list, Type itemType)
-        {
-            Grid grid = new Grid();
-
-            List<string> propertyNames = new List<string>();
-
-            foreach (PropertyInfo pi in itemType.GetProperties())
-            {
-                if (pi.CanRead && pi.GetGetMethod().GetParameters().Length == 0)
-                {
-                    propertyNames.Add(pi.Name);
-                }
-            }
-
-            grid.SetHeaders(propertyNames);
-
-            foreach (object item in list)
-            {
-                List<string> propertyValues = new List<string>();
-
-                foreach (string propertyName in propertyNames)
-                {
-                    object propertyValue = itemType.GetProperty(propertyName).GetValue(item, null);
-
-                    propertyValues.Add(propertyValue != null ? propertyValue.ToString() : "null");
-                }
-
-                grid.AddValues(propertyValues);
-            }
-
-            return grid;
         }
 
         /// <summary>

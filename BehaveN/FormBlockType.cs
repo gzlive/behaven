@@ -49,7 +49,7 @@ namespace BehaveN
         /// </returns>
         public override bool HandlesType(Type type)
         {
-            return GetCollectionItemType(type) == null && type != typeof(StringBuilder);
+            return TypeExtensions.GetCollectionItemType(type) == null && type != typeof(StringBuilder);
         }
 
         /// <summary>

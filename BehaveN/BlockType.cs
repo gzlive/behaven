@@ -29,7 +29,6 @@
 namespace BehaveN
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a block parameter type.
@@ -50,31 +49,6 @@ namespace BehaveN
         /// <param name="block">The block to convert.</param>
         /// <returns>The real object.</returns>
         public abstract object GetObject(Type type, IBlock block);
-
-        /// <summary>
-        /// Gets the type of the collection item.
-        /// </summary>
-        /// <param name="type">The type of items contained by the collection.</param>
-        /// <returns>The collection item type.</returns>
-        internal static Type GetCollectionItemType(Type type)
-        {
-            if (!type.IsGenericType)
-            {
-                return null;
-            }
-
-            Type genericType = type.GetGenericTypeDefinition();
-
-            if (genericType == typeof(IEnumerable<>) ||
-                genericType == typeof(IList<>) ||
-                genericType == typeof(ICollection<>) ||
-                genericType == typeof(List<>))
-            {
-                return type.GetGenericArguments()[0];
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Determines if the lines the part of a block it handles.
