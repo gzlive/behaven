@@ -81,6 +81,7 @@ namespace BehaveN
         }
 
         private TextWriter _writer;
+        private StepType _lastStepType;
 
         /// <summary>
         /// Reports the specifications file.
@@ -211,7 +212,14 @@ namespace BehaveN
 
         private void ReportStatus(Step step, string status)
         {
+            if (_lastStepType != StepType.Unknown && step.Type != _lastStepType)
+            {
+                _writer.WriteLine();
+            }
+
             _writer.WriteLine(status + " " + step.Text);
+
+            _lastStepType = step.Type;
         }
 
         private void ReportBlock(IBlock block)
