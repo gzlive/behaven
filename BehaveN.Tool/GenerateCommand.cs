@@ -27,6 +27,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Mono.Options;
 
@@ -39,7 +40,7 @@ namespace BehaveN.Tool
         {
             Console.WriteLine("usage: BehaveN.Tool Generate [OPTION]... <filepattern>...");
             Console.WriteLine();
-            Console.WriteLine("<filepattern> can be the path to any file. Wildcards don't work yet.");
+            Console.WriteLine("<filepattern> can be the path to any file. Wildcards like *.txt do work.");
             Console.WriteLine("All files are considered to be text files containing scenarios. A .g.cs");
             Console.WriteLine("file will be generated next to each text file containing the test");
             Console.WriteLine("fixtures.");
@@ -66,7 +67,9 @@ namespace BehaveN.Tool
             if (files.Count < 1)
                 return -1;
 
-            foreach (var file in files)
+            var expandedFiles = ExpandWildcards(files);
+
+            foreach (var file in expandedFiles)
             {
                 var specs = new SpecificationsFile();
                 specs.LoadFile(file);
@@ -146,6 +149,27 @@ namespace BehaveN.Tool
             }
 
             return 0;
+        }
+
+        private List<string> ExpandWildcards(List<string> files)
+        {
+            var expandedFiles = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (file.Contains("*"))
+                {
+                    string path = Path.GetDirectoryName(file);
+                    string searchPattern = Path.GetFileName(file);
+                    expandedFiles.AddRange(Directory.GetFiles(path, searchPattern));
+                }
+                else
+                {
+                    expandedFiles.Add(file);
+                }
+            }
+
+            return expandedFiles;
         }
 
         private static OptionSet GetOptions()
