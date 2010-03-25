@@ -38,10 +38,14 @@ namespace BehaveN
     /// </summary>
     public class PlainTextReader
     {
+        private const string HeaderPattern = @"^\s*#\s*(.+)\s*:\s*(.+)\s*$";
+        private const string CommentPattern = @"^\s*#.*$";
         private const string FeaturePattern = @"^\s*(?:{0})\s*:\s*(.+)";
         private const string ScenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.+)";
         private const string StepPattern = @"^\s*({0})\s+.+";
 
+        private readonly Regex headerRegex = new Regex(HeaderPattern);
+        private readonly Regex commentRegex = new Regex(CommentPattern);
         private Regex featureRegex;
         private Regex scenarioRegex;
         private Regex givenRegex;
@@ -71,10 +75,24 @@ namespace BehaveN
 
                 if (scenario == null)
                 {
+                    this.match = this.headerRegex.Match(line);
+
+                    if (this.match.Success)
+                    {
+                        specificationsFile.Headers[this.match.Groups[1].Value] = this.match.Groups[2].Value;
+
+                        continue;
+                    }
+
                     i = this.ParseTitleAndDescription(lines, i, specificationsFile);
                 }
                 else
                 {
+                    if (this.commentRegex.IsMatch(line))
+                    {
+                        continue;
+                    }
+
                     this.match = this.scenarioRegex.Match(line);
                 }
 
@@ -123,7 +141,7 @@ namespace BehaveN
                 i++;
             }
 
-            List<string> featureLines = new List<string>();
+            var featureLines = new List<string>();
 
             for (; i < lines.Count; i++)
             {

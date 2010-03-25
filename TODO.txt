@@ -1,4 +1,6 @@
 - Add wildcard support to tool commands.
+- Allow parentheses to appear in steps, but strip them out.
+  - To act as parenthetical comments.
 - Add support for generating fixtures for other frameworks.
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.

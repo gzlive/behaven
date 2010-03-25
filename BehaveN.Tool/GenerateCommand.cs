@@ -92,6 +92,12 @@ namespace BehaveN.Tool
                 sw.WriteLine("{");
 
                 sw.WriteLine("    [TestFixture]");
+
+                if (specs.Headers["ignore"] != null)
+                {
+                    sw.WriteLine("    [Ignore(\"{0}\")]", specs.Headers["ignore"]);
+                }
+
                 sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
                 sw.WriteLine("    {");
 
@@ -122,8 +128,15 @@ namespace BehaveN.Tool
                 {
                     sw.WriteLine();
 
+                    string methodName = scenario.Name.Replace(" ", "_");
+
+                    if (Char.IsDigit(methodName[0]))
+                    {
+                        methodName = "_" + methodName;
+                    }
+
                     sw.WriteLine("        [Test]");
-                    sw.WriteLine("        public void {0}()", scenario.Name.Replace(" ", "_"));
+                    sw.WriteLine("        public void {0}()", methodName);
                     sw.WriteLine("        {");
                     sw.WriteLine("            _specs.Scenarios[\"{0}\"].Verify();", scenario.Name);
                     sw.WriteLine("        }");

@@ -38,10 +38,20 @@ namespace BehaveN
     /// </summary>
     public class SpecificationsFile
     {
+        private readonly HeaderCollection headers = new HeaderCollection();
         private readonly StepDefinitionCollection stepDefinitions = new StepDefinitionCollection();
-        private ScenarioCollection scenarios = new ScenarioCollection();
+        private readonly ScenarioCollection scenarios = new ScenarioCollection();
         private bool passed;
         private Reporter reporter;
+
+        /// <summary>
+        /// Gets the headers.
+        /// </summary>
+        /// <value>The headers.</value>
+        public HeaderCollection Headers
+        {
+            get { return this.headers; }
+        }
 
         /// <summary>
         /// Gets or sets the title for these specifications.

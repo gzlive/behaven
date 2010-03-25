@@ -27,6 +27,15 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_loads_headers()
+        {
+            LoadText("# foo: bar",
+                     "Scenario: A");
+
+            TheSpecificationsFile.Headers["foo"].Should().Be("bar");
+        }
+
+        [Test]
         public void it_loads_the_steps_in_a_scenario()
         {
             LoadText("Scenario: A",

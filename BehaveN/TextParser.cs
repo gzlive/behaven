@@ -47,9 +47,9 @@ namespace BehaveN
 
         internal static List<string> GetLines(string text)
         {
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
 
-            using (StringReader reader = new StringReader(text))
+            using (var reader = new StringReader(text))
             {
                 string line;
 
@@ -57,7 +57,7 @@ namespace BehaveN
                 {
                     line = line.Trim();
 
-                    if (LineIsNotEmptyAndNotAComment(line))
+                    if (line != "")
                     {
                         lines.Add(line);
                     }
@@ -65,11 +65,6 @@ namespace BehaveN
             }
 
             return lines;
-        }
-
-        private static bool LineIsNotEmptyAndNotAComment(string line)
-        {
-            return line != "" && !line.StartsWith("#");
         }
     }
 }
