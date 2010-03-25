@@ -26,24 +26,30 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Helper methods for working with InlineType objects.
     /// </summary>
     public static class InlineTypes
     {
+        /// <summary>
+        /// The collection of discovered inline types.
+        /// </summary>
+        private static readonly List<InlineType> inlineTypes;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="InlineTypes"/> class.
+        /// </summary>
         static InlineTypes()
         {
             List<Type> types = new List<Type>(typeof(InlineTypes).Assembly.GetTypes());
             types = types.FindAll(delegate(Type t) { return typeof(InlineType).IsAssignableFrom(t) && !t.IsAbstract; });
             inlineTypes = types.ConvertAll(delegate(Type t) { return (InlineType)Activator.CreateInstance(t); });
         }
-
-        private static List<InlineType> inlineTypes;
 
         /// <summary>
         /// Gets the inline types.
@@ -57,23 +63,27 @@ namespace BehaveN
         /// <summary>
         /// Gets the inline type that handles the specified type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The value type.</param>
         /// <returns>The inline type.</returns>
         public static InlineType GetInlineTypeFor(Type type)
         {
             if (type.IsByRef)
+            {
                 type = type.GetElementType();
+            }
 
             if (TypeExtensions.IsNullable(type))
+            {
                 type = Nullable.GetUnderlyingType(type);
+            }
 
             return inlineTypes.Find(delegate(InlineType it) { return it.HandlesType(type); });
         }
 
         /// <summary>
-        /// Determines if an inline type existis for the specific type.
+        /// Determines if an inline type existis for the specified type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The value type.</param>
         /// <returns>True if an inline type exists.</returns>
         public static bool InlineTypeExistsFor(Type type)
         {

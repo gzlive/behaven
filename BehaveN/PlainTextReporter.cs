@@ -26,14 +26,13 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Represents a plain text reporter.
     /// </summary>
@@ -64,6 +63,9 @@ namespace BehaveN
         /// </summary>
         public const string Skipped = "-";
 
+        private readonly TextWriter writer;
+        private StepType lastStepType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlainTextReporter"/> class.
         /// </summary>
@@ -77,11 +79,8 @@ namespace BehaveN
         /// <param name="writer">The writer.</param>
         public PlainTextReporter(TextWriter writer)
         {
-            _writer = writer;
+            this.writer = writer;
         }
-
-        private TextWriter _writer;
-        private StepType _lastStepType;
 
         /// <summary>
         /// Reports the specifications file.
@@ -93,12 +92,12 @@ namespace BehaveN
         {
             foreach (Scenario scenario in specificationsFile.Scenarios)
             {
-                ReportScenario(scenario);
+                this.ReportScenario(scenario);
 
-                WriteDivider();
+                this.WriteDivider();
             }
 
-            ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
+            this.ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
         }
 
         /// <summary>
@@ -107,64 +106,39 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            _writer.WriteLine("Scenario: {0}", scenario.Name);
-            _writer.WriteLine();
+            this.writer.WriteLine("Scenario: {0}", scenario.Name);
+            this.writer.WriteLine();
 
             foreach (Step step in scenario.Steps)
             {
                 switch (step.Result)
                 {
                     case StepResult.Passed:
-                        ReportPassed(step);
+                        this.ReportPassed(step);
                         break;
                     case StepResult.Failed:
-                        ReportFailed(step);
+                        this.ReportFailed(step);
                         break;
                     case StepResult.Undefined:
-                        ReportUndefined(step);
+                        this.ReportUndefined(step);
                         break;
                     case StepResult.Pending:
-                        ReportPending(step);
+                        this.ReportPending(step);
                         break;
                     case StepResult.Skipped:
-                        ReportSkipped(step);
+                        this.ReportSkipped(step);
                         break;
                 }
 
                 if (step.Block != null)
-                    ReportBlock(step.Block);
-            }
-
-            _writer.WriteLine();
-
-            ReportException(scenario);
-        }
-
-        private void WriteDivider()
-        {
-            _writer.WriteLine("---");
-            _writer.WriteLine();
-        }
-
-        private void ReportException(Scenario scenario)
-        {
-            if (scenario.Exception != null)
-            {
-                _writer.WriteLine(scenario.Exception.Message);
-
-                if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
                 {
-                    _writer.WriteLine();
-                    _writer.WriteLine(GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
+                    this.ReportBlock(step.Block);
                 }
-
-                _writer.WriteLine();
             }
-        }
 
-        private string GetStackTraceThatIsClickableInOutputWindow(Exception e)
-        {
-            return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
+            this.writer.WriteLine();
+
+            this.ReportException(scenario);
         }
 
         /// <summary>
@@ -175,63 +149,90 @@ namespace BehaveN
         {
             if (undefinedSteps.Count > 0)
             {
-                _writer.WriteLine("Your undefined steps can be defined with the following code:");
-                _writer.WriteLine();
+                this.writer.WriteLine("Your undefined steps can be defined with the following code:");
+                this.writer.WriteLine();
 
                 foreach (Step undefinedStep in undefinedSteps)
                 {
-                    ReportUndefinedStep(undefinedStep);
+                    this.ReportUndefinedStep(undefinedStep);
                 }
             }
         }
 
+        private void WriteDivider()
+        {
+            this.writer.WriteLine("---");
+            this.writer.WriteLine();
+        }
+
+        private void ReportException(Scenario scenario)
+        {
+            if (scenario.Exception != null)
+            {
+                this.writer.WriteLine(scenario.Exception.Message);
+
+                if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
+                {
+                    this.writer.WriteLine();
+                    this.writer.WriteLine(this.GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
+                }
+
+                this.writer.WriteLine();
+            }
+        }
+
+        private string GetStackTraceThatIsClickableInOutputWindow(Exception e)
+        {
+            return Regex.Replace(e.StackTrace, @"  at (.+) in (.+):line (\d+)", "$2($3): $1");
+        }
+
         private void ReportUndefined(Step step)
         {
-            ReportStatus(step, Undefined);
+            this.ReportStatus(step, Undefined);
         }
 
         private void ReportPending(Step step)
         {
-            ReportStatus(step, Pending);
+            this.ReportStatus(step, Pending);
         }
 
         private void ReportPassed(Step step)
         {
-            ReportStatus(step, Passed);
+            this.ReportStatus(step, Passed);
         }
 
         private void ReportFailed(Step step)
         {
-            ReportStatus(step, Failed);
+            this.ReportStatus(step, Failed);
         }
 
         private void ReportSkipped(Step step)
         {
-            ReportStatus(step, Skipped);
+            this.ReportStatus(step, Skipped);
         }
 
         private void ReportStatus(Step step, string status)
         {
-            if (_lastStepType != StepType.Unknown && step.Type != _lastStepType)
+            if (this.lastStepType != StepType.Unknown && step.Type != this.lastStepType)
             {
-                _writer.WriteLine();
+                this.writer.WriteLine();
             }
 
-            _writer.WriteLine(status + " " + step.Text);
+            this.writer.WriteLine(status + " " + step.Text);
 
-            _lastStepType = step.Type;
+            this.lastStepType = step.Type;
         }
 
         private void ReportBlock(IBlock block)
         {
-            _writer.Write(block.Format());
+            this.writer.Write(block.Format());
         }
 
         private void ReportUndefinedStep(Step undefinedStep)
         {
             string code = UndefinedStepDefinitionHelper.GetUndefinedStepCode(undefinedStep);
-            _writer.WriteLine(code);
-            _writer.WriteLine();
+            this.writer.WriteLine(code);
+            this.writer.WriteLine();
         }
     }
 }

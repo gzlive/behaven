@@ -26,31 +26,37 @@
 //
 // </copyright>
 
-using System.Collections.Generic;
-using System.Resources;
-using System.Text;
-
 namespace BehaveN
 {
+    using System.Collections.Generic;
+    using System.Resources;
+
     /// <summary>
     /// Manages getting strings for native languages.
     /// </summary>
     public class LanguageManager
     {
-        private ResourceManager _en = new ResourceManager("BehaveN.Languages.en", typeof(LanguageManager).Assembly);
-        private Dictionary<string, ResourceManager> _languages = new Dictionary<string, ResourceManager>();
+        /// <summary>
+        /// The resource manager for English resources.
+        /// </summary>
+        private ResourceManager englishResources = new ResourceManager("BehaveN.Languages.en", typeof(LanguageManager).Assembly);
+
+        /// <summary>
+        /// The resource managers for other languages.
+        /// </summary>
+        private Dictionary<string, ResourceManager> otherResources = new Dictionary<string, ResourceManager>();
 
         /// <summary>
         /// Gets the string with the specified name in the specified language.
         /// </summary>
         /// <param name="language">The language.</param>
-        /// <param name="name">The name.</param>
-        /// <returns>The string.</returns>
+        /// <param name="name">The name of the string.</param>
+        /// <returns>The actual string.</returns>
         public string GetString(string language, string name)
         {
             ResourceManager rm;
 
-            if (!_languages.ContainsKey(language))
+            if (!this.otherResources.ContainsKey(language))
             {
                 rm = new ResourceManager("BehaveN.Languages." + language, typeof(LanguageManager).Assembly);
 
@@ -58,19 +64,19 @@ namespace BehaveN
                 {
                     rm.GetString("x");
 
-                    _languages[language] = rm;
+                    this.otherResources[language] = rm;
                 }
                 catch
                 {
-                    rm = _en;
+                    rm = this.englishResources;
                 }
             }
             else
             {
-                rm = _languages[language];
+                rm = this.otherResources[language];
             }
 
-            return rm.GetString(name) ?? _en.GetString(name);
+            return rm.GetString(name) ?? this.englishResources.GetString(name);
         }
     }
 }

@@ -26,10 +26,10 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+
     /// <summary>
     /// An attribute that specifies the text of a step.
     /// </summary>
@@ -39,16 +39,16 @@ namespace BehaveN
         /// <summary>
         /// Initializes a new instance of the <see cref="StepAttribute"/> class.
         /// </summary>
-        /// <param name="text">The text.</param>
+        /// <param name="text">The text to match.</param>
         public StepAttribute(string text)
         {
-            Text = text;
+            this.Text = text;
         }
 
         /// <summary>
-        /// Gets or sets the text.
+        /// Gets or sets the text to match.
         /// </summary>
-        /// <value>The text.</value>
+        /// <value>The text to match.</value>
         public string Text { get; set; }
     }
 }

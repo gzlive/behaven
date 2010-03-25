@@ -26,11 +26,11 @@
 //
 // </copyright>
 
-using System;
-using System.Text;
-
 namespace BehaveN
 {
+    using System;
+    using System.Text;
+
     /// <summary>
     /// A utility class for comparing member names.
     /// </summary>
@@ -39,7 +39,7 @@ namespace BehaveN
         /// <summary>
         /// Normalizes the name.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name to normalize.</param>
         /// <returns>The normalized name.</returns>
         public static string NormalizeName(string name)
         {
@@ -61,7 +61,7 @@ namespace BehaveN
         /// </summary>
         /// <param name="normalizedName1">The first normalized name.</param>
         /// <param name="normalizedName2">The second normalized name.</param>
-        /// <returns></returns>
+        /// <returns>True if the names are equal.</returns>
         public static bool NormalizedNamesAreEqual(string normalizedName1, string normalizedName2)
         {
             return string.Equals(normalizedName1, normalizedName2, StringComparison.OrdinalIgnoreCase);

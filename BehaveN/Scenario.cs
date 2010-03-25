@@ -26,31 +26,31 @@
 //
 // </copyright>
 
-using System;
-using System.Reflection;
-
 namespace BehaveN
 {
+    using System;
+    using System.Reflection;
+
     /// <summary>
     /// Represents a scenario.
     /// </summary>
     public class Scenario
     {
-        private string _name;
-        private StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
-        private readonly StepCollection _steps = new StepCollection();
-        private bool _passed;
-        private Exception _exception;
-        private Reporter _reporter;
+        private string name;
+        private StepDefinitionCollection stepDefinitions = new StepDefinitionCollection();
+        private StepCollection steps = new StepCollection();
+        private bool passed;
+        private Exception exception;
+        private Reporter reporter;
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets or sets the scenario name.
         /// </summary>
-        /// <value>The name.</value>
+        /// <value>The name of the scenario.</value>
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace BehaveN
         /// <value>The step definitions.</value>
         public StepDefinitionCollection StepDefinitions
         {
-            get { return _stepDefinitions; }
-            set { _stepDefinitions = value; }
+            get { return this.stepDefinitions; }
+            set { this.stepDefinitions = value; }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace BehaveN
         /// <value>The steps.</value>
         public StepCollection Steps
         {
-            get { return _steps; }
+            get { return this.steps; }
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace BehaveN
         /// <value><c>true</c> if passed; otherwise, <c>false</c>.</value>
         public bool Passed
         {
-            get { return _passed; }
+            get { return this.passed; }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace BehaveN
         /// <value>The exception.</value>
         public Exception Exception
         {
-            get { return _exception; }
+            get { return this.exception; }
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace BehaveN
         /// <value>The reporter.</value>
         public Reporter Reporter
         {
-            get { return _reporter ?? (_reporter = new DefaultReporter()); }
-            set { _reporter = value; }
+            get { return this.reporter ?? (this.reporter = new DefaultReporter()); }
+            set { this.reporter = value; }
         }
 
         /// <summary>
@@ -105,87 +105,23 @@ namespace BehaveN
         /// </summary>
         public void Execute()
         {
-            PrepareToExecute();
+            this.PrepareToExecute();
 
             int lastStepIndex = 0;
 
             try
             {
-                ExecuteSteps(out lastStepIndex);
+                this.ExecuteSteps(out lastStepIndex);
             }
             catch (Exception e)
             {
-                SaveException(e);
-                SetStepResult(lastStepIndex, e);
+                this.SaveException(e);
+                this.SetStepResult(lastStepIndex, e);
             }
             finally
             {
-                CheckForMoreUndefinedSteps(lastStepIndex + 1);
-                CleanUpAfterExecuting();
-            }
-        }
-
-        private void PrepareToExecute()
-        {
-            StepDefinitions.CreateContext();
-
-            _passed = true;
-            _exception = null;
-        }
-
-        private void CleanUpAfterExecuting()
-        {
-            StepDefinitions.Dispose();
-        }
-
-        private void ExecuteSteps(out int lastStepIndex)
-        {
-            for (lastStepIndex = 0; lastStepIndex < _steps.Count; lastStepIndex++)
-            {
-                Step step = _steps[lastStepIndex];
-
-                if (!_stepDefinitions.TryExecute(step))
-                {
-                    _passed = false;
-                    step.Result = StepResult.Undefined;
-                    break;
-                }
-
-                step.Result = StepResult.Passed;
-            }
-        }
-
-        private void SaveException(Exception e)
-        {
-            _passed = false;
-            _exception = e;
-
-            if (e is TargetInvocationException)
-                _exception = e.InnerException;
-        }
-
-        private void SetStepResult(int stepIndex, Exception e)
-        {
-            if (_exception is NotImplementedException)
-                _steps[stepIndex].Result = StepResult.Pending;
-            else
-                _steps[stepIndex].Result = StepResult.Failed;
-        }
-
-        private void CheckForMoreUndefinedSteps(int stepIndex)
-        {
-            for (; stepIndex < _steps.Count; stepIndex++)
-            {
-                Step step = _steps[stepIndex];
-
-                if (_stepDefinitions.HasMatchFor(step))
-                {
-                    step.Result = StepResult.Skipped;
-                }
-                else
-                {
-                    step.Result = StepResult.Undefined;
-                }
+                this.CheckForMoreUndefinedSteps(lastStepIndex + 1);
+                this.CleanUpAfterExecuting();
             }
         }
 
@@ -203,11 +139,83 @@ namespace BehaveN
         /// </summary>
         public void Verify()
         {
-            Execute();
-            Report();
+            this.Execute();
+            this.Report();
 
-            if (!Passed)
-                throw new VerificationException(_exception ?? new Exception("Scenario failed."));
+            if (!this.Passed)
+            {
+                throw new VerificationException(this.exception ?? new Exception("Scenario failed."));
+            }
+        }
+
+        private void PrepareToExecute()
+        {
+            this.StepDefinitions.CreateContext();
+
+            this.passed = true;
+            this.exception = null;
+        }
+
+        private void CleanUpAfterExecuting()
+        {
+            this.StepDefinitions.Dispose();
+        }
+
+        private void ExecuteSteps(out int lastStepIndex)
+        {
+            for (lastStepIndex = 0; lastStepIndex < this.steps.Count; lastStepIndex++)
+            {
+                Step step = this.steps[lastStepIndex];
+
+                if (!this.stepDefinitions.TryExecute(step))
+                {
+                    this.passed = false;
+                    step.Result = StepResult.Undefined;
+                    break;
+                }
+
+                step.Result = StepResult.Passed;
+            }
+        }
+
+        private void SaveException(Exception e)
+        {
+            this.passed = false;
+            this.exception = e;
+
+            if (e is TargetInvocationException)
+            {
+                this.exception = e.InnerException;
+            }
+        }
+
+        private void SetStepResult(int stepIndex, Exception e)
+        {
+            if (this.exception is NotImplementedException)
+            {
+                this.steps[stepIndex].Result = StepResult.Pending;
+            }
+            else
+            {
+                this.steps[stepIndex].Result = StepResult.Failed;
+            }
+        }
+
+        private void CheckForMoreUndefinedSteps(int stepIndex)
+        {
+            for (; stepIndex < this.steps.Count; stepIndex++)
+            {
+                Step step = this.steps[stepIndex];
+
+                if (this.stepDefinitions.HasMatchFor(step))
+                {
+                    step.Result = StepResult.Skipped;
+                }
+                else
+                {
+                    step.Result = StepResult.Undefined;
+                }
+            }
         }
     }
 }

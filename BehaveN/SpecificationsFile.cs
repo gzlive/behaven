@@ -26,22 +26,22 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+
     /// <summary>
     /// Represents a specifications file.
     /// </summary>
     public class SpecificationsFile
     {
-        private readonly StepDefinitionCollection _stepDefinitions = new StepDefinitionCollection();
-        private ScenarioCollection _scenarios = new ScenarioCollection();
-        private bool _passed;
-        private Reporter _reporter;
+        private readonly StepDefinitionCollection stepDefinitions = new StepDefinitionCollection();
+        private ScenarioCollection scenarios = new ScenarioCollection();
+        private bool passed;
+        private Reporter reporter;
 
         /// <summary>
         /// Gets or sets the title for these specifications.
@@ -61,7 +61,7 @@ namespace BehaveN
         /// <value>The step definitions.</value>
         public StepDefinitionCollection StepDefinitions
         {
-            get { return _stepDefinitions; }
+            get { return this.stepDefinitions; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace BehaveN
         /// <value>The scenarios.</value>
         public ScenarioCollection Scenarios
         {
-            get { return _scenarios; }
+            get { return this.scenarios; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace BehaveN
         /// <value><c>true</c> if passed; otherwise, <c>false</c>.</value>
         public bool Passed
         {
-            get { return _passed; }
+            get { return this.passed; }
         }
 
         /// <summary>
@@ -88,25 +88,25 @@ namespace BehaveN
         /// <value>The reporter.</value>
         public Reporter Reporter
         {
-            get { return _reporter ?? (_reporter = new DefaultReporter()); }
-            set { _reporter = value; }
+            get { return this.reporter ?? (this.reporter = new DefaultReporter()); }
+            set { this.reporter = value; }
         }
 
         /// <summary>
         /// Loads the file.
         /// </summary>
-        /// <param name="path">The path.</param>
+        /// <param name="path">The path to load from.</param>
         public void LoadFile(string path)
         {
             string text = File.ReadAllText(path);
-            LoadText(text);
+            this.LoadText(text);
         }
 
         /// <summary>
         /// Loads the embedded resource.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name of the embedded resource.</param>
         public void LoadEmbeddedResource(Assembly assembly, string name)
         {
             string actualName = null;
@@ -129,22 +129,22 @@ namespace BehaveN
             using (StreamReader reader = new StreamReader(stream))
             {
                 string text = reader.ReadToEnd();
-                LoadText(text);
+                this.LoadText(text);
             }
         }
 
         /// <summary>
         /// Loads the text.
         /// </summary>
-        /// <param name="text">The text.</param>
+        /// <param name="text">The text to read.</param>
         public void LoadText(string text)
         {
             PlainTextReader reader = new PlainTextReader();
             reader.ReadTo(text, this);
 
-            foreach (Scenario scenario in _scenarios)
+            foreach (Scenario scenario in this.scenarios)
             {
-                scenario.StepDefinitions = _stepDefinitions;
+                scenario.StepDefinitions = this.stepDefinitions;
             }
         }
 
@@ -153,12 +153,12 @@ namespace BehaveN
         /// </summary>
         public void Execute()
         {
-            _passed = true;
+            this.passed = true;
 
-            foreach (Scenario scenario in _scenarios)
+            foreach (Scenario scenario in this.scenarios)
             {
                 scenario.Execute();
-                _passed &= scenario.Passed;
+                this.passed &= scenario.Passed;
             }
         }
 
@@ -167,7 +167,7 @@ namespace BehaveN
         /// </summary>
         public void Report()
         {
-            Reporter.ReportSpecificationsFile(this);
+            this.Reporter.ReportSpecificationsFile(this);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace BehaveN
         /// </summary>
         public void ReportUndefinedSteps()
         {
-            Reporter.ReportUndefinedSteps(GetUndefinedSteps());
+            this.Reporter.ReportUndefinedSteps(this.GetUndefinedSteps());
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace BehaveN
         {
             List<Step> undefinedSteps = new List<Step>();
 
-            foreach (Scenario scenario in _scenarios)
+            foreach (Scenario scenario in this.scenarios)
             {
                 foreach (Step step in scenario.Steps)
                 {
@@ -208,11 +208,13 @@ namespace BehaveN
         /// </summary>
         public void Verify()
         {
-            Execute();
-            Report();
+            this.Execute();
+            this.Report();
 
-            if (!Passed)
+            if (!this.Passed)
+            {
                 throw new VerificationException(new Exception("Failed."));
+            }
         }
     }
 }

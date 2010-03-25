@@ -26,10 +26,10 @@
 //
 // </copyright>
 
-using System.Diagnostics;
-
 namespace BehaveN
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// Represents an executable step in a scenario.
     /// </summary>
@@ -37,22 +37,22 @@ namespace BehaveN
     public class Step
     {
         /// <summary>
-        /// The type of the step.
+        /// Gets or sets the type of the step.
         /// </summary>
         public StepType Type { get; set; }
 
         /// <summary>
-        /// The actual text for the step.
+        /// Gets or sets the actual text for the step.
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        /// The block value or null for the step.
+        /// Gets or sets the block value or null for the step.
         /// </summary>
         public IBlock Block { get; set; }
 
         /// <summary>
-        /// The result of executing the step.
+        /// Gets or sets the result of executing the step.
         /// </summary>
         public StepResult Result { get; set; }
    }

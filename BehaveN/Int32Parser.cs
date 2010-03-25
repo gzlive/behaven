@@ -26,16 +26,19 @@
 //
 // </copyright>
 
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Utility class that parses Int32 strings.
     /// </summary>
     public static class Int32Parser
     {
-        private static readonly Regex _ordinalRegex = new Regex(@"(\d+)(?:st|nd|rd|th)", RegexOptions.IgnoreCase);
+        /// <summary>
+        /// A regex that allows ordinal suffixes.
+        /// </summary>
+        private static readonly Regex OrdinalRegex = new Regex(@"(\d+)(?:st|nd|rd|th)", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Parses the integer.
@@ -62,7 +65,7 @@ namespace BehaveN
                 return i;
             }
 
-            Match m = _ordinalRegex.Match(value);
+            Match m = OrdinalRegex.Match(value);
 
             if (m.Success)
             {

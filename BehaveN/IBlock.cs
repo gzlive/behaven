@@ -26,10 +26,10 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+
     /// <summary>
     /// Represents a block parameter to a step definition.
     /// </summary>
@@ -52,18 +52,19 @@ namespace BehaveN
         /// Checks that all of the values are on the specified object.
         /// </summary>
         /// <param name="actual">The object to check against.</param>
+        /// <returns>True if the check succeeded.</returns>
         bool Check(object actual);
 
         /// <summary>
         /// Gets the suggested type for the parameter.
         /// </summary>
-        /// <returns>The type.</returns>
+        /// <returns>The suggested type.</returns>
         string GetSuggestedParameterType();
 
         /// <summary>
         /// Gets the suggested name for the parameter.
         /// </summary>
-        /// <returns>The name.</returns>
+        /// <returns>The suggested name.</returns>
         string GetSuggestedParameterName();
 
         /// <summary>

@@ -26,12 +26,12 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// <summary>
     /// Generates regular expression patterns for a method.
     /// </summary>
@@ -47,6 +47,12 @@ namespace BehaveN
             return GetPattern(methodInfo.Name, methodInfo);
         }
 
+        /// <summary>
+        /// Gets the pattern for a step definition.
+        /// </summary>
+        /// <param name="text">The step definition "template".</param>
+        /// <param name="methodInfo">The method info for this step definition.</param>
+        /// <returns>A pattern that matches steps that should invoke this step definition.</returns>
         internal static string GetPattern(string text, MethodInfo methodInfo)
         {
             var splits = new List<string>(NameParser.Parse(text).Split());
@@ -56,6 +62,11 @@ namespace BehaveN
             return string.Format(@"\s*{0}\s*", string.Join(@"\s+", splits.ToArray()));
         }
 
+        /// <summary>
+        /// Replaces the arg placeholders with patterns based on their type.
+        /// </summary>
+        /// <param name="methodInfo">The method info.</param>
+        /// <param name="splits">The split parts of the step text.</param>
         private static void ReplaceArgPlaceholdersWithPatterns(MethodInfo methodInfo, List<string> splits)
         {
             int i = 1;
@@ -78,6 +89,11 @@ namespace BehaveN
             }
         }
 
+        /// <summary>
+        /// Gets the pattern for a parameter type.
+        /// </summary>
+        /// <param name="parameterInfo">The parameter info.</param>
+        /// <returns>The pattern.</returns>
         private static string GetPatternForParameter(ParameterInfo parameterInfo)
         {
             Type type = parameterInfo.ParameterType;

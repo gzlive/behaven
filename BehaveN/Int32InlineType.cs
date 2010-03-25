@@ -26,21 +26,38 @@
 //
 // </copyright>
 
-using System;
-
 namespace BehaveN
 {
+    using System;
+
+    /// <summary>
+    /// Inline type for Int32 values.
+    /// </summary>
     internal class Int32InlineType : InlineType
     {
+        /// <summary>
+        /// Determines if this type handles the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>
+        /// true if this type handles the specified type
+        /// </returns>
         public override bool HandlesType(Type type)
         {
             return type == typeof(int);
         }
 
+        /// <summary>
+        /// Gets the pattern for the specified type.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>The pattern.</returns>
         public override string GetPattern(Type type)
         {
             if (TypeExtensions.IsNullable(type))
+            {
                 return @"(?<{0}>(?:-?\d+)|(?:null))(?:st|nd|rd|th)?";
+            }
 
             return @"(?<{0}>-?\d+)(?:st|nd|rd|th)?";
         }

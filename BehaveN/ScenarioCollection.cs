@@ -26,17 +26,44 @@
 //
 // </copyright>
 
-using System.Collections;
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a collection of scenarios.
     /// </summary>
     public class ScenarioCollection : IEnumerable<Scenario>
     {
-        private readonly List<Scenario> _scenarios = new List<Scenario>();
+        private readonly List<Scenario> scenarios = new List<Scenario>();
+
+        /// <summary>
+        /// Gets the count of scenarios.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count
+        {
+            get { return this.scenarios.Count; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BehaveN.Scenario"/> at the specified index.
+        /// </summary>
+        /// <param name="index">The requested index.</param>
+        public Scenario this[int index]
+        {
+            get { return this.scenarios[index]; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BehaveN.Scenario"/> with the specified name.
+        /// </summary>
+        /// <param name="name">The requested scenario name.</param>
+        public Scenario this[string name]
+        {
+            get { return this.scenarios.Find(delegate(Scenario s) { return s.Name == name; }); }
+        }
 
         /// <summary>
         /// Adds the specified scenario.
@@ -44,31 +71,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public void Add(Scenario scenario)
         {
-            _scenarios.Add(scenario);
-        }
-
-        /// <summary>
-        /// Gets the count of scenarios.
-        /// </summary>
-        /// <value>The count.</value>
-        public int Count { get { return _scenarios.Count; } }
-
-        /// <summary>
-        /// Gets the <see cref="BehaveN.Scenario"/> at the specified index.
-        /// </summary>
-        /// <value></value>
-        public Scenario this[int index]
-        {
-            get { return _scenarios[index]; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="BehaveN.Scenario"/> with the specified name.
-        /// </summary>
-        /// <value></value>
-        public Scenario this[string name]
-        {
-            get { return _scenarios.Find(delegate(Scenario s) { return s.Name == name; }); }
+            this.scenarios.Add(scenario);
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace BehaveN
         /// </returns>
         public IEnumerator<Scenario> GetEnumerator()
         {
-            return _scenarios.GetEnumerator();
+            return this.scenarios.GetEnumerator();
         }
 
         /// <summary>
@@ -90,7 +93,7 @@ namespace BehaveN
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
     }
 }

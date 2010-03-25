@@ -26,59 +26,62 @@
 //
 // </copyright>
 
-using System.Collections;
-using System.Collections.Generic;
-
 namespace BehaveN
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents an executable step in a scenario.
     /// </summary>
     public class StepCollection : IEnumerable<Step>
     {
-        List<Step> _steps = new List<Step>();
+        private readonly List<Step> steps = new List<Step>();
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count
+        {
+            get { return this.steps.Count; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BehaveN.Step"/> at the specified index.
+        /// </summary>
+        /// <param name="index">The requested index.</param>
+        public Step this[int index]
+        {
+            get
+            {
+                return this.steps[index];
+            }
+        }
 
         /// <summary>
         /// Adds a step with the specified information.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="step">The step.</param>
-        /// <param name="block">The block.</param>
+        /// <param name="type">The step type.</param>
+        /// <param name="step">The step text.</param>
+        /// <param name="block">The block value.</param>
         public void Add(StepType type, string step, IBlock block)
         {
             Step newStep = new Step();
             newStep.Type = type;
             newStep.Text = step;
             newStep.Block = block;
-            Add(newStep);
+            this.Add(newStep);
         }
 
         /// <summary>
         /// Adds the specified step.
         /// </summary>
-        /// <param name="step">The step.</param>
+        /// <param name="step">The step to add.</param>
         public void Add(Step step)
         {
-            _steps.Add(step);
+            this.steps.Add(step);
         }
-
-        /// <summary>
-        /// Gets the <see cref="BehaveN.Step"/> at the specified index.
-        /// </summary>
-        /// <value>The step.</value>
-        public Step this[int index]
-        {
-            get
-            {
-                return _steps[index];
-            }
-        }
-
-        /// <summary>
-        /// Gets the count.
-        /// </summary>
-        /// <value>The count.</value>
-        public int Count { get { return _steps.Count; } }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -88,7 +91,7 @@ namespace BehaveN
         /// </returns>
         public IEnumerator<Step> GetEnumerator()
         {
-            return _steps.GetEnumerator();
+            return this.steps.GetEnumerator();
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace BehaveN
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
     }
 }

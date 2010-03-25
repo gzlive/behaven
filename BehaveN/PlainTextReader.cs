@@ -26,20 +26,30 @@
 //
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Reads specifications in the Given/When/Then style from a plain text file.
     /// </summary>
     public class PlainTextReader
     {
-        private Match _match;
+        private const string FeaturePattern = @"^\s*(?:{0})\s*:\s*(.+)";
+        private const string ScenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.+)";
+        private const string StepPattern = @"^\s*({0})\s+.+";
+
+        private Regex featureRegex;
+        private Regex scenarioRegex;
+        private Regex givenRegex;
+        private Regex whenRegex;
+        private Regex thenRegex;
+        private Regex andRegex;
+
+        private Match match;
 
         /// <summary>
         /// Reads the contents of the file to the specifications file.
@@ -48,7 +58,7 @@ namespace BehaveN
         /// <param name="specificationsFile">The specifications file.</param>
         public void ReadTo(string text, SpecificationsFile specificationsFile)
         {
-            CompileRegexes(text);
+            this.CompileRegexes(text);
 
             List<string> lines = TextParser.GetLines(text);
 
@@ -61,34 +71,55 @@ namespace BehaveN
 
                 if (scenario == null)
                 {
-                    i = ParseTitleAndDescription(lines, i, specificationsFile);
+                    i = this.ParseTitleAndDescription(lines, i, specificationsFile);
                 }
                 else
                 {
-                    _match = _scenarioRegex.Match(line);
+                    this.match = this.scenarioRegex.Match(line);
                 }
 
-                if (_match.Success)
+                if (this.match.Success)
                 {
                     scenario = new Scenario();
-                    scenario.Name = _match.Groups[1].Value;
+                    scenario.Name = this.match.Groups[1].Value;
                     specificationsFile.Scenarios.Add(scenario);
                     stepType = StepType.Unknown;
                 }
                 else
                 {
-                    ParseStep(lines, ref i, scenario, ref stepType, line);
+                    this.ParseStep(lines, ref i, scenario, ref stepType, line);
                 }
             }
+        }
+
+        private void CompileRegexes(string text)
+        {
+            var lm = new LanguageManager();
+
+            string language = TextParser.DiscoverLanguage(text);
+
+            string feature = lm.GetString(language, "Feature");
+            string scenario = lm.GetString(language, "Scenario");
+            string given = lm.GetString(language, "Given");
+            string when = lm.GetString(language, "When");
+            string then = lm.GetString(language, "Then");
+            string and = lm.GetString(language, "And");
+
+            this.featureRegex = new Regex(string.Format(FeaturePattern, feature), RegexOptions.IgnoreCase);
+            this.scenarioRegex = new Regex(string.Format(ScenarioPattern, scenario), RegexOptions.IgnoreCase);
+            this.givenRegex = new Regex(string.Format(StepPattern, given), RegexOptions.IgnoreCase);
+            this.whenRegex = new Regex(string.Format(StepPattern, when), RegexOptions.IgnoreCase);
+            this.thenRegex = new Regex(string.Format(StepPattern, then), RegexOptions.IgnoreCase);
+            this.andRegex = new Regex(string.Format(StepPattern, and), RegexOptions.IgnoreCase);
         }
 
         private int ParseTitleAndDescription(List<string> lines, int i, SpecificationsFile specificationsFile)
         {
             string line = lines[i];
 
-            if ((_match = _featureRegex.Match(line)).Success) 
+            if ((this.match = this.featureRegex.Match(line)).Success) 
             {
-                specificationsFile.Title = _match.Groups[1].Value;
+                specificationsFile.Title = this.match.Groups[1].Value;
                 i++;
             }
 
@@ -98,9 +129,9 @@ namespace BehaveN
             {
                 line = lines[i];
 
-                _match = _scenarioRegex.Match(line);
+                this.match = this.scenarioRegex.Match(line);
 
-                if (_match.Success)
+                if (this.match.Success)
                 {
                     break;
                 }
@@ -115,29 +146,31 @@ namespace BehaveN
 
         private void ParseStep(List<string> lines, ref int i, Scenario scenario, ref StepType stepType, string line)
         {
-            if (_givenRegex.Match(line).Success)
+            if (this.givenRegex.Match(line).Success)
             {
                 stepType = StepType.Given;
             }
-            else if (_whenRegex.Match(line).Success)
+            else if (this.whenRegex.Match(line).Success)
             {
                 stepType = StepType.When;
             }
-            else if (_thenRegex.Match(line).Success)
+            else if (this.thenRegex.Match(line).Success)
             {
                 stepType = StepType.Then;
             }
-            else if (_andRegex.Match(line).Success)
+            else if (this.andRegex.Match(line).Success)
             {
                 if (stepType == StepType.Unknown)
+                {
                     throw new Exception("\"And\" steps cannot appear before \"given\", \"when\", or \"then\" steps.");
+                }
             }
             else
             {
                 throw new Exception(string.Format("Unrecognized step: \"{0}\".", line));
             }
 
-            IBlock block = ParseBlock(lines, ref i);
+            IBlock block = this.ParseBlock(lines, ref i);
 
             scenario.Steps.Add(stepType, line, block);
         }
@@ -175,49 +208,5 @@ namespace BehaveN
 
             return block;
         }
-
-        private void CompileRegexes(string text)
-        {
-            var lm = new LanguageManager();
-
-            string language = TextParser.DiscoverLanguage(text);
-
-            string feature = lm.GetString(language, "Feature");
-            string scenario = lm.GetString(language, "Scenario");
-            string given = lm.GetString(language, "Given");
-            string when = lm.GetString(language, "When");
-            string then = lm.GetString(language, "Then");
-            string and = lm.GetString(language, "And");
-
-            _featureRegex = new Regex(string.Format(_featurePattern, feature), RegexOptions.IgnoreCase);
-            _scenarioRegex = new Regex(string.Format(_scenarioPattern, scenario), RegexOptions.IgnoreCase);
-            _givenRegex = new Regex(string.Format(_stepPattern, given), RegexOptions.IgnoreCase);
-            _whenRegex = new Regex(string.Format(_stepPattern, when), RegexOptions.IgnoreCase);
-            _thenRegex = new Regex(string.Format(_stepPattern, then), RegexOptions.IgnoreCase);
-            _andRegex = new Regex(string.Format(_stepPattern, and), RegexOptions.IgnoreCase);
-        }
-
-        private CultureInfo GetCultureInfo(string language)
-        {
-            try
-            {
-                return CultureInfo.GetCultureInfo(language);
-            }
-            catch (ArgumentException)
-            {
-                return CultureInfo.GetCultureInfo("en");
-            }
-        }
-
-        private Regex _featureRegex;
-        private Regex _scenarioRegex;
-        private Regex _givenRegex;
-        private Regex _whenRegex;
-        private Regex _thenRegex;
-        private Regex _andRegex;
-
-        private static readonly string _featurePattern = @"^\s*(?:{0})\s*:\s*(.+)";
-        private static readonly string _scenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.+)";
-        private static readonly string _stepPattern = @"^\s*({0})\s+.+";
     }
 }
