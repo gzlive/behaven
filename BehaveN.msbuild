@@ -60,8 +60,8 @@
       <Output TaskParameter="Minor" PropertyName="Minor" />
       <Output TaskParameter="Build" PropertyName="Build" />
     </Version>
-    <Copy SourceFiles="@(ReleaseFiles)" DestinationFolder="$(ReleaseFolder)\BehaveN-$(Major).$(Minor).$(Build)" />
-    <Exec Command="..\3rdPartyBinaries\7-Zip\7z.exe a BehaveN-$(Major).$(Minor).$(Build).zip Behaven-$(Major).$(Minor).$(Build)" WorkingDirectory="$(ReleaseFolder)" />
+    <Copy SourceFiles="@(ReleaseFiles)" DestinationFolder="$(ReleaseFolder)\BehaveN-$(Major).$(Minor).$(Build).$(Revision)" />
+    <Exec Command="..\3rdPartyBinaries\7-Zip\7z.exe a BehaveN-$(Major).$(Minor).$(Build).$(Revision).zip Behaven-$(Major).$(Minor).$(Build).$(Revision)" WorkingDirectory="$(ReleaseFolder)" />
   </Target>
 
   <Target Name="Release" DependsOnTargets="Clean;Version;Build">

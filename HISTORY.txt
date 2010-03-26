@@ -1,4 +1,24 @@
-2.0.0 - Not released yet.
+2.0.0.0 - 2010/03/xx:
+
+  - First release of BehaveN 2. Almost a complete rewrite with a
+    completely changed API. Sorry.
+
+  - No more code-only syntax. Don't ask for it.
+
+  - [Convert] and [FromContext] attributes are gone.
+
+  - It's now possible to write step definitions in an assembly
+    without referencing BehaveN.dll.
+
+  - IoC-like injection of "context" objects into constructors of
+    classes containing step definitions.
+
+  - Output parameters of step definitions cause BehaveN to assert
+    on values.
+
+  - Some limited support for authoring steps in natural languages.
+
+  - New BehaveN.Tool.exe for doing all sorts of neat tasks.
 
 1.3.0 - 2009/09/25:
 

@@ -1,7 +1,7 @@
 BehaveN
 -------
 
-There is no installer. Extract the DLLs to some folder and add a
+There is no installer. Extract the assemblies to some folder and add a
 reference to BehaveN.dll from your test project.
 
 BehaveN is free to use for both free and commercial projects. See
