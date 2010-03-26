@@ -52,12 +52,12 @@ namespace BehaveN
         private TextWriter _writer;
 
         /// <summary>
-        /// Reports the specifications file.
+        /// Reports the feature.
         /// </summary>
-        /// <param name="specificationsFile">The specifications file.</param>
+        /// <param name="feature">The feature.</param>
         /// <remarks>This reports all scenarios in the file and their
         /// undefined steps.</remarks>
-        public override void ReportSpecificationsFile(SpecificationsFile specificationsFile)
+        public override void ReportFeature(Feature feature)
         {
             _writer.WriteLine(@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.01//EN"" ""http://www.w3.org/TR/html4/strict.dtd"">");
             _writer.WriteLine("<html>");
@@ -67,22 +67,22 @@ namespace BehaveN
             _writer.WriteLine("<body>");
             _writer.WriteLine(@"<div id=""wrap"">");
 
-            if (!string.IsNullOrEmpty(specificationsFile.Title))
+            if (!string.IsNullOrEmpty(feature.Name))
             {
-                _writer.WriteLine("<h1>{0}</h1>", Escape(specificationsFile.Title));
+                _writer.WriteLine("<h1>{0}</h1>", Escape(feature.Name));
             }
 
-            if (!string.IsNullOrEmpty(specificationsFile.Description))
+            if (!string.IsNullOrEmpty(feature.Description))
             {
-                _writer.WriteLine("<p>{0}</p>", Escape(specificationsFile.Description));
+                _writer.WriteLine("<p>{0}</p>", Escape(feature.Description));
             }
 
-            foreach (Scenario scenario in specificationsFile.Scenarios)
+            foreach (Scenario scenario in feature.Scenarios)
             {
                 ReportScenario(scenario);
             }
 
-            ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
+            ReportUndefinedSteps(feature.GetUndefinedSteps());
 
             _writer.WriteLine("</div>");
             _writer.WriteLine("</body>");

@@ -8,7 +8,7 @@ namespace BehaveN.Tests
     public class PlainTextReader_Tests
     {
         private PlainTextReader _reader;
-        private SpecificationsFile _specs;
+        private Feature _feature;
         private Exception _exception;
 
         [Test]
@@ -51,8 +51,8 @@ namespace BehaveN.Tests
                      "Scenario: My scenario",
                      "Given foo");
 
-            _specs.Title.Should().Be("My feature");
-            _specs.Description.Should().Be(string.Join("\r\n", new[]
+            _feature.Name.Should().Be("My feature");
+            _feature.Description.Should().Be(string.Join("\r\n", new[]
                                                                    {
                                                                        "This is a description of my feature.",
                                                                        "This is the second line.",
@@ -60,10 +60,10 @@ namespace BehaveN.Tests
                                                                        "Given nothing because this is in a feature.",
                                                                        "This is the end of my feature.",
                                                                    }));
-            _specs.Scenarios.Count.Should().Be(1);
-            _specs.Scenarios[0].Name.Should().Be("My scenario");
-            _specs.Scenarios[0].Steps.Count.Should().Be(1);
-            _specs.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
+            _feature.Scenarios.Count.Should().Be(1);
+            _feature.Scenarios[0].Name.Should().Be("My scenario");
+            _feature.Scenarios[0].Steps.Count.Should().Be(1);
+            _feature.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
         }
 
         [Test]
@@ -78,8 +78,8 @@ namespace BehaveN.Tests
                      "Scenario: My scenario",
                      "Given foo");
 
-            _specs.Title.Should().Be.Null();
-            _specs.Description.Should().Be(string.Join("\r\n", new[]
+            _feature.Name.Should().Be.Null();
+            _feature.Description.Should().Be(string.Join("\r\n", new[]
                                                                    {
                                                                        "This is a description of my feature.",
                                                                        "This is the second line.",
@@ -87,21 +87,21 @@ namespace BehaveN.Tests
                                                                        "Given nothing because this is in a feature.",
                                                                        "This is the end of my feature.",
                                                                    }));
-            _specs.Scenarios.Count.Should().Be(1);
-            _specs.Scenarios[0].Name.Should().Be("My scenario");
-            _specs.Scenarios[0].Steps.Count.Should().Be(1);
-            _specs.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
+            _feature.Scenarios.Count.Should().Be(1);
+            _feature.Scenarios[0].Name.Should().Be("My scenario");
+            _feature.Scenarios[0].Steps.Count.Should().Be(1);
+            _feature.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
         }
 
         private void ReadText(params string[] lines)
         {
             _reader = new PlainTextReader();
-            _specs = new SpecificationsFile();
+            _feature = new Feature();
             _exception = null;
 
             try
             {
-                _reader.ReadTo(string.Join("\r\n", lines), _specs);
+                _reader.ReadTo(string.Join("\r\n", lines), _feature);
             }
             catch (Exception e)
             {

@@ -71,8 +71,8 @@ namespace BehaveN.Tool
 
             foreach (var file in expandedFiles)
             {
-                var specs = new SpecificationsFile();
-                specs.LoadFile(file);
+                var feature = new Feature();
+                feature.LoadFile(file);
 
                 string className = Path.GetFileNameWithoutExtension(file);
                 string csFile = Path.ChangeExtension(file, ".g.cs");
@@ -93,15 +93,15 @@ namespace BehaveN.Tool
 
                 sw.WriteLine("    [TestFixture]");
 
-                if (specs.Headers["ignore"] != null)
+                if (feature.Headers["ignore"] != null)
                 {
-                    sw.WriteLine("    [Ignore(\"{0}\")]", specs.Headers["ignore"]);
+                    sw.WriteLine("    [Ignore(\"{0}\")]", feature.Headers["ignore"]);
                 }
 
                 sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
                 sw.WriteLine("    {");
 
-                sw.WriteLine(@"        private SpecificationsFile _specs = new SpecificationsFile();");
+                sw.WriteLine(@"        private Feature _feature = new Feature();");
 
                 if (!noSetUp)
                 {
@@ -109,8 +109,8 @@ namespace BehaveN.Tool
         [TestFixtureSetUp]
         public void LoadScenarios()
         {{
-            _specs.StepDefinitions.UseStepDefinitionsFromAssembly({1});
-            _specs.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
+            _feature.StepDefinitions.UseStepDefinitionsFromAssembly({1});
+            _feature.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
         }}", Path.GetFileName(file), (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")");
                 }
 
@@ -120,11 +120,11 @@ namespace BehaveN.Tool
         [TestFixtureTearDown]
         public void ReportUndefinedSteps()
         {
-            _specs.ReportUndefinedSteps();
+            _feature.ReportUndefinedSteps();
         }");
                 }
 
-                foreach (var scenario in specs.Scenarios)
+                foreach (var scenario in feature.Scenarios)
                 {
                     sw.WriteLine();
 
@@ -138,7 +138,7 @@ namespace BehaveN.Tool
                     sw.WriteLine("        [Test]");
                     sw.WriteLine("        public void {0}()", methodName);
                     sw.WriteLine("        {");
-                    sw.WriteLine("            _specs.Scenarios[\"{0}\"].Verify();", scenario.Name);
+                    sw.WriteLine("            _feature.Scenarios[\"{0}\"].Verify();", scenario.Name);
                     sw.WriteLine("        }");
                 }
 

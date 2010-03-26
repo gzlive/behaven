@@ -61,7 +61,7 @@
     <Compile Include="StepType.cs" />
     <Compile Include="StepCollection.cs" />
     <Compile Include="ScenarioCollection.cs" />
-    <Compile Include="SpecificationsFile.cs" />
+    <Compile Include="Feature.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="StepDefinition.cs" />
     <Compile Include="StepDefinitionCollection.cs" />

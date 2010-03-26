@@ -56,11 +56,11 @@ namespace BehaveN
         private Match match;
 
         /// <summary>
-        /// Reads the contents of the file to the specifications file.
+        /// Reads the contents of the file to the feature.
         /// </summary>
         /// <param name="text">The text to read.</param>
-        /// <param name="specificationsFile">The specifications file.</param>
-        public void ReadTo(string text, SpecificationsFile specificationsFile)
+        /// <param name="feature">The feature.</param>
+        public void ReadTo(string text, Feature feature)
         {
             this.CompileRegexes(text);
 
@@ -79,12 +79,12 @@ namespace BehaveN
 
                     if (this.match.Success)
                     {
-                        specificationsFile.Headers[this.match.Groups[1].Value] = this.match.Groups[2].Value;
+                        feature.Headers[this.match.Groups[1].Value] = this.match.Groups[2].Value;
 
                         continue;
                     }
 
-                    i = this.ParseTitleAndDescription(lines, i, specificationsFile);
+                    i = this.ParseTitleAndDescription(lines, i, feature);
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace BehaveN
                 {
                     scenario = new Scenario();
                     scenario.Name = this.match.Groups[1].Value;
-                    specificationsFile.Scenarios.Add(scenario);
+                    feature.Scenarios.Add(scenario);
                     stepType = StepType.Unknown;
                 }
                 else
@@ -131,13 +131,13 @@ namespace BehaveN
             this.andRegex = new Regex(string.Format(StepPattern, and), RegexOptions.IgnoreCase);
         }
 
-        private int ParseTitleAndDescription(List<string> lines, int i, SpecificationsFile specificationsFile)
+        private int ParseTitleAndDescription(List<string> lines, int i, Feature feature)
         {
             string line = lines[i];
 
             if ((this.match = this.featureRegex.Match(line)).Success) 
             {
-                specificationsFile.Title = this.match.Groups[1].Value;
+                feature.Name = this.match.Groups[1].Value;
                 i++;
             }
 
@@ -157,7 +157,7 @@ namespace BehaveN
                 featureLines.Add(line);
             }
 
-            specificationsFile.Description = string.Join("\r\n", featureLines.ToArray()).Trim('\r', '\n');
+            feature.Description = string.Join("\r\n", featureLines.ToArray()).Trim('\r', '\n');
 
             return i;
         }

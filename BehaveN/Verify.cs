@@ -37,43 +37,43 @@ namespace BehaveN
     public static class Verify
     {
         /// <summary>
-        /// Verifies the specifications in the specified embedded resource.
+        /// Verifies the feature in the specified embedded resource.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <param name="resourceName">Name of the resource.</param>
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void EmbeddedResource(Assembly assembly, string resourceName, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadEmbeddedResource(assembly, resourceName);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Verify();
+            var feature = new Feature();
+            feature.LoadEmbeddedResource(assembly, resourceName);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Verify();
         }
 
         /// <summary>
-        /// Verifies the specifications in the specified file.
+        /// Verifies the feature in the specified file.
         /// </summary>
         /// <param name="path">The path.</param>
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void File(string path, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadFile(path);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Verify();
+            var feature = new Feature();
+            feature.LoadFile(path);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Verify();
         }
 
         /// <summary>
-        /// Verifies the specifications in the specified text.
+        /// Verifies the feature in the specified text.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void Text(string text, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadText(text);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Verify();
+            var feature = new Feature();
+            feature.LoadText(text);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Verify();
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace BehaveN
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void ScenarioInEmbeddedResource(string scenarioName, Assembly assembly, string resourceName, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadEmbeddedResource(assembly, resourceName);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Scenarios[scenarioName].Verify();
+            var feature = new Feature();
+            feature.LoadEmbeddedResource(assembly, resourceName);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Scenarios[scenarioName].Verify();
         }
 
         /// <summary>
@@ -99,10 +99,10 @@ namespace BehaveN
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void ScenarioInFile(string scenarioName, string path, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadFile(path);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Scenarios[scenarioName].Verify();
+            var feature = new Feature();
+            feature.LoadFile(path);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Scenarios[scenarioName].Verify();
         }
 
         /// <summary>
@@ -113,27 +113,27 @@ namespace BehaveN
         /// <param name="stepDefinitions">The assemblies, types, or objects containing step definitions.</param>
         public static void ScenarioInText(string scenarioName, string text, params object[] stepDefinitions)
         {
-            var specs = new SpecificationsFile();
-            specs.LoadText(text);
-            AddStepDefinitions(specs, stepDefinitions);
-            specs.Scenarios[scenarioName].Verify();
+            var feature = new Feature();
+            feature.LoadText(text);
+            AddStepDefinitions(feature, stepDefinitions);
+            feature.Scenarios[scenarioName].Verify();
         }
 
-        private static void AddStepDefinitions(SpecificationsFile specs, object[] stepDefinitions)
+        private static void AddStepDefinitions(Feature feature, object[] stepDefinitions)
         {
             foreach (var stepDefinition in stepDefinitions)
             {
                 if (stepDefinition is Assembly)
                 {
-                    specs.StepDefinitions.UseStepDefinitionsFromAssembly((Assembly)stepDefinition);
+                    feature.StepDefinitions.UseStepDefinitionsFromAssembly((Assembly)stepDefinition);
                 }
                 else if (stepDefinition is Type)
                 {
-                    specs.StepDefinitions.UseStepDefinitionsFromType((Type)stepDefinition);
+                    feature.StepDefinitions.UseStepDefinitionsFromType((Type)stepDefinition);
                 }
                 else
                 {
-                    specs.StepDefinitions.UseStepDefinitionsFromObject(stepDefinition);
+                    feature.StepDefinitions.UseStepDefinitionsFromObject(stepDefinition);
                 }
             }
         }

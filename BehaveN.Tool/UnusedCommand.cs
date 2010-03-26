@@ -81,10 +81,10 @@ namespace BehaveN.Tool
         {
             foreach (var specFile in specFiles)
             {
-                var specificationsFile = new SpecificationsFile();
-                specificationsFile.LoadFile(specFile);
+                var feature = new Feature();
+                feature.LoadFile(specFile);
 
-                foreach (var scenario in specificationsFile.Scenarios)
+                foreach (var scenario in feature.Scenarios)
                 {
                     foreach (var step in scenario.Steps)
                     {

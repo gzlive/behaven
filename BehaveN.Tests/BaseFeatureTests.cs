@@ -2,22 +2,22 @@ using NUnit.Framework;
 
 namespace BehaveN.Tests
 {
-    public class BaseSpecificationsFileTests
+    public class BaseFeatureTests
     {
         [SetUp]
         public void SetUp()
         {
-            _specs = new SpecificationsFile();
+            _feature = new Feature();
         }
 
-        private SpecificationsFile _specs;
+        private Feature _feature;
 
-        protected SpecificationsFile TheSpecificationsFile { get { return _specs; } }
+        protected Feature TheFeature { get { return _feature; } }
 
         protected void LoadText(params string[] lines)
         {
             string text = string.Join("\r\n", lines);
-            _specs.LoadText(text);
+            _feature.LoadText(text);
         }
     }
 }

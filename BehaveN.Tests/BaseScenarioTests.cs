@@ -7,21 +7,21 @@ namespace BehaveN.Tests
         [SetUp]
         public void BaseSetUp()
         {
-            _specs = new SpecificationsFile();
-            _specs.StepDefinitions.UseStepDefinitionsFromObject(this);
+            _feature = new Feature();
+            _feature.StepDefinitions.UseStepDefinitionsFromObject(this);
         }
 
-        private SpecificationsFile _specs;
+        private Feature _feature;
         private Scenario _scenario;
 
-        protected SpecificationsFile TheSpecificationsFile { get { return _specs; } }
+        protected Feature TheFeature { get { return _feature; } }
         protected Scenario TheScenario { get { return _scenario; } }
 
         protected void ExecuteText(params string[] lines)
         {
             string text = string.Join("\r\n", lines);
-            _specs.LoadText(text);
-            _scenario = _specs.Scenarios[0];
+            _feature.LoadText(text);
+            _scenario = _feature.Scenarios[0];
             _scenario.Execute();
         }
     }

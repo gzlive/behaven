@@ -1,4 +1,4 @@
-﻿// <copyright file="SpecificationsFile.cs" company="Jason Diamond">
+﻿// <copyright file="Feature.cs" company="Jason Diamond">
 //
 // Copyright (c) 2009-2010 Jason Diamond
 //
@@ -34,9 +34,9 @@ namespace BehaveN
     using System.Reflection;
 
     /// <summary>
-    /// Represents a specifications file.
+    /// Represents a feature.
     /// </summary>
-    public class SpecificationsFile
+    public class Feature
     {
         private readonly HeaderCollection headers = new HeaderCollection();
         private readonly StepDefinitionCollection stepDefinitions = new StepDefinitionCollection();
@@ -54,13 +54,13 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Gets or sets the title for these specifications.
+        /// Gets or sets the name of the feature.
         /// </summary>
-        /// <value>The title.</value>
-        public string Title { get; set; }
+        /// <value>The name.</value>
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the description for these specifications.
+        /// Gets or sets the description for this feature.
         /// </summary>
         /// <value>The description.</value>
         public string Description { get; set; }
@@ -84,7 +84,7 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="SpecificationsFile"/> is passed.
+        /// Gets a value indicating whether this <see cref="Feature"/> is passed.
         /// </summary>
         /// <value><c>true</c> if passed; otherwise, <c>false</c>.</value>
         public bool Passed
@@ -177,7 +177,7 @@ namespace BehaveN
         /// </summary>
         public void Report()
         {
-            this.Reporter.ReportSpecificationsFile(this);
+            this.Reporter.ReportFeature(this);
         }
 
         /// <summary>

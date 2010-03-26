@@ -83,21 +83,21 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Reports the specifications file.
+        /// Reports the feature.
         /// </summary>
-        /// <param name="specificationsFile">The specifications file.</param>
+        /// <param name="feature">The feature.</param>
         /// <remarks>This reports all scenarios in the file and their
         /// undefined steps.</remarks>
-        public override void ReportSpecificationsFile(SpecificationsFile specificationsFile)
+        public override void ReportFeature(Feature feature)
         {
-            foreach (Scenario scenario in specificationsFile.Scenarios)
+            foreach (Scenario scenario in feature.Scenarios)
             {
                 this.ReportScenario(scenario);
 
                 this.WriteDivider();
             }
 
-            this.ReportUndefinedSteps(specificationsFile.GetUndefinedSteps());
+            this.ReportUndefinedSteps(feature.GetUndefinedSteps());
         }
 
         /// <summary>

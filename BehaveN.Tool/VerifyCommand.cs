@@ -95,23 +95,23 @@ namespace BehaveN.Tool
                                  {
                                      foreach (var scenarioFile in scenarioFiles)
                                      {
-                                         var specificationsFile = new SpecificationsFile();
+                                         var feature = new Feature();
 
                                          if (!string.IsNullOrEmpty(outputFile))
                                          {
-                                             specificationsFile.Reporter.Destination = outputFile;
+                                             feature.Reporter.Destination = outputFile;
                                          }
 
                                          foreach (var assembly in _assemblies)
                                          {
-                                             specificationsFile.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
+                                             feature.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
                                          }
 
-                                         specificationsFile.LoadFile(scenarioFile);
-                                         specificationsFile.Execute();
-                                         specificationsFile.Report();
+                                         feature.LoadFile(scenarioFile);
+                                         feature.Execute();
+                                         feature.Report();
 
-                                         if (specificationsFile.Passed)
+                                         if (feature.Passed)
                                              WriteLineWithColor(ConsoleColor.Green, Passed);
                                          else
                                              WriteLineWithColor(ConsoleColor.Red, Failed);

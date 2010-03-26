@@ -10,7 +10,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_calls_dispose_at_the_end_of_a_passing_test()
         {
-            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyDisposableStepDefinitions>();
+            TheFeature.StepDefinitions.UseStepDefinitionsFromType<MyDisposableStepDefinitions>();
             MyDisposableStepDefinitions.DisposeInvoked = false;
 
             ExecuteText("Scenario: Dispose after passing",
@@ -22,7 +22,7 @@ namespace BehaveN.Tests
         [Test]
         public void it_calls_dispose_at_the_end_of_a_failing_test()
         {
-            TheSpecificationsFile.StepDefinitions.UseStepDefinitionsFromType<MyDisposableStepDefinitions>();
+            TheFeature.StepDefinitions.UseStepDefinitionsFromType<MyDisposableStepDefinitions>();
             MyDisposableStepDefinitions.DisposeInvoked = false;
 
             ExecuteText("Scenario: Dispose after failing",
