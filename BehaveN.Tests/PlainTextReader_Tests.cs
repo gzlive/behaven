@@ -38,7 +38,7 @@ namespace BehaveN.Tests
         }
 
         [Test]
-        public void it_parses_the_title_and_description_from_the_beginning_of_the_file()
+        public void it_parses_the_feature_name_and_description_from_the_beginning_of_the_file()
         {
             ReadText("Feature: My feature",
                      "",
@@ -59,6 +59,30 @@ namespace BehaveN.Tests
                                                                        "This next line starts with Given:",
                                                                        "Given nothing because this is in a feature.",
                                                                        "This is the end of my feature.",
+                                                                   }));
+            _feature.Scenarios.Count.Should().Be(1);
+            _feature.Scenarios[0].Name.Should().Be("My scenario");
+            _feature.Scenarios[0].Steps.Count.Should().Be(1);
+            _feature.Scenarios[0].Steps[0].Text.Should().Be("Given foo");
+        }
+
+        [Test]
+        public void it_allows_blank_lines_and_comments_before_the_feature_keyword()
+        {
+            ReadText("",
+                     "# a comment",
+                     "",
+                     "Feature: My feature",
+                     "",
+                     "This is a description of my feature.",
+                     "",
+                     "Scenario: My scenario",
+                     "Given foo");
+
+            _feature.Name.Should().Be("My feature");
+            _feature.Description.Should().Be(string.Join("\r\n", new[]
+                                                                   {
+                                                                       "This is a description of my feature.",
                                                                    }));
             _feature.Scenarios.Count.Should().Be(1);
             _feature.Scenarios[0].Name.Should().Be("My scenario");

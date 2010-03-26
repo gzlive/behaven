@@ -84,6 +84,11 @@ namespace BehaveN
                         continue;
                     }
 
+                    if (this.commentRegex.IsMatch(line))
+                    {
+                        continue;
+                    }
+
                     i = this.ParseTitleAndDescription(lines, i, feature);
                 }
                 else
