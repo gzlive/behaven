@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Mono.Options;
 
 namespace BehaveN.Tool
@@ -74,7 +75,6 @@ namespace BehaveN.Tool
                 var feature = new Feature();
                 feature.LoadFile(file);
 
-                string className = Path.GetFileNameWithoutExtension(file);
                 string csFile = Path.ChangeExtension(file, ".g.cs");
 
                 Console.WriteLine("Writing to " + csFile);
@@ -97,6 +97,8 @@ namespace BehaveN.Tool
                 {
                     sw.WriteLine("    [Ignore(\"{0}\")]", feature.Headers["ignore"]);
                 }
+
+                string className = MakeNameSafeForCSharp(Path.GetFileNameWithoutExtension(file));
 
                 sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
                 sw.WriteLine("    {");
@@ -128,12 +130,7 @@ namespace BehaveN.Tool
                 {
                     sw.WriteLine();
 
-                    string methodName = scenario.Name.Replace(" ", "_");
-
-                    if (Char.IsDigit(methodName[0]))
-                    {
-                        methodName = "_" + methodName;
-                    }
+                    string methodName = MakeNameSafeForCSharp(scenario.Name);
 
                     sw.WriteLine("        [Test]");
                     sw.WriteLine("        public void {0}()", methodName);
@@ -183,6 +180,20 @@ namespace BehaveN.Tool
             }
 
             return expandedFiles;
+        }
+
+        private string MakeNameSafeForCSharp(string name)
+        {
+            name = Regex.Replace(name, @"\p{P}", "");
+
+            name = name.Replace(" ", "_");
+
+            if (Char.IsDigit(name[0]))
+            {
+                name = "_" + name;
+            }
+
+            return name;
         }
 
         private static OptionSet GetOptions()
