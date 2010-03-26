@@ -191,7 +191,7 @@ namespace BehaveN
 
             if (!passed)
             {
-                throw new VerificationException(new Exception("One or more output parameters did not pass."));
+                throw new VerificationException(new Exception("One or more output parameters were not correct."));
             }
         }
 

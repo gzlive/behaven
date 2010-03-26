@@ -46,7 +46,7 @@ namespace BehaveN
         /// <summary>
         /// The symbol for a pending step.
         /// </summary>
-        public const string Pending = "*";
+        public const string Pending = "!";
 
         /// <summary>
         /// The symbol for a passed step.
@@ -61,7 +61,7 @@ namespace BehaveN
         /// <summary>
         /// The symbol for a skipped step.
         /// </summary>
-        public const string Skipped = "-";
+        public const string Skipped = " ";
 
         private readonly TextWriter writer;
         private StepType lastStepType;

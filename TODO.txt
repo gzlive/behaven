@@ -1,6 +1,11 @@
-- Add wildcard support to tool commands.
+- Try to insert out modifiers in suggested step definitions
+  for parameters that appear after the word "should".
+- If any steps are undefined, don't bother running any.
+  - Requires scanning all the steps before running any of them.
+- Finish adding wildcard support to tool commands.
 - Allow parentheses to appear in steps, but strip them out.
   - To act as parenthetical comments.
+  - But don't strip them out of quoted strings.
 - Add support for generating fixtures for other frameworks.
 - Add new "list" block type.
   - Leading "-" will indicate item in a list.

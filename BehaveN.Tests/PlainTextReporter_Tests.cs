@@ -63,25 +63,25 @@ namespace BehaveN.Tests
         }
 
         [Test]
-        public void it_reports_pending_steps_with_a_leading_asterisk()
+        public void it_reports_pending_steps_with_a_leading_bang()
         {
             s.Name = "My scenario";
             s.Steps.Add(new Step { Text = "Given pending", Result = StepResult.Pending });
 
             ScenarioReportShouldBe("Scenario: My scenario",
                                    "",
-                                   "* Given pending");
+                                   "! Given pending");
         }
 
         [Test]
-        public void it_reports_skipped_steps_with_a_leading_dash()
+        public void it_reports_skipped_steps_with_a_leading_space()
         {
             s.Name = "My scenario";
             s.Steps.Add(new Step { Text = "Given skipped", Result = StepResult.Skipped });
 
             ScenarioReportShouldBe("Scenario: My scenario",
                                    "",
-                                   "- Given skipped");
+                                   "  Given skipped");
         }
 
         [Test]
