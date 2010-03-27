@@ -184,8 +184,8 @@ namespace BehaveN.Tool
 
         private string MakeNameSafeForCSharp(string name)
         {
+            name = name.Replace("_", " ");
             name = Regex.Replace(name, @"\p{P}", "");
-
             name = name.Replace(" ", "_");
 
             if (Char.IsDigit(name[0]))
