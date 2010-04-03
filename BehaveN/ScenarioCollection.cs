@@ -37,6 +37,16 @@ namespace BehaveN
     public class ScenarioCollection : IEnumerable<Scenario>
     {
         private readonly List<Scenario> scenarios = new List<Scenario>();
+        private readonly Feature feature;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScenarioCollection"/> class.
+        /// </summary>
+        /// <param name="feature">The feature.</param>
+        internal ScenarioCollection(Feature feature)
+        {
+            this.feature = feature;
+        }
 
         /// <summary>
         /// Gets the count of scenarios.
@@ -71,6 +81,7 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public void Add(Scenario scenario)
         {
+            scenario.StepDefinitions = feature.StepDefinitions;
             this.scenarios.Add(scenario);
         }
 

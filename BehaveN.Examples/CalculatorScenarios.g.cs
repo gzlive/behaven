@@ -15,7 +15,7 @@ namespace BehaveN.Examples
         public void LoadScenarios()
         {
             _feature.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
-            _feature.LoadEmbeddedResource(GetType().Assembly, "CalculatorScenarios.txt");
+            new PlainTextReader().ReadTo(Read.EmbeddedResource(GetType().Assembly, "CalculatorScenarios.txt"), _feature);
         }
 
         [TestFixtureTearDown]

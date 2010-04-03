@@ -45,7 +45,7 @@ namespace BehaveN
         public static void EmbeddedResource(Assembly assembly, string resourceName, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadEmbeddedResource(assembly, resourceName);
+            new PlainTextReader().ReadTo(Read.EmbeddedResource(assembly, resourceName), feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Verify();
         }
@@ -58,7 +58,7 @@ namespace BehaveN
         public static void File(string path, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadFile(path);
+            new PlainTextReader().ReadTo(Read.File(path), feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Verify();
         }
@@ -71,7 +71,7 @@ namespace BehaveN
         public static void Text(string text, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadText(text);
+            new PlainTextReader().ReadTo(text, feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Verify();
         }
@@ -86,7 +86,7 @@ namespace BehaveN
         public static void ScenarioInEmbeddedResource(string scenarioName, Assembly assembly, string resourceName, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadEmbeddedResource(assembly, resourceName);
+            new PlainTextReader().ReadTo(Read.EmbeddedResource(assembly, resourceName), feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Scenarios[scenarioName].Verify();
         }
@@ -100,7 +100,7 @@ namespace BehaveN
         public static void ScenarioInFile(string scenarioName, string path, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadFile(path);
+            new PlainTextReader().ReadTo(Read.File(path), feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Scenarios[scenarioName].Verify();
         }
@@ -114,7 +114,7 @@ namespace BehaveN
         public static void ScenarioInText(string scenarioName, string text, params object[] stepDefinitions)
         {
             var feature = new Feature();
-            feature.LoadText(text);
+            new PlainTextReader().ReadTo(text, feature);
             AddStepDefinitions(feature, stepDefinitions);
             feature.Scenarios[scenarioName].Verify();
         }

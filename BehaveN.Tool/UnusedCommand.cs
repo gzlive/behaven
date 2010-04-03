@@ -82,7 +82,7 @@ namespace BehaveN.Tool
             foreach (var specFile in specFiles)
             {
                 var feature = new Feature();
-                feature.LoadFile(specFile);
+                new PlainTextReader().ReadTo(Read.File(specFile), feature);
 
                 foreach (var scenario in feature.Scenarios)
                 {

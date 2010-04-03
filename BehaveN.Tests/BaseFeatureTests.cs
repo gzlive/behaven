@@ -17,7 +17,7 @@ namespace BehaveN.Tests
         protected void LoadText(params string[] lines)
         {
             string text = string.Join("\r\n", lines);
-            _feature.LoadText(text);
+            new PlainTextReader().ReadTo(text, _feature);
         }
     }
 }

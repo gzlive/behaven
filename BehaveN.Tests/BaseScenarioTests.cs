@@ -20,7 +20,7 @@ namespace BehaveN.Tests
         protected void ExecuteText(params string[] lines)
         {
             string text = string.Join("\r\n", lines);
-            _feature.LoadText(text);
+            new PlainTextReader().ReadTo(text, _feature);
             _scenario = _feature.Scenarios[0];
             _scenario.Execute();
         }

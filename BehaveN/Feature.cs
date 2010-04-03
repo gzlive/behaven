@@ -30,8 +30,6 @@ namespace BehaveN
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
 
     /// <summary>
     /// Represents a feature.
@@ -40,9 +38,17 @@ namespace BehaveN
     {
         private readonly HeaderCollection headers = new HeaderCollection();
         private readonly StepDefinitionCollection stepDefinitions = new StepDefinitionCollection();
-        private readonly ScenarioCollection scenarios = new ScenarioCollection();
+        private readonly ScenarioCollection scenarios;
         private bool passed;
         private Reporter reporter;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Feature"/> class.
+        /// </summary>
+        public Feature()
+        {
+            this.scenarios = new ScenarioCollection(this);
+        }
 
         /// <summary>
         /// Gets the headers.
@@ -100,62 +106,6 @@ namespace BehaveN
         {
             get { return this.reporter ?? (this.reporter = new DefaultReporter()); }
             set { this.reporter = value; }
-        }
-
-        /// <summary>
-        /// Loads the file.
-        /// </summary>
-        /// <param name="path">The path to load from.</param>
-        public void LoadFile(string path)
-        {
-            string text = File.ReadAllText(path);
-            this.LoadText(text);
-        }
-
-        /// <summary>
-        /// Loads the embedded resource.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <param name="name">The name of the embedded resource.</param>
-        public void LoadEmbeddedResource(Assembly assembly, string name)
-        {
-            string actualName = null;
-
-            foreach (string possibleName in assembly.GetManifestResourceNames())
-            {
-                if (possibleName == name || possibleName.EndsWith("." + name, StringComparison.OrdinalIgnoreCase))
-                {
-                    actualName = possibleName;
-                    break;
-                }
-            }
-
-            if (actualName == null)
-            {
-                throw new Exception(string.Format("Could not find embedded resource named \"{0}\" in assembly named \"{1}\".", name, assembly.FullName));
-            }
-
-            using (Stream stream = assembly.GetManifestResourceStream(actualName))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string text = reader.ReadToEnd();
-                this.LoadText(text);
-            }
-        }
-
-        /// <summary>
-        /// Loads the text.
-        /// </summary>
-        /// <param name="text">The text to read.</param>
-        public void LoadText(string text)
-        {
-            PlainTextReader reader = new PlainTextReader();
-            reader.ReadTo(text, this);
-
-            foreach (Scenario scenario in this.scenarios)
-            {
-                scenario.StepDefinitions = this.stepDefinitions;
-            }
         }
 
         /// <summary>

@@ -47,6 +47,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Read.cs" />
     <Compile Include="HeaderCollection.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="TextBlockType.cs" />

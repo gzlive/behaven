@@ -107,7 +107,7 @@ namespace BehaveN.Tool
                                              feature.StepDefinitions.UseStepDefinitionsFromAssembly(assembly);
                                          }
 
-                                         feature.LoadFile(scenarioFile);
+                                         new PlainTextReader().ReadTo(Read.File(scenarioFile), feature);
                                          feature.Execute();
                                          feature.Report();
 

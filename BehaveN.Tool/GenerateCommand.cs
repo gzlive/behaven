@@ -73,7 +73,7 @@ namespace BehaveN.Tool
             foreach (var file in expandedFiles)
             {
                 var feature = new Feature();
-                feature.LoadFile(file);
+                new PlainTextReader().ReadTo(Read.File(file), feature);
 
                 string csFile = Path.ChangeExtension(file, ".g.cs");
 
@@ -112,7 +112,7 @@ namespace BehaveN.Tool
         public void LoadScenarios()
         {{
             _feature.StepDefinitions.UseStepDefinitionsFromAssembly({1});
-            _feature.LoadEmbeddedResource(GetType().Assembly, ""{0}"");
+            new PlainTextReader().ReadTo(Read.EmbeddedResource(GetType().Assembly, ""{0}""), _feature);
         }}", Path.GetFileName(file), (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")");
                 }
 
