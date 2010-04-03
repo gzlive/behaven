@@ -62,7 +62,12 @@ namespace BehaveN
         private MethodInfo _methodInfo;
         private List<Regex> _regexes;
 
-        internal bool TryExecute(Step step)
+        /// <summary>
+        /// Tries to execute the step.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns>True if the step was able to be executed.</returns>
+        public bool TryExecute(Step step)
         {
             Match m = GetMatch(step);
 
@@ -98,13 +103,12 @@ namespace BehaveN
         }
 
         private static readonly Regex firstWordReplacer = new Regex(@"^\S+");
-        private static readonly Regex punctuationRemover = new Regex(@"(?<=\p{L})\p{P}");
 
         private Match GetMatch(Step step)
         {
             string text = firstWordReplacer.Replace(step.Text, step.Type.ToString());
 
-            text = punctuationRemover.Replace(text, "");
+            text = StringExtensions.RemovePunctuationFromOutsideQuotedParts(text);
 
             foreach (var regex in _regexes)
             {

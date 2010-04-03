@@ -51,7 +51,7 @@ namespace BehaveN
             int i = 0;
             int arg = 1;
 
-            foreach (string part in Split(step.Text))
+            foreach (string part in StringExtensions.SplitTokens(step.Text))
             {
                 if (sb.Length > 0)
                 {
@@ -82,7 +82,7 @@ namespace BehaveN
 
             int i = 1;
 
-            foreach (string part in Split(description))
+            foreach (string part in StringExtensions.SplitTokens(description))
             {
                 if (IsInteger(part))
                 {
@@ -104,33 +104,6 @@ namespace BehaveN
             }
 
             return string.Join(", ", parameters.ToArray());
-        }
-
-        private static string[] Split(string description)
-        {
-            List<string> parts = new List<string>();
-
-            bool quoted = false;
-            int start = 0;
-
-            for (int i = 0; i < description.Length; i++)
-            {
-                char c = description[i];
-
-                if (c == '\"') quoted = !quoted;
-
-                if (!quoted && c == ' ')
-                {
-                    if (start < i)
-                        parts.Add(description.Substring(start, i - start));
-
-                    start = i + 1;
-                }
-            }
-
-            parts.Add(description.Substring(start));
-
-            return parts.ToArray();
         }
 
         private static bool IsInteger(string part)
