@@ -142,7 +142,7 @@ namespace BehaveN
         public void Verify()
         {
             this.Execute();
-            //this.Report();
+            this.Report();
 
             var sw = new StringWriter();
             new PlainTextReporter(sw).ReportScenario(this);

@@ -28,31 +28,21 @@
 
 namespace BehaveN
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
     /// Represents the default reporter.
     /// </summary>
-    /// <remarks>The default reporter always reports to the console. It's
-    /// <see cref="Reporter.Destination" /> property will create and use another
-    /// reporter (based on the file extension of the new destination).</remarks>
+    /// <remarks>The default reporter creates another reporter based on its
+    /// <see cref="Reporter.Destination" /> property (based on the file
+    /// extension of the new destination).</remarks>
     public class DefaultReporter : Reporter
     {
         /// <summary>
-        /// The composite reporter that holds the reporter that writes
-        /// to the console and the other reporter that writes to a file.
+        /// The child reporter that does the actual reporting.
         /// </summary>
-        private readonly CompositeReporter compositeReporter = new CompositeReporter();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultReporter"/> class.
-        /// </summary>
-        public DefaultReporter()
-        {
-            this.compositeReporter.Add(new PlainTextReporter(Console.Out));
-        }
+        private Reporter actualReporter;
 
         /// <summary>
         /// Gets or sets the destination.
@@ -65,12 +55,7 @@ namespace BehaveN
             {
                 base.Destination = value;
 
-                if (this.compositeReporter.Count > 1)
-                {
-                    this.compositeReporter.RemoveAt(1);
-                }
-
-                this.compositeReporter.Add(GetReporterBasedOnExtension(value, new StreamWriter(value)));
+                this.actualReporter = GetReporterBasedOnExtension(value, new StreamWriter(value));
             }
         }
 
@@ -82,7 +67,10 @@ namespace BehaveN
         /// undefined steps.</remarks>
         public override void ReportFeature(Feature feature)
         {
-            this.compositeReporter.ReportFeature(feature);
+            if (this.actualReporter != null)
+            {
+                this.actualReporter.ReportFeature(feature);
+            }
         }
 
         /// <summary>
@@ -91,7 +79,10 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
-            this.compositeReporter.ReportScenario(scenario);
+            if (this.actualReporter != null)
+            {
+                this.actualReporter.ReportScenario(scenario);
+            }
         }
 
         /// <summary>
@@ -100,7 +91,10 @@ namespace BehaveN
         /// <param name="undefinedSteps">The undefined steps.</param>
         public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
-            this.compositeReporter.ReportUndefinedSteps(undefinedSteps);
+            if (this.actualReporter != null)
+            {
+                this.actualReporter.ReportUndefinedSteps(undefinedSteps);
+            }
         }
     }
 }
