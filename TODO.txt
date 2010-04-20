@@ -15,6 +15,5 @@
 - Forms and Grids are inconsistent.
   - Trying to set a property throws an exception.
   - Trying to get a property reports "(unknown)".
-- Fix DefaultReporter so that it doesn't always write to the console.
 - BehaveN.Tool Verify should output stack trace.
 - Checking out params should report a more meaningful message.
