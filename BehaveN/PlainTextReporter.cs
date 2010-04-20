@@ -171,13 +171,13 @@ namespace BehaveN
             {
                 this.writer.WriteLine(scenario.Exception.Message);
 
-                if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
-                {
-                    this.writer.WriteLine();
-                    this.writer.WriteLine(this.GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
-                }
+                //if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
+                //{
+                //    this.writer.WriteLine();
+                //    this.writer.WriteLine(this.GetStackTraceThatIsClickableInOutputWindow(scenario.Exception));
+                //}
 
-                this.writer.WriteLine();
+                //this.writer.WriteLine();
             }
         }
 

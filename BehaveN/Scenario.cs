@@ -26,6 +26,8 @@
 //
 // </copyright>
 
+using System.IO;
+
 namespace BehaveN
 {
     using System;
@@ -140,11 +142,14 @@ namespace BehaveN
         public void Verify()
         {
             this.Execute();
-            this.Report();
+            //this.Report();
+
+            var sw = new StringWriter();
+            new PlainTextReporter(sw).ReportScenario(this);
 
             if (!this.Passed)
             {
-                throw new VerificationException(this.exception ?? new Exception("Scenario failed."));
+                throw new VerificationException("\r\n\r\n" + sw.GetStringBuilder(), this.exception);
             }
         }
 

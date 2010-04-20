@@ -26,69 +26,46 @@
 //
 // </copyright>
 
-using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace BehaveN
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Represents a failed specification.
     /// </summary>
     public class VerificationException : Exception
     {
-        private Regex _stackTraceFilter = new Regex(@"BehaveN(?!\.(Example|Tests))\.");
-        private string _message;
-        private string _stackTrace;
+        private static readonly Regex StackTraceFilter = new Regex(@"BehaveN(?!\.(Example|Tests))\.");
+        private readonly string message;
+        private readonly string stackTrace;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VerificationException"/> class.
         /// </summary>
         /// <param name="originalException">The original exception.</param>
         public VerificationException(Exception originalException)
+            : this(originalException.Message, originalException)
         {
-            _message = originalException.Message;
-
-            if (_message.Contains("\n") && !(_message.StartsWith("\r") || _message.StartsWith("\n")))
-            {
-                _message = Environment.NewLine + _message;
-            }
-
-            _stackTrace = originalException.StackTrace;
         }
 
-        private string FilterStackTrace()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VerificationException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="originalException">The original exception.</param>
+        public VerificationException(string message, Exception originalException)
         {
-            StringBuilder sb = new StringBuilder();
+            this.message = message;
 
-            StringReader sr;
-            string line;
-
-            if (_stackTrace != null)
+            if (this.message.Contains("\n") && !(this.message.StartsWith("\r") || this.message.StartsWith("\n")))
             {
-                sr = new StringReader(_stackTrace);
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (!_stackTraceFilter.IsMatch(line))
-                    {
-                        sb.AppendLine(line);
-                    }
-                }
+                this.message = Environment.NewLine + this.message;
             }
 
-            sr = new StringReader(base.StackTrace);
-
-            while ((line = sr.ReadLine()) != null)
-            {
-                if (!_stackTraceFilter.IsMatch(line))
-                {
-                    sb.AppendLine(line);
-                }
-            }
-
-            return sb.ToString();
+            this.stackTrace = originalException.StackTrace;
         }
 
         /// <summary>
@@ -100,7 +77,7 @@ namespace BehaveN
         /// </returns>
         public override string Message
         {
-            get { return _message; }
+            get { return this.message; }
         }
 
         /// <summary>
@@ -115,7 +92,40 @@ namespace BehaveN
         /// </PermissionSet>
         public override string StackTrace
         {
-            get { return FilterStackTrace(); }
+            get { return this.FilterStackTrace(); }
+        }
+
+        private string FilterStackTrace()
+        {
+            var sb = new StringBuilder();
+
+            StringReader sr;
+            string line;
+
+            if (this.stackTrace != null)
+            {
+                sr = new StringReader(this.stackTrace);
+
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (!StackTraceFilter.IsMatch(line))
+                    {
+                        sb.AppendLine(line);
+                    }
+                }
+            }
+
+            sr = new StringReader(base.StackTrace);
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (!StackTraceFilter.IsMatch(line))
+                {
+                    sb.AppendLine(line);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
