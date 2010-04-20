@@ -27,6 +27,7 @@
 // </copyright>
 
 using System.IO;
+using System.Reflection;
 
 namespace BehaveN
 {
@@ -50,6 +51,34 @@ namespace BehaveN
         public Feature()
         {
             this.scenarios = new ScenarioCollection(this);
+        }
+
+        /// <summary>
+        /// Reads the embedded resource.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="name">The name of the embedded resource.</param>
+        public void ReadEmbeddedResource(Assembly assembly, string name)
+        {
+            this.ReadText(Read.EmbeddedResource(assembly, name));
+        }
+
+        /// <summary>
+        /// Reads the file.
+        /// </summary>
+        /// <param name="path">The path to the file.</param>
+        public void ReadFile(string path)
+        {
+            this.ReadText(Read.File(path));
+        }
+
+        /// <summary>
+        /// Reads the text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        public void ReadText(string text)
+        {
+            new PlainTextReader().ReadTo(text, this);
         }
 
         /// <summary>

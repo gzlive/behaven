@@ -107,13 +107,15 @@ namespace BehaveN.Tool
 
                 if (!noSetUp)
                 {
+                    string resourceAssembly = (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")";
+
                     sw.WriteLine(@"
         [TestFixtureSetUp]
         public void LoadScenarios()
         {{
             _feature.StepDefinitions.UseStepDefinitionsFromAssembly({1});
-            new PlainTextReader().ReadTo(Read.EmbeddedResource(GetType().Assembly, ""{0}""), _feature);
-        }}", Path.GetFileName(file), (assemblyName == null) ? "GetType().Assembly" : @"Assembly.Load(""" + assemblyName + @""")");
+            _feature.ReadEmbeddedResource(GetType().Assembly, ""{0}"");
+        }}", Path.GetFileName(file), resourceAssembly);
                 }
 
                 if (!noTearDown)
