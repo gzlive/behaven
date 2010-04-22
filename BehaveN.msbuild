@@ -38,15 +38,24 @@
       <Output TaskParameter="Major" PropertyName="Major" />
       <Output TaskParameter="Minor" PropertyName="Minor" />
       <Output TaskParameter="Build" PropertyName="Build" />
-      <Output TaskParameter="Revision" PropertyName="Revision" />
     </Version>
 
-    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
+    <Exec Command="hg id -n > revision.txt" />
+
+    <ReadLinesFromFile File="revision.txt">
+      <Output TaskParameter="Lines" ItemName="Revision" />
+    </ReadLinesFromFile>
+
+    <Message Text="Version: $(Major).$(Minor).$(Build).@(Revision)" />
+    <Message Text="If the Revision ends in a +, the build will fail." />
+    <Message Text="Check in and build with a clean working directory." />
+
+    <Delete Files="revision.txt" />
 
     <AssemblyInfo CodeLanguage="CS"
              OutputFile="VersionInfo.cs"
-             AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
-             AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
+             AssemblyVersion="$(Major).$(Minor).$(Build).@(Revision)"
+             AssemblyFileVersion="$(Major).$(Minor).$(Build).@(Revision)" />
   </Target>
 
   <Target Name="Documentation">
