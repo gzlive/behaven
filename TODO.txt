@@ -17,3 +17,5 @@
   - Trying to get a property reports "(unknown)".
 - BehaveN.Tool Verify should output stack trace.
 - Checking out params should report a more meaningful message.
+- When a scenario has undefined steps, the failure message should
+  say that.

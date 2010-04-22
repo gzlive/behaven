@@ -169,7 +169,7 @@ namespace BehaveN
         {
             if (scenario.Exception != null)
             {
-                this.writer.WriteLine(scenario.Exception.Message);
+                //this.writer.WriteLine(scenario.Exception.Message);
 
                 //if (!string.IsNullOrEmpty(scenario.Exception.StackTrace))
                 //{

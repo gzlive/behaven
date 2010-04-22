@@ -144,12 +144,9 @@ namespace BehaveN
             this.Execute();
             this.Report();
 
-            var sw = new StringWriter();
-            new PlainTextReporter(sw).ReportScenario(this);
-
             if (!this.Passed)
             {
-                throw new VerificationException("\r\n\r\n" + sw.GetStringBuilder(), this.exception);
+                throw new VerificationException(this.exception ?? new Exception("Scenario failed."));
             }
         }
 

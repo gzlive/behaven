@@ -67,6 +67,8 @@ namespace BehaveN
         /// undefined steps.</remarks>
         public override void ReportFeature(Feature feature)
         {
+            new PlainTextReporter().ReportFeature(feature);
+
             if (this.actualReporter != null)
             {
                 this.actualReporter.ReportFeature(feature);
@@ -79,6 +81,8 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
+            new PlainTextReporter().ReportScenario(scenario);
+
             if (this.actualReporter != null)
             {
                 this.actualReporter.ReportScenario(scenario);
@@ -91,6 +95,8 @@ namespace BehaveN
         /// <param name="undefinedSteps">The undefined steps.</param>
         public override void ReportUndefinedSteps(ICollection<Step> undefinedSteps)
         {
+            new PlainTextReporter().ReportUndefinedSteps(undefinedSteps);
+
             if (this.actualReporter != null)
             {
                 this.actualReporter.ReportUndefinedSteps(undefinedSteps);

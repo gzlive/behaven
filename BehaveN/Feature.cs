@@ -202,12 +202,9 @@ namespace BehaveN
             this.Execute();
             this.Report();
 
-            var sw = new StringWriter();
-            new PlainTextReporter(sw).ReportFeature(this);
-
             if (!this.Passed)
             {
-                throw new VerificationException("\r\n\r\n" + sw.GetStringBuilder(), null);
+                throw new VerificationException(new Exception("Feature failed."));
             }
         }
     }
