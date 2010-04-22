@@ -47,11 +47,11 @@
       <Output TaskParameter="Lines" ItemName="Revision" />
     </ReadLinesFromFile>
 
+    <Delete Files="revision.txt" />
+
     <Message Text="Version: $(Major).$(Minor).$(Build).@(Revision)" />
     <Message Text="If the Revision ends in a +, the build will fail." />
     <Message Text="Check in and build with a clean working directory." />
-
-    <Delete Files="revision.txt" />
 
     <AssemblyInfo CodeLanguage="CS"
              OutputFile="VersionInfo.cs"
