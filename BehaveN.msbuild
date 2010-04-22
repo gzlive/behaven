@@ -40,7 +40,8 @@
       <Output TaskParameter="Build" PropertyName="Build" />
     </Version>
 
-    <Exec Command="hg id -n > revision.txt" />
+    <Exec Command="hg revert --no-backup VersionInfo.cs" />
+    <Exec Command="hg identify -n > revision.txt" />
 
     <ReadLinesFromFile File="revision.txt">
       <Output TaskParameter="Lines" ItemName="Revision" />
