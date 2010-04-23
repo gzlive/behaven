@@ -26,13 +26,11 @@
 //
 // </copyright>
 
-using System.IO;
-using System.Reflection;
-
 namespace BehaveN
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// Represents a feature.
@@ -202,9 +200,20 @@ namespace BehaveN
             this.Execute();
             this.Report();
 
+            var exception = new Exception("Feature failed.");
+
+            foreach (var scenario in this.Scenarios)
+            {
+                if (scenario.Exception != null)
+                {
+                    exception = scenario.Exception;
+                    break;
+                }
+            }
+
             if (!this.Passed)
             {
-                throw new VerificationException(new Exception("Feature failed."));
+                throw new VerificationException(exception);
             }
         }
     }

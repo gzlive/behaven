@@ -63,6 +63,7 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorScenarios.g.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />
+    <Compile Include="Tests.cs" />
     <Compile Include="WatiNStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
