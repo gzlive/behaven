@@ -106,6 +106,8 @@ namespace BehaveN
         /// <param name="scenario">The scenario.</param>
         public override void ReportScenario(Scenario scenario)
         {
+            this.lastStepType = StepType.Unknown;
+
             this.writer.WriteLine("Scenario: {0}", scenario.Name);
             this.writer.WriteLine();
 
