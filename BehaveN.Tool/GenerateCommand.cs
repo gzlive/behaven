@@ -27,7 +27,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Mono.Options;
@@ -68,7 +67,7 @@ namespace BehaveN.Tool
             if (files.Count < 1)
                 return -1;
 
-            var expandedFiles = ExpandWildcards(files);
+            var expandedFiles = FileHelpers.ExpandWildcards(files);
 
             foreach (var file in expandedFiles)
             {
@@ -76,8 +75,6 @@ namespace BehaveN.Tool
                 new PlainTextReader().ReadTo(Read.File(file), feature);
 
                 string csFile = Path.ChangeExtension(file, ".g.cs");
-
-                Console.WriteLine("Writing to " + csFile);
 
                 StringWriter sw = new StringWriter();
 
@@ -156,32 +153,12 @@ namespace BehaveN.Tool
 
                 if (oldText != newText)
                 {
+                    Console.WriteLine("Writing to " + csFile);
                     File.WriteAllText(csFile, newText);
                 }
             }
 
             return 0;
-        }
-
-        private List<string> ExpandWildcards(List<string> files)
-        {
-            var expandedFiles = new List<string>();
-
-            foreach (var file in files)
-            {
-                if (file.Contains("*"))
-                {
-                    string path = Path.GetDirectoryName(file);
-                    string searchPattern = Path.GetFileName(file);
-                    expandedFiles.AddRange(Directory.GetFiles(path, searchPattern));
-                }
-                else
-                {
-                    expandedFiles.Add(file);
-                }
-            }
-
-            return expandedFiles;
         }
 
         private string MakeNameSafeForCSharp(string name)

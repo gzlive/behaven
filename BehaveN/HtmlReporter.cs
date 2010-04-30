@@ -103,6 +103,9 @@ namespace BehaveN
             {
                 switch (step.Result)
                 {
+                    case StepResult.Unknown:
+                        ReportUnknown(step);
+                        break;
                     case StepResult.Passed:
                         ReportPassed(step);
                         break;
@@ -153,6 +156,11 @@ namespace BehaveN
         private void ReportPending(Step step)
         {
             ReportStatus(step, "red", XMark);
+        }
+
+        private void ReportUnknown(Step step)
+        {
+            ReportStatus(step, "", "");
         }
 
         private void ReportPassed(Step step)
@@ -335,6 +343,8 @@ dt,strong,b{font-weight:700}
 	margin:auto;
 	padding:1.5em 10px;
 }
+th { text-align: right; }
+h2 { margin-top: 2.5em; }
 </style>";
     }
 }

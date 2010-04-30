@@ -42,6 +42,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="CommandHelpers.cs" />
+    <Compile Include="FileHelpers.cs" />
+    <Compile Include="PrintCommand.cs" />
     <Compile Include="UnusedCommand.cs" />
     <Compile Include="GenerateCommand.cs" />
     <Compile Include="ListCommand.cs" />
