@@ -95,6 +95,11 @@ namespace BehaveN.Tool
                     sw.WriteLine("    [Ignore(\"{0}\")]", feature.Headers["ignore"]);
                 }
 
+                if (feature.Headers["category"] != null)
+                {
+                    sw.WriteLine("    [Category(\"{0}\")]", feature.Headers["category"]);
+                }
+
                 string className = MakeNameSafeForCSharp(Path.GetFileNameWithoutExtension(file));
 
                 sw.WriteLine("    public partial class {0}{1}", className, (baseClass != null) ? " : " + baseClass : "");
