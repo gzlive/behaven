@@ -19,3 +19,16 @@
 - Checking out params should report a more meaningful message.
 - When a scenario has undefined steps, the failure message should
   say that.
+- Support lists as inline parameters?
+  - Given this list of ints: [1, 2, 3]
+- Add a Verify.Files method that accepts a wildcard
+- Add a Verify.EmbeddedResources method
+
+Screencasts to record:
+
+- Introduction
+- Setting up the macros
+- Verifying a file with BehaveN.Tool
+- Generating test fixtures with a pre-build event
+- Using Forms and Grids
+- Using output parameters
