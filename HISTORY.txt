@@ -1,4 +1,4 @@
-2.0.0.0 - 2010/03/xx:
+2.0.0.90 - 2010/07/11:
 
   - First release of BehaveN 2. Almost a complete rewrite with a
     completely changed API. Sorry.

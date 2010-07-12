@@ -38,25 +38,15 @@
       <Output TaskParameter="Major" PropertyName="Major" />
       <Output TaskParameter="Minor" PropertyName="Minor" />
       <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
     </Version>
 
-    <Exec Command="hg revert --no-backup VersionInfo.cs" />
-    <Exec Command="hg identify -n > revision.txt" />
-
-    <ReadLinesFromFile File="revision.txt">
-      <Output TaskParameter="Lines" ItemName="Revision" />
-    </ReadLinesFromFile>
-
-    <Delete Files="revision.txt" />
-
-    <Message Text="Version: $(Major).$(Minor).$(Build).@(Revision)" />
-    <Message Text="If the Revision ends in a +, the build will fail." />
-    <Message Text="Check in and build with a clean working directory." />
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
 
     <AssemblyInfo CodeLanguage="CS"
              OutputFile="VersionInfo.cs"
-             AssemblyVersion="$(Major).$(Minor).$(Build).@(Revision)"
-             AssemblyFileVersion="$(Major).$(Minor).$(Build).@(Revision)" />
+             AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)"
+             AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
   </Target>
 
   <Target Name="Documentation">

@@ -13,8 +13,6 @@ The project wiki on Google Code has plenty of examples and documentation:
 
 http://code.google.com/p/behaven
 
-For the API details, see BehaveN.chm.
-
 If you have any questions or suggestions, feel free to email me:
 
 mailto:jason@diamond.name
