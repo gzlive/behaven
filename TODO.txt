@@ -1,3 +1,6 @@
+- Add BooleanInlineType.
+  - Update UndefinedStepDefinitionHelper.
+  - Update macro.
 - Try to insert out modifiers in suggested step definitions
   for parameters that appear after the word "should".
 - If any steps are undefined, don't bother running any.
@@ -16,11 +19,10 @@
   - Trying to set a property throws an exception.
   - Trying to get a property reports "(unknown)".
 - BehaveN.Tool Verify should output stack trace.
-- Checking out params should report a more meaningful message.
+- Checking out params should report a more meaningful message when
+  they don't match.
 - When a scenario has undefined steps, the failure message should
   say that.
-- Support lists as inline parameters?
-  - Given this list of ints: [1, 2, 3]
 - Add a Verify.Files method that accepts a wildcard
 - Add a Verify.EmbeddedResources method
 
