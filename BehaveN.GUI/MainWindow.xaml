@@ -1,0 +1,16 @@
+﻿<Window x:Class="BehaveN.GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BehaveN GUI"
+        Width="640"
+        Height="480"
+>
+    <Grid>
+        <Menu Name="menu1" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <MenuItem Header="_File">
+                <MenuItem Name="OpenMenuItem" Header="_Open" Click="OpenMenuItem_Click" />
+                <MenuItem Name="ExitMenuItem" Header="E_xit" Click="ExitMenuItem_Click" />
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>

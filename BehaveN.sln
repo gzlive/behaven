@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.Examples", "BehaveN
 		{A0217D6C-3817-4E59-8321-FFDE89BD8491} = {A0217D6C-3817-4E59-8321-FFDE89BD8491}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaveN.GUI", "BehaveN.GUI\BehaveN.GUI.csproj", "{FD4478DB-5A9B-48DE-AB49-6E2BCF385E7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CC88ACF-D105-4FCC-AA6B-DA3853636D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4478DB-5A9B-48DE-AB49-6E2BCF385E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4478DB-5A9B-48DE-AB49-6E2BCF385E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4478DB-5A9B-48DE-AB49-6E2BCF385E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4478DB-5A9B-48DE-AB49-6E2BCF385E7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
