@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="BaseFeatureTests.cs" />
     <Compile Include="BaseScenarioTests.cs" />
+    <Compile Include="Scenario_Name_Tests.cs" />
     <Compile Include="Scenario_Text_Tests.cs" />
     <Compile Include="StepDefinition_Tests.cs" />
     <Compile Include="StepAttribute_Tests.cs" />

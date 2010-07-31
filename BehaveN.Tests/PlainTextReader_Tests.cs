@@ -12,14 +12,6 @@ namespace BehaveN.Tests
         private Exception _exception;
 
         [Test]
-        public void it_throws_an_exception_when_a_step_appears_before_a_scenario()
-        {
-            ReadText("Given foo");
-
-            _exception.Should().Be.InstanceOf<Exception>();
-        }
-
-        [Test]
         public void it_throws_an_exception_when_an_and_step_appears_first_in_a_scenario()
         {
             ReadText("Scenario: No ands first",

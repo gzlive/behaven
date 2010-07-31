@@ -41,7 +41,7 @@ namespace BehaveN
         private const string HeaderPattern = @"^\s*#\s*(.+)\s*:\s*(.+)\s*$";
         private const string CommentPattern = @"^\s*#.*$";
         private const string FeaturePattern = @"^\s*(?:{0})\s*:\s*(.+)";
-        private const string ScenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.+)";
+        private const string ScenarioPattern = @"^\s*(?:{0})\s*\d*\s*:\s*(.*)";
         private const string StepPattern = @"^\s*({0})\s+.+";
 
         private readonly Regex headerRegex = new Regex(HeaderPattern);
@@ -103,16 +103,27 @@ namespace BehaveN
 
                 if (this.match.Success)
                 {
-                    scenario = new Scenario();
-                    scenario.Name = this.match.Groups[1].Value;
-                    feature.Scenarios.Add(scenario);
-                    stepType = StepType.Unknown;
+                    scenario = CreateScenario(feature, this.match.Groups[1].Value, out stepType);
                 }
                 else
                 {
+                    if (scenario == null)
+                    {
+                        scenario = CreateScenario(feature, null, out stepType);
+                    }
+
                     this.ParseStep(lines, ref i, scenario, ref stepType, line);
                 }
             }
+        }
+
+        private Scenario CreateScenario(Feature feature, string name, out StepType stepType)
+        {
+            var scenario = new Scenario();
+            scenario.Name = string.IsNullOrEmpty(name) ? "(no name)" : name;
+            feature.Scenarios.Add(scenario);
+            stepType = StepType.Unknown;
+            return scenario;
         }
 
         private void CompileRegexes(string text)
