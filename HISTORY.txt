@@ -1,3 +1,8 @@
+  - Scenarios are allowed to not have a name.
+
+  - Undefined steps that use a form or grid now suggest a class along
+    with the method.
+
 2.0.0.90 - 2010/07/11:
 
   - First release of BehaveN 2. Almost a complete rewrite with a

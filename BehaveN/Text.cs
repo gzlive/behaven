@@ -118,6 +118,15 @@ namespace BehaveN
         }
 
         /// <summary>
+        /// Gets the suggested type definition for the parameter.
+        /// </summary>
+        /// <returns>The suggested type definition.</returns>
+        public string GetSuggestedParameterTypeDefinition()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Reports to the reporter.
         /// </summary>
         /// <param name="reporter">The reporter.</param>

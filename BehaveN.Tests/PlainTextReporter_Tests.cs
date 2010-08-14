@@ -101,6 +101,75 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_suggests_a_class_for_an_undefined_step_with_a_form()
+        {
+            var form = new Form();
+            form.Add("A", "a");
+            form.Add("B", "b");
+            form.Add("C", "c");
+
+            var undefinedSteps = new List<Step>
+                                     {
+                                         new Step
+                                         {
+                                             Type = StepType.Given,
+                                             Text = "Given this form",
+                                             Block = form,
+                                             Result = StepResult.Undefined
+                                         }
+                                     };
+
+            ReportUndefinedStepsOutputShouldBe(undefinedSteps,
+                "Your undefined steps can be defined with the following code:",
+                "",
+                "public void given_this_form(Foo foo)",
+                "{",
+                "    throw new NotImplementedException();",
+                "}",
+                "",
+                "public class Foo",
+                "{",
+                "    public string A { get; set; }",
+                "    public string B { get; set; }",
+                "    public string C { get; set; }",
+                "}"
+            );
+        }
+        [Test]
+        public void it_suggests_a_class_for_an_undefined_step_with_a_grid()
+        {
+            var grid = new Grid();
+            grid.SetHeaders(new List<string> { "A", "B", "C" });
+
+            var undefinedSteps = new List<Step>
+                                     {
+                                         new Step
+                                         {
+                                             Type = StepType.Given,
+                                             Text = "Given this grid",
+                                             Block = grid,
+                                             Result = StepResult.Undefined
+                                         }
+                                     };
+
+            ReportUndefinedStepsOutputShouldBe(undefinedSteps,
+                "Your undefined steps can be defined with the following code:",
+                "",
+                "public void given_this_grid(List<Foo> foos)",
+                "{",
+                "    throw new NotImplementedException();",
+                "}",
+                "",
+                "public class Foo",
+                "{",
+                "    public string A { get; set; }",
+                "    public string B { get; set; }",
+                "    public string C { get; set; }",
+                "}"
+            );
+        }
+
+        [Test]
         public void it_does_not_suggest_methods_beginning_with_and_for_undefined_steps()
         {
             var undefinedSteps = new List<Step>

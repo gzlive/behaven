@@ -38,10 +38,22 @@ namespace BehaveN
             string methodName = GetMethodName(undefinedStep);
             string parameters = GetParameters(undefinedStep.Text, undefinedStep.Block);
 
-            return string.Format(@"public void {0}({1})
+            string code = string.Format(@"public void {0}({1})
 {{
     throw new NotImplementedException();
 }}", methodName, parameters);
+
+            if (undefinedStep.Block != null)
+            {
+                string blockCode = undefinedStep.Block.GetSuggestedParameterTypeDefinition();
+
+                if (blockCode != null)
+                {
+                    code += "\r\n\r\n" + blockCode;
+                }
+            }
+
+            return code;
         }
 
         private static string GetMethodName(Step step)

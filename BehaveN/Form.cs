@@ -183,6 +183,25 @@ namespace BehaveN
         }
 
         /// <summary>
+        /// Gets the suggested type definition for the parameter.
+        /// </summary>
+        /// <returns>The suggested type definition.</returns>
+        public string GetSuggestedParameterTypeDefinition()
+        {
+            string code = "public class Foo\r\n" +
+                          "{\r\n";
+
+            foreach (string label in this.labels)
+            {
+                code += string.Format("    public string {0} {{ get; set; }}\r\n", label);
+            }
+
+            code += "}";
+
+            return code;
+        }
+
+        /// <summary>
         /// Reports to the reporter.
         /// </summary>
         /// <param name="reporter">The reporter.</param>

@@ -33,7 +33,6 @@ namespace BehaveN
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Represents a grid.
@@ -361,6 +360,25 @@ namespace BehaveN
         public string GetSuggestedParameterName()
         {
             return "foos";
+        }
+
+        /// <summary>
+        /// Gets the suggested type definition for the parameter.
+        /// </summary>
+        /// <returns>The suggested type definition.</returns>
+        public string GetSuggestedParameterTypeDefinition()
+        {
+            string code = "public class Foo\r\n" +
+                          "{\r\n";
+
+            foreach (string header in this.headers)
+            {
+                code += string.Format("    public string {0} {{ get; set; }}\r\n", header);
+            }
+
+            code += "}";
+
+            return code;
         }
 
         /// <summary>

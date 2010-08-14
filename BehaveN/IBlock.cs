@@ -68,6 +68,12 @@ namespace BehaveN
         string GetSuggestedParameterName();
 
         /// <summary>
+        /// Gets the suggested type definition for the parameter.
+        /// </summary>
+        /// <returns>The suggested type definition.</returns>
+        string GetSuggestedParameterTypeDefinition();
+
+        /// <summary>
         /// Reports to the reporter.
         /// </summary>
         /// <param name="reporter">The reporter.</param>

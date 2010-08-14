@@ -1,5 +1,3 @@
-- The reporter should suggest classes for undefined steps
-  that use forms or grids.
 - Make it possible to disable stack trace filtering.
 - Add BooleanInlineType.
   - Update UndefinedStepDefinitionHelper.
