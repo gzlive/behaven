@@ -63,6 +63,8 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorScenarios.g.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />
+    <Compile Include="TextExample.g.cs" />
+    <Compile Include="TextExampleStepDefinitions.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="WatiNStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,7 +79,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BlockExamples.txt" />
+    <EmbeddedResource Include="TextExample.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WatiNScenarios.txt" />
@@ -91,6 +93,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)CalculatorScenarios.txt</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)CalculatorScenarios.txt
+$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)TextExample.txt</PreBuildEvent>
   </PropertyGroup>
 </Project>

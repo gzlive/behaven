@@ -1,0 +1,11 @@
+﻿Scenario: Text
+
+Given this text
+  > This is line 1.
+  > This is line 2.
+
+When converting numbers into words
+
+Then the text should look like this
+  > This is line one.
+  > This is line two.
