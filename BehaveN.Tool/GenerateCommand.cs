@@ -139,7 +139,7 @@ namespace BehaveN.Tool
                     sw.WriteLine("        [Test]");
                     sw.WriteLine("        public void {0}()", methodName);
                     sw.WriteLine("        {");
-                    sw.WriteLine("            _feature.Scenarios[\"{0}\"].Verify();", scenario.Name);
+                    sw.WriteLine("            _feature.Scenarios[\"{0}\"].Verify();", EncodeString(scenario.Name));
                     sw.WriteLine("        }");
                 }
 
@@ -178,6 +178,11 @@ namespace BehaveN.Tool
             }
 
             return name;
+        }
+
+        private string EncodeString(string value)
+        {
+            return value.Replace("\"", "\\\"");
         }
 
         private static OptionSet GetOptions()

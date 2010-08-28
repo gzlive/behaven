@@ -7,7 +7,7 @@ using System.Reflection;
 namespace BehaveN.Examples
 {
     [TestFixture]
-    public partial class TextExample
+    public partial class TextBlockScenarios
     {
         private Feature _feature = new Feature();
 
@@ -15,7 +15,7 @@ namespace BehaveN.Examples
         public void LoadScenarios()
         {
             _feature.StepDefinitions.UseStepDefinitionsFromAssembly(GetType().Assembly);
-            _feature.ReadEmbeddedResource(GetType().Assembly, "TextExample.txt");
+            _feature.ReadEmbeddedResource(GetType().Assembly, "TextBlockScenarios.txt");
         }
 
         [TestFixtureTearDown]

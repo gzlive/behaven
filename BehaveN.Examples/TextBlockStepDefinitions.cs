@@ -2,7 +2,7 @@
 
 namespace BehaveN.Examples
 {
-    public class TextExampleStepDefinitions
+    public class TextBlockStepDefinitions
     {
         private string _text;
 

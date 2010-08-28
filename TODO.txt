@@ -1,3 +1,7 @@
+- Add support for ref parameters.
+- Make text blocks display the actual text when an assertion fails.
+- Figure out a way to add arbitrary headers to test methods when
+  generating code with BehaveN.Tool. (Category, Ignore, RequiresSTA)
 - Make it possible to disable stack trace filtering.
 - Add BooleanInlineType.
   - Update UndefinedStepDefinitionHelper.

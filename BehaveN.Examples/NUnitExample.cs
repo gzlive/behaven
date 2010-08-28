@@ -3,7 +3,7 @@
 namespace BehaveN.Examples
 {
     [TestFixture]
-    public class Tests
+    public class NUnitExample
     {
         [Test]
         public void Test()

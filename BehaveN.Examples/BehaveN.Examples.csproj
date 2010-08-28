@@ -63,9 +63,10 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorScenarios.g.cs" />
     <Compile Include="CalculatorStepDefinitions.cs" />
-    <Compile Include="TextExample.g.cs" />
-    <Compile Include="TextExampleStepDefinitions.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="TextBlockScenarios.g.cs" />
+    <Compile Include="TextBlockStepDefinitions.cs" />
+    <Compile Include="NUnitExample.cs" />
+    <Compile Include="WatiNScenarios.g.cs" />
     <Compile Include="WatiNStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,7 +80,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TextExample.txt" />
+    <EmbeddedResource Include="TextBlockScenarios.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WatiNScenarios.txt" />
@@ -93,7 +94,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)CalculatorScenarios.txt
-$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)TextExample.txt</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)BehaveN.Tool\bin\$(ConfigurationName)\BehaveN.Tool.exe Generate --namespace=BehaveN.Examples $(ProjectDir)*Scenarios.txt</PreBuildEvent>
   </PropertyGroup>
 </Project>
