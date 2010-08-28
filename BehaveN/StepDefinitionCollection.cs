@@ -126,12 +126,12 @@ namespace BehaveN
 
             if (constructors.Length < 1)
             {
-                throw new ArgumentException(string.Format("{0} has no constructors.", type.FullName));
+                throw new ArgumentException(string.Format("{0} has no public constructors.", type.FullName));
             }
 
             if (constructors.Length > 1)
             {
-                throw new ArgumentException(string.Format("{0} has more than one constructor.", type.FullName));
+                throw new ArgumentException(string.Format("{0} has more than one public constructor.", type.FullName));
             }
 
             ConstructorInfo constructor = constructors[0];

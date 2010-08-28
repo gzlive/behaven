@@ -26,8 +26,6 @@
 - BehaveN.Tool Verify should output stack trace.
 - Checking out params should report a more meaningful message when
   they don't match.
-- When a scenario has undefined steps, the failure message should
-  say that.
 - Add a Verify.Files method that accepts a wildcard
 - Add a Verify.EmbeddedResources method
 

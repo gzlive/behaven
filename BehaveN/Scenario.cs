@@ -26,8 +26,6 @@
 //
 // </copyright>
 
-using System.IO;
-
 namespace BehaveN
 {
     using System;
@@ -118,7 +116,7 @@ namespace BehaveN
             catch (Exception e)
             {
                 this.SaveException(e);
-                this.SetStepResult(lastStepIndex, e);
+                this.SetFailedStepResult(lastStepIndex, e);
             }
             finally
             {
@@ -146,7 +144,28 @@ namespace BehaveN
 
             if (!this.Passed)
             {
-                throw new VerificationException(this.exception ?? new Exception("Scenario failed."));
+                if (this.exception != null)
+                {
+                    throw new VerificationException(this.exception);
+                }
+
+                int undefinedStepCount = 0;
+
+                foreach (var step in this.steps)
+                {
+                    if (step.Result == StepResult.Undefined)
+                    {
+                        undefinedStepCount++;
+                    }
+                }
+
+                if (undefinedStepCount > 0)
+                {
+                    string message = string.Format("Scenario has {0} undefined step(s).", undefinedStepCount);
+                    throw new VerificationException(new Exception(message));
+                }
+
+                throw new VerificationException(new Exception("Scenario failed."));
             }
         }
 
@@ -191,7 +210,7 @@ namespace BehaveN
             }
         }
 
-        private void SetStepResult(int stepIndex, Exception e)
+        private void SetFailedStepResult(int stepIndex, Exception e)
         {
             if (this.exception is NotImplementedException)
             {
