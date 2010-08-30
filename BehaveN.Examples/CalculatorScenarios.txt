@@ -15,6 +15,12 @@ Given a new calculator
 When subtracting 1 and 2
 Then the result should be -1
 
+Scenario: Multiplying two numbers
+
+Given a new calculator
+When multiplying 2 by 3
+Then the result should be 6
+
 Scenario: Dividing two numbers
 
 Given a new calculator

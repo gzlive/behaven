@@ -37,6 +37,12 @@ namespace BehaveN.Examples
         }
 
         [Test]
+        public void Multiplying_two_numbers()
+        {
+            _feature.Scenarios["Multiplying two numbers"].Verify();
+        }
+
+        [Test]
         public void Dividing_two_numbers()
         {
             _feature.Scenarios["Dividing two numbers"].Verify();

@@ -1,6 +1,4 @@
-﻿using SharpTestsEx;
-
-namespace BehaveN.Examples
+﻿namespace BehaveN.Examples
 {
     public class CalculatorStepDefinitions
     {
@@ -17,14 +15,19 @@ namespace BehaveN.Examples
             _result = _calculator.Add(a, b);
         }
 
+        public void When_multiplying_arg1_by_arg2(int a, int b)
+        {
+            _result = a + b;
+        }
+
         public void When_dividing_arg1_by_arg2(int a, int b)
         {
             _result = _calculator.Divide(a, b);
         }
 
-        public void Then_the_result_should_be_arg1(int n)
+        public void Then_the_result_should_be_arg1(out int n)
         {
-            _result.Should().Be(n);
+            n = _result;
         }
 
         public void Given_an_unused_step_definition()
