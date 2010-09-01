@@ -164,7 +164,13 @@ namespace BehaveN
 
         private IEnumerable<StepDefinition> GetStepDefinitionsFrom(object target)
         {
-            foreach (MethodInfo mi in target.GetType().GetMethods())
+            var methods = new List<MethodInfo>(target.GetType().GetMethods());
+
+            // Sort the methods in reverse order so that longer names get
+            // matched before shorter ones.
+            methods.Sort((a, b) => -string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+
+            foreach (MethodInfo mi in methods)
             {
                 if (mi.DeclaringType.Namespace != "BehaveN" && NameParser.IsStepDefinition(mi))
                     yield return new StepDefinition(target, mi);
