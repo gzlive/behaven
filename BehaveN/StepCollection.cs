@@ -60,21 +60,6 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Adds a step with the specified information.
-        /// </summary>
-        /// <param name="type">The step type.</param>
-        /// <param name="step">The step text.</param>
-        /// <param name="block">The block value.</param>
-        public void Add(StepType type, string step, IBlock block)
-        {
-            Step newStep = new Step();
-            newStep.Type = type;
-            newStep.Text = step;
-            newStep.Block = block;
-            this.Add(newStep);
-        }
-
-        /// <summary>
         /// Adds the specified step.
         /// </summary>
         /// <param name="step">The step to add.</param>

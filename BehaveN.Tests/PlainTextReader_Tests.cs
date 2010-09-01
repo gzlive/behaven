@@ -21,6 +21,15 @@ namespace BehaveN.Tests
         }
 
         [Test]
+        public void it_throws_an_exception_when_a_with_step_appears_first_in_a_scenario()
+        {
+            ReadText("Scenario: No withs first",
+                     "With foo");
+
+            _exception.Should().Be.InstanceOf<Exception>();
+        }
+
+        [Test]
         public void it_throws_an_exception_when_it_encounters_a_step_it_does_not_recognize()
         {
             ReadText("Scenario: Unrecognized step",

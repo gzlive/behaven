@@ -215,7 +215,7 @@ namespace BehaveN
 
         private void ReportStatus(Step step, string status)
         {
-            if (this.lastStepType != StepType.Unknown && step.Type != this.lastStepType)
+            if (this.lastStepType != StepType.Unknown && step.IsPrimary)
             {
                 this.writer.WriteLine();
             }

@@ -52,6 +52,7 @@ namespace BehaveN
         private Regex whenRegex;
         private Regex thenRegex;
         private Regex andRegex;
+        private Regex withRegex;
 
         private Match match;
 
@@ -138,6 +139,7 @@ namespace BehaveN
             string when = lm.GetString(language, "When");
             string then = lm.GetString(language, "Then");
             string and = lm.GetString(language, "And");
+            string with = lm.GetString(language, "With");
 
             this.featureRegex = new Regex(string.Format(FeaturePattern, feature), RegexOptions.IgnoreCase);
             this.scenarioRegex = new Regex(string.Format(ScenarioPattern, scenario), RegexOptions.IgnoreCase);
@@ -145,6 +147,7 @@ namespace BehaveN
             this.whenRegex = new Regex(string.Format(StepPattern, when), RegexOptions.IgnoreCase);
             this.thenRegex = new Regex(string.Format(StepPattern, then), RegexOptions.IgnoreCase);
             this.andRegex = new Regex(string.Format(StepPattern, and), RegexOptions.IgnoreCase);
+            this.withRegex = new Regex(string.Format(StepPattern, with), RegexOptions.IgnoreCase);
         }
 
         private int ParseTitleAndDescription(List<string> lines, int i, Feature feature)
@@ -180,23 +183,35 @@ namespace BehaveN
 
         private void ParseStep(List<string> lines, ref int i, Scenario scenario, ref StepType stepType, string line)
         {
+            bool isPrimary = false;
+
             if (this.givenRegex.Match(line).Success)
             {
                 stepType = StepType.Given;
+                isPrimary = true;
             }
             else if (this.whenRegex.Match(line).Success)
             {
                 stepType = StepType.When;
+                isPrimary = true;
             }
             else if (this.thenRegex.Match(line).Success)
             {
                 stepType = StepType.Then;
+                isPrimary = true;
             }
             else if (this.andRegex.Match(line).Success)
             {
                 if (stepType == StepType.Unknown)
                 {
                     throw new Exception("\"And\" steps cannot appear before \"given\", \"when\", or \"then\" steps.");
+                }
+            }
+            else if (this.withRegex.Match(line).Success)
+            {
+                if (stepType == StepType.Unknown)
+                {
+                    throw new Exception("\"With\" steps cannot appear before \"given\", \"when\", or \"then\" steps.");
                 }
             }
             else
@@ -206,7 +221,13 @@ namespace BehaveN
 
             IBlock block = this.ParseBlock(lines, ref i);
 
-            scenario.Steps.Add(stepType, line, block);
+            scenario.Steps.Add(new Step
+                               {
+                                   Type = stepType,
+                                   IsPrimary = isPrimary,
+                                   Text = line,
+                                   Block = block
+                               });
         }
 
         private IBlock ParseBlock(List<string> lines, ref int i)

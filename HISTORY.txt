@@ -10,6 +10,13 @@
     before those with shorter names. This fixes the problem where the
     wrong step definition could get invoked.
 
+  - Added "with" as another "secondary" keyword (like "and").
+
+  - The plain text reporter now separates steps from the previous with
+    blank lines if they use a "primary" keyword (given, when, or then).
+    This allows you to create your own "groups" by starting with a
+    primary keyword and connecting steps to it with secondary keywords.
+
 2.0.0.90 - 2010/07/11:
 
   - First release of BehaveN 2. Almost a complete rewrite with a

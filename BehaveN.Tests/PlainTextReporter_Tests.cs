@@ -191,6 +191,22 @@ namespace BehaveN.Tests
                                                                "}");
         }
 
+        [Test]
+        public void it_puts_a_blank_line_in_front_of_steps_that_use_a_primary_keyword()
+        {
+            s.Name = "My scenario";
+            s.Steps.Add(new Step { Type = StepType.Given, IsPrimary = true, Text = "Given a", Result = StepResult.Passed });
+            s.Steps.Add(new Step { Type = StepType.Given, IsPrimary = false, Text = "and b", Result = StepResult.Passed });
+            s.Steps.Add(new Step { Type = StepType.Then, IsPrimary = true, Text = "Then c", Result = StepResult.Passed });
+
+            ScenarioReportShouldBe("Scenario: My scenario",
+                                   "",
+                                   "  Given a",
+                                   "  and b",
+                                   "",
+                                   "  Then c");
+        }
+
         private void ScenarioReportShouldBe(params string[] lines)
         {
             reporter.ReportScenario(s);

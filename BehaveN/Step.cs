@@ -42,6 +42,12 @@ namespace BehaveN
         public StepType Type { get; set; }
 
         /// <summary>
+        /// Indicates if this step was specified using a "primary" keyword
+        /// (given, when, or then).
+        /// </summary>
+        public bool IsPrimary { get; set; }
+
+        /// <summary>
         /// Gets or sets the actual text for the step.
         /// </summary>
         public string Text { get; set; }
