@@ -1,10 +1,10 @@
-  - Scenarios are allowed to not have a name.
+  - Scenarios are now allowed to not have a name.
 
   - Undefined steps that use a form or grid now suggest a class along
     with the method.
 
   - Scenarios with undefined steps now report that in their exception
-     message.
+    message.
 
   - Step definitions with longer names are now considered for matches
     before those with shorter names. This fixes the problem where the
@@ -16,6 +16,9 @@
     blank lines if they use a "primary" keyword (given, when, or then).
     This allows you to create your own "groups" by starting with a
     primary keyword and connecting steps to it with secondary keywords.
+
+  - Context objects that implement IDisposable now get disposed after
+    the scenario is done executing.
 
 2.0.0.90 - 2010/07/11:
 

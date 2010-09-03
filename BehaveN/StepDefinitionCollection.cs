@@ -187,6 +187,9 @@ namespace BehaveN
             contextObject = Activator.CreateInstance(type);
             _context[type] = contextObject;
 
+            if (contextObject is IDisposable)
+                _disposables.Add((IDisposable)contextObject);
+
             return contextObject;
         }
 
