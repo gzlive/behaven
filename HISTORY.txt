@@ -1,3 +1,5 @@
+2.0.1.102 - 2010/09/03:
+
   - Scenarios are now allowed to not have a name.
 
   - Undefined steps that use a form or grid now suggest a class along

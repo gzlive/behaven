@@ -24,8 +24,16 @@ To build the documentation:
 
 To make a release:
 
-  - Update the version number in VERSION.txt.
+  - Make sure your local repository is clean.
+
+  - Update the version number in VERSION.txt. Use the current
+    repository version + 1 as the last number. This will be the
+    version checked in to HG.
+
+  - Update HISTORY.txt to include the version and date.
 
   - Run MSBuild.exe /t:Release to make the ZIP file.
 
   - Upload the ZIP file to Google Code.
+
+  - Check the changed files in to HG.
