@@ -1,3 +1,4 @@
+- Figure out a way to allow numeric conversions using other cultures.
 - Add support for ref parameters.
 - Make text blocks display the actual text when an assertion fails.
 - Figure out a way to add arbitrary headers to test methods when

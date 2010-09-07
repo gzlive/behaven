@@ -29,6 +29,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace BehaveN
 {
@@ -96,7 +97,8 @@ namespace BehaveN
                 return list;
             }
 
-            return Convert.ChangeType(value, type);
+            // TODO: Figure out how to configure which format provider to use!
+            return Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
         }
     }
 }
