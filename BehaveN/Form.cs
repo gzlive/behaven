@@ -142,7 +142,7 @@ namespace BehaveN
             string label = this.GetLabel(i);
             string propertyName = NameComparer.NormalizeName(label);
 
-            PropertyInfo pi = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            PropertyInfo pi = ValueGetter.GetPropertyInfo(type, propertyName);
 
             if (pi != null)
             {

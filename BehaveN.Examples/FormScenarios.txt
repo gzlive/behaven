@@ -1,0 +1,6 @@
+﻿Scenario: Form
+
+When creating a customer named "Jason"
+
+Then the customer object should look like this
+  : Id : Jason

@@ -406,7 +406,7 @@ namespace BehaveN
         private PropertyInfo GetPropertyInfo(Type type, string header)
         {
             string propertyName = NameComparer.NormalizeName(header);
-            return type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            return ValueGetter.GetPropertyInfo(type, propertyName);
         }
     }
 }

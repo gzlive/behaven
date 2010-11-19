@@ -242,7 +242,7 @@ namespace BehaveN
     {
         internal static PropertyInfoValueSetter GetPropertyInfoValueSetter(object target, string normalizedName)
         {
-            PropertyInfo property = target.GetType().GetProperty(normalizedName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            PropertyInfo property = ValueGetter.GetPropertyInfo(target.GetType(), normalizedName);
 
             if (property != null && PropertyCanSetValue(property))
             {

@@ -95,6 +95,7 @@
     <Compile Include="UndefinedStepDefinitionHelper.cs" />
     <Compile Include="ValueComparer.cs" />
     <Compile Include="ValueFormatter.cs" />
+    <Compile Include="ValueGetter.cs" />
     <Compile Include="ValueParser.cs" />
     <Compile Include="ValueSetter.cs" />
     <Compile Include="VerificationException.cs" />
