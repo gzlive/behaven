@@ -1,3 +1,9 @@
+  - DateTimeParser was updated to be smarter with units. When the unit
+    is "day", "month", or "year", the base is DateTime.Today instead
+    of DateTime.Now. You can override that by using "x units before
+    anchor" or "x units from anchor" where "anchor" can be "now",
+    "today", "yesterdy", or "tomorrow".
+
 2.0.1.102 - 2010/09/03:
 
   - Scenarios are now allowed to not have a name.
