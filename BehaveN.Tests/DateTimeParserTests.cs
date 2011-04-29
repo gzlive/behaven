@@ -169,14 +169,14 @@ namespace BehaveN.Tests
         public void In5Months()
         {
             DateTime dt = DateTimeParser.ParseDateTime("In 5 Months");
-            AssertThatDateTimeIsCloseEnough(dt, DateTime.Now.AddMonths(5));
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddMonths(5));
         }
 
         [Test]
         public void In5Years()
         {
             DateTime dt = DateTimeParser.ParseDateTime("In 5 Years");
-            AssertThatDateTimeIsCloseEnough(dt, DateTime.Now.AddYears(5));
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddYears(5));
         }
 
         [Test]
@@ -211,14 +211,14 @@ namespace BehaveN.Tests
         public void _5MonthsAgo()
         {
             DateTime dt = DateTimeParser.ParseDateTime("5 Months Ago");
-            AssertThatDateTimeIsCloseEnough(dt, DateTime.Now.AddMonths(-5));
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddMonths(-5));
         }
 
         [Test]
         public void _5YearsAgo()
         {
             DateTime dt = DateTimeParser.ParseDateTime("5 Years Ago");
-            AssertThatDateTimeIsCloseEnough(dt, DateTime.Now.AddYears(-5));
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddYears(-5));
         }
 
         [Test]
@@ -268,6 +268,20 @@ namespace BehaveN.Tests
         {
             DateTime dt = DateTimeParser.ParseDateTime("5 Days From Today");
             AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddDays(5));
+        }
+
+        [Test]
+        public void _5MonthsBeforeToday()
+        {
+            DateTime dt = DateTimeParser.ParseDateTime("5 Months Before Today");
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddMonths(-5));
+        }
+
+        [Test]
+        public void _5MonthsBeforeTomorrow()
+        {
+            DateTime dt = DateTimeParser.ParseDateTime("5 Months Before Tomorrow");
+            AssertThatDateTimeIsCloseEnough(dt, DateTime.Today.AddDays(1).AddMonths(-5));
         }
     }
 }

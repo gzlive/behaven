@@ -37,6 +37,11 @@ namespace BehaveN
     public static class DateTimeParser
     {
         /// <summary>
+        /// The supported named instants in time.
+        /// </summary>
+        private const string Instants = "(now|today|yesterday|tomorrow)";
+
+        /// <summary>
         /// Regex that matches "in 3 days".
         /// </summary>
         private static readonly Regex InXUnits = new Regex(@"in\s+(\d+)\s+(.+?)s?\b", RegexOptions.IgnoreCase);
@@ -47,14 +52,14 @@ namespace BehaveN
         private static readonly Regex XUnitsAgo = new Regex(@"(\d+)\s+(.+?)s?\s+ago", RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Regex that matches "3 days from now".
+        /// Regex that matches "3 days from now" or "3 days from today".
         /// </summary>
-        private static readonly Regex XUnitsFromNow = new Regex(@"(\d+)\s+(.+?)s?\s+from\s+now", RegexOptions.IgnoreCase);
+        private static readonly Regex XUnitsFromX = new Regex(@"(\d+)\s+(.+?)s?\s+from\s+" + Instants, RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Regex that matches "3 days from today".
+        /// Regex that matches "3 days before now" or "3 days before today".
         /// </summary>
-        private static readonly Regex XDaysFromToday = new Regex(@"(\d+)\s+days?\s+from\s+today", RegexOptions.IgnoreCase);
+        private static readonly Regex XUnitsBeforeX = new Regex(@"(\d+)\s+(.+?)s?\s+before\s+" + Instants, RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Parses the date time.
@@ -83,24 +88,11 @@ namespace BehaveN
 
             value = value.Trim();
 
-            if (string.Equals(value, "now", StringComparison.OrdinalIgnoreCase))
-            {
-                return DateTime.Now;
-            }
+            dt = GetInstant(value);
 
-            if (string.Equals(value, "today", StringComparison.OrdinalIgnoreCase))
+            if (dt != DateTime.MinValue)
             {
-                return DateTime.Today;
-            }
-
-            if (string.Equals(value, "tomorrow", StringComparison.OrdinalIgnoreCase))
-            {
-                return DateTime.Today.AddDays(1);
-            }
-
-            if (string.Equals(value, "yesterday", StringComparison.OrdinalIgnoreCase))
-            {
-                return DateTime.Today.AddDays(-1);
+                return dt;
             }
 
             Match m;
@@ -109,8 +101,8 @@ namespace BehaveN
             {
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
-                
-                if (string.Equals(unit, "day", StringComparison.OrdinalIgnoreCase))
+
+                if (UnitIsBasedOnToday(unit))
                 {
                     return AddUnits(DateTime.Today, unit, x, defaultValue);
                 }
@@ -123,7 +115,7 @@ namespace BehaveN
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
                 
-                if (string.Equals(unit, "day", StringComparison.OrdinalIgnoreCase))
+                if (UnitIsBasedOnToday(unit))
                 {
                     return AddUnits(DateTime.Today, unit, -x, defaultValue);
                 }
@@ -131,20 +123,64 @@ namespace BehaveN
                 return AddUnits(DateTime.Now, unit, -x, defaultValue);
             }
 
-            if ((m = XUnitsFromNow.Match(value)).Success)
+            if ((m = XUnitsFromX.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
                 string unit = m.Groups[2].Value;
-                return AddUnits(DateTime.Now, unit, x, defaultValue);
+                string anchor = m.Groups[3].Value;
+                return AddUnits(GetInstant(anchor), unit, x, defaultValue);
             }
 
-            if ((m = XDaysFromToday.Match(value)).Success)
+            if ((m = XUnitsBeforeX.Match(value)).Success)
             {
                 int x = int.Parse(m.Groups[1].Value);
-                return DateTime.Today.AddDays(x);
+                string unit = m.Groups[2].Value;
+                string anchor = m.Groups[3].Value;
+                return AddUnits(GetInstant(anchor), unit, -x, defaultValue);
             }
 
             return defaultValue;
+        }
+
+        /// <summary>
+        /// Gets the instant in time specified by a string.
+        /// </summary>
+        /// <param name="instant">The instant in time.</param>
+        private static DateTime GetInstant(string instant)
+        {
+            if (string.Equals(instant, "now", StringComparison.OrdinalIgnoreCase))
+            {
+                return DateTime.Now;
+            }
+
+            if (string.Equals(instant, "today", StringComparison.OrdinalIgnoreCase))
+            {
+                return DateTime.Today;
+            }
+
+            if (string.Equals(instant, "tomorrow", StringComparison.OrdinalIgnoreCase))
+            {
+                return DateTime.Today.AddDays(1);
+            }
+
+            if (string.Equals(instant, "yesterday", StringComparison.OrdinalIgnoreCase))
+            {
+                return DateTime.Today.AddDays(-1);
+            }
+
+            return DateTime.MinValue;
+        }
+
+        /// <summary>
+        /// Determines if the unit should be added to today or now.
+        /// </summary>
+        /// <param name="unit">The string describing the unit.</param>
+        /// <returns>True if the units should be added to today.</returns>
+        private static bool UnitIsBasedOnToday(string unit)
+        {
+            return string.Equals(unit, "day", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(unit, "month", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(unit, "year", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
