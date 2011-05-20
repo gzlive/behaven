@@ -28,6 +28,7 @@
 
 namespace BehaveN
 {
+    using System;
     using System.Diagnostics;
 
     /// <summary>
@@ -61,5 +62,10 @@ namespace BehaveN
         /// Gets or sets the result of executing the step.
         /// </summary>
         public StepResult Result { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exception that was thrown by the previous step (if any).
+        /// </summary>
+        public Exception Exception { get; set; }
    }
 }

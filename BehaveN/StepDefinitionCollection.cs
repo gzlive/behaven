@@ -194,7 +194,7 @@ namespace BehaveN
         }
 
         /// <summary>
-        /// Tries to execute a step.
+        /// Tries to execute a step. Returns true if the step was executed, false if it wasn't found.
         /// </summary>
         /// <param name="step">The step.</param>
         /// <returns>True if the step was executed.</returns>
@@ -222,6 +222,26 @@ namespace BehaveN
             {
                 if (stepDefinition.Matches(step))
                     return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified step can handle an exception.
+        /// </summary>
+        /// <param name="step">The step.</param>
+        /// <returns>
+        /// 	<c>true</c> if the step can handler an exception; otherwise, <c>false</c>.
+        /// </returns>
+        public bool CanHandleException(Step step)
+        {
+            foreach (StepDefinition stepDefinition in _stepDefinitions)
+            {
+                if (stepDefinition.Matches(step))
+                {
+                    return stepDefinition.CanHandleException();
+                }
             }
 
             return false;

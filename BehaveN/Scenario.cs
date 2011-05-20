@@ -116,7 +116,7 @@ namespace BehaveN
             catch (Exception e)
             {
                 this.SaveException(e);
-                this.SetFailedStepResult(lastStepIndex, e);
+                this.SetFailedStepResult(lastStepIndex);
             }
             finally
             {
@@ -188,29 +188,54 @@ namespace BehaveN
             {
                 Step step = this.steps[lastStepIndex];
 
-                if (!this.stepDefinitions.TryExecute(step))
+                try
                 {
-                    this.passed = false;
-                    step.Result = StepResult.Undefined;
-                    break;
-                }
+                    if (!this.stepDefinitions.TryExecute(step))
+                    {
+                        this.passed = false;
+                        step.Result = StepResult.Undefined;
+                        break;
+                    }
 
-                step.Result = StepResult.Passed;
+                    step.Result = StepResult.Passed;
+                }
+                catch (Exception e)
+                {
+                    if (!NextStepCanHandleException(lastStepIndex))
+                    {
+                        throw;
+                    }
+
+                    step.Result = StepResult.Passed;
+
+                    this.steps[lastStepIndex + 1].Exception = GetRealException(e);
+                }
             }
+        }
+
+        private bool NextStepCanHandleException(int lastStepIndex)
+        {
+            if ((lastStepIndex + 1) < this.steps.Count)
+            {
+                Step step = this.steps[lastStepIndex + 1];
+                return this.stepDefinitions.CanHandleException(step);
+            }
+
+            return false;
         }
 
         private void SaveException(Exception e)
         {
             this.passed = false;
-            this.exception = e;
-
-            if (e is TargetInvocationException)
-            {
-                this.exception = e.InnerException;
-            }
+            this.exception = GetRealException(e);
         }
 
-        private void SetFailedStepResult(int stepIndex, Exception e)
+        private static Exception GetRealException(Exception e)
+        {
+            return e is TargetInvocationException ? e.InnerException : e;
+        }
+
+        private void SetFailedStepResult(int stepIndex)
         {
             if (this.exception is NotImplementedException)
             {

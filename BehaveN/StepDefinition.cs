@@ -74,7 +74,7 @@ namespace BehaveN
             if (!m.Success)
                 return false;
 
-            object[] parameters = GetParametersForMethodFromMatch(m, step.Block);
+            object[] parameters = GetParametersForMethodFromMatch(m, step.Block, step.Exception);
 
             Invoke(parameters);
 
@@ -121,7 +121,7 @@ namespace BehaveN
             return Match.Empty;
         }
 
-        private object[] GetParametersForMethodFromMatch(Match match, IBlock block)
+        private object[] GetParametersForMethodFromMatch(Match match, IBlock block, Exception e)
         {
             object[] parameters = null;
 
@@ -133,7 +133,11 @@ namespace BehaveN
 
                 foreach (ParameterInfo pi in _methodInfo.GetParameters())
                 {
-                    if (!pi.IsOut)
+                    if (pi.ParameterType == typeof (Exception))
+                    {
+                        parameters[i] = e;
+                    }
+                    else if (!pi.IsOut)
                     {
                         object parameter = GetParameterFromMatch(pi, match, block);
 
@@ -224,6 +228,25 @@ namespace BehaveN
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether the step definition can handle an exception.
+        /// </summary>
+        /// <returns>
+        /// 	<c>true</c> if the step can handler an exception; otherwise, <c>false</c>.
+        /// </returns>
+        public bool CanHandleException()
+        {
+            foreach (ParameterInfo pi in this._methodInfo.GetParameters())
+            {
+                if (pi.ParameterType == typeof(Exception))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
