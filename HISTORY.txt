@@ -1,3 +1,7 @@
+  - Added support for unordered comparisons of Grid rows. This is
+    triggered when the type of an output parameter is HashSet or
+    SortedSet.
+
 2.1.0.107 - 2011/05/20:
 
   - Step definitions that accept an Exception as a parameter can
@@ -7,7 +11,7 @@
     is "day", "month", or "year", the base is DateTime.Today instead
     of DateTime.Now. You can override that by using "x units before
     anchor" or "x units from anchor" where "anchor" can be "now",
-    "today", "yesterdy", or "tomorrow".
+    "today", "yesterday", or "tomorrow".
 
 2.0.1.102 - 2010/09/03:
 

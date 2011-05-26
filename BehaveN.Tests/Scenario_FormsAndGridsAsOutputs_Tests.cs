@@ -108,6 +108,65 @@ namespace BehaveN.Tests
             ((Grid)TheScenario.Steps[0].Block).GetValue(2, 1).Should().Be("3");
         }
 
+        [Test]
+        public void it_doesnt_require_rows_to_be_in_the_same_order_when_the_output_arg_is_a_set()
+        {
+            ExecuteText("Scenario: Set",
+                        "Then the objects should look like this set",
+                        "  | String Property | Int Property |",
+                        "  |             baz |            3 |",
+                        "  |             bar |            2 |",
+                        "  |             foo |            1 |");
+
+            TheScenario.Passed.Should().Be.True();
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("baz");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 1).Should().Be("3");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 0).Should().Be("bar");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 1).Should().Be("2");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 0).Should().Be("foo");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 1).Should().Be("1");
+        }
+
+        [Test]
+        public void it_reports_unexpected_rows_with_sets()
+        {
+            ExecuteText("Scenario: Set unexpected",
+                        "Then the objects should look like this set",
+                        "  | String Property | Int Property |",
+                        "  |             baz |            3 |",
+                        "  |             foo |            1 |");
+
+            TheScenario.Passed.Should().Be.False();
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("baz");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 1).Should().Be("3");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 0).Should().Be("foo");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 1).Should().Be("1");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 0).Should().Be("(unexpected) bar");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 1).Should().Be("2");
+        }
+
+        [Test]
+        public void it_reports_missing_rows_with_sets()
+        {
+            ExecuteText("Scenario: Set missing",
+                        "Then the objects should look like this set",
+                        "  | String Property | Int Property |",
+                        "  |            quux |            4 |",
+                        "  |             baz |            3 |",
+                        "  |             bar |            2 |",
+                        "  |             foo |            1 |");
+
+            TheScenario.Passed.Should().Be.False();
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 0).Should().Be("(missing) quux");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(0, 1).Should().Be("4");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 0).Should().Be("baz");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(1, 1).Should().Be("3");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 0).Should().Be("bar");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(2, 1).Should().Be("2");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(3, 0).Should().Be("foo");
+            ((Grid)TheScenario.Steps[0].Block).GetValue(3, 1).Should().Be("1");
+        }
+
         public void then_the_object_should_look_like_this(out MyObject theObject)
         {
             theObject = new MyObject { StringProperty = "foo", IntProperty = 1 };
@@ -119,6 +178,16 @@ namespace BehaveN.Tests
                              {
                                  new MyObject { StringProperty = "foo", IntProperty = 1 },
                                  new MyObject { StringProperty = "bar", IntProperty = 2 },
+                             };
+        }
+
+        public void then_the_objects_should_look_like_this_set(out HashSet<MyObject> theObjects)
+        {
+            theObjects = new HashSet<MyObject>
+                             {
+                                 new MyObject { StringProperty = "foo", IntProperty = 1 },
+                                 new MyObject { StringProperty = "bar", IntProperty = 2 },
+                                 new MyObject { StringProperty = "baz", IntProperty = 3 },
                              };
         }
     }

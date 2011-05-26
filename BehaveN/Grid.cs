@@ -236,6 +236,67 @@ namespace BehaveN
         /// <returns>True if all checks pass.</returns>
         public bool Check(object actual)
         {
+            if (TypeExtensions.IsSetType(actual.GetType()))
+            {
+                return CheckUnorderedCollection(actual);
+            }
+
+            return CheckOrderedCollection(actual);
+        }
+
+        private bool CheckUnorderedCollection(object actual)
+        {
+            var expectedRowIndexes = new List<int>();
+
+            for (var i = 0; i < this.RowCount; i++)
+            {
+                expectedRowIndexes.Add(i);
+            }
+
+            var actualObjects = new List<object>();
+
+            foreach (var actualObject in (IEnumerable)actual)
+            {
+                actualObjects.Add(actualObject);
+            }
+
+            var unexpectedObjects = new List<object>();
+
+            foreach (var actualObject in actualObjects)
+            {
+                var found = false;
+
+                foreach (var rowIndex in expectedRowIndexes)
+                {
+                    if (CheckExpectedRow(actualObject, rowIndex, false))
+                    {
+                        expectedRowIndexes.Remove(rowIndex);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    unexpectedObjects.Add(actualObject);
+                }
+            }
+
+            var passed = expectedRowIndexes.Count == 0 && unexpectedObjects.Count == 0;
+
+            foreach (var rowIndex in expectedRowIndexes)
+            {
+                string expectedValue = this.GetValue(rowIndex, 0);
+                this.rows[rowIndex][0] = string.Format("(missing) {0}", expectedValue);
+            }
+
+            AddUnexpectedRows(unexpectedObjects.GetEnumerator());
+
+            return passed;
+        }
+
+        private bool CheckOrderedCollection(object actual)
+        {
             IEnumerator enumerator = ((IEnumerable)actual).GetEnumerator();
 
             bool passed = CheckExpectedRows(enumerator);
@@ -253,7 +314,7 @@ namespace BehaveN
             {
                 if (enumerator.MoveNext())
                 {
-                    passed &= CheckExpectedRow(enumerator, rowIndex);
+                    passed &= CheckExpectedRow(enumerator.Current, rowIndex, true);
                 }
                 else
                 {
@@ -266,21 +327,19 @@ namespace BehaveN
             return passed;
         }
 
-        private bool CheckExpectedRow(IEnumerator enumerator, int rowIndex)
+        private bool CheckExpectedRow(object current, int rowIndex, bool updateCells)
         {
             bool passed = true;
 
-            object current = enumerator.Current;
-
             for (int columnIndex = 0; columnIndex < this.ColumnCount; columnIndex++)
             {
-                passed &= CheckExpectedCell(columnIndex, current, rowIndex);
+                passed &= CheckExpectedCell(columnIndex, current, rowIndex, updateCells);
             }
 
             return passed;
         }
 
-        private bool CheckExpectedCell(int columnIndex, object current, int rowIndex)
+        private bool CheckExpectedCell(int columnIndex, object current, int rowIndex, bool updateCell)
         {
             bool passed = true;
 
@@ -294,7 +353,11 @@ namespace BehaveN
 
                 if (!object.Equals(actualValue, expectedValue))
                 {
-                    this.rows[rowIndex][columnIndex] = string.Format("{0} (was {1})", expectedValue, actualValue);
+                    if (updateCell)
+                    {
+                        this.rows[rowIndex][columnIndex] = string.Format("{0} (was {1})", expectedValue, actualValue);
+                    }
+
                     passed = false;
                 }
             }

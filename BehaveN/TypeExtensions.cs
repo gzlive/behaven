@@ -55,12 +55,34 @@ namespace BehaveN
             if (genericType == typeof(IEnumerable<>) ||
                 genericType == typeof(IList<>) ||
                 genericType == typeof(ICollection<>) ||
-                genericType == typeof(List<>))
+                genericType == typeof(List<>) ||
+                IsSetType(type))
             {
                 return type.GetGenericArguments()[0];
             }
 
             return null;
+        }
+
+        public static bool IsSetType(Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return false;
+            }
+
+            Type genericType = type.GetGenericTypeDefinition();
+
+            if (genericType == null)
+            {
+                return false;
+            }
+
+            // We have to use strings since these types are new in 3.5 and BehaveN is compiled for 2.0.
+            return genericType.FullName == "System.Collections.Generic.HashSet`1" ||
+                   genericType.FullName == "System.Collections.Generic.SortedSet`1";
+
+            // TODO: It would be nice if we also checked the implemented interfaces to see if ISet<T> is there.
         }
     }
 }
